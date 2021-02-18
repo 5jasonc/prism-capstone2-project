@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: sans-serif;
+}
+
+p, a {
+  font-family: sans-serif;
+}
+
+#app {
+  background-color: black;
+  width: 100vw;
+  height: calc(100vh - 70px);
+}
+
+nav {
+  height: 70px;
+}
+
+#title {
+  margin: 15px 25px;
+}
+
+#links {
+  width: fit-content;
+  overflow: hidden;
+  height: 100%;
+}
+
+nav, #links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#links a {
+  color: black;
+  text-align: center;
+  padding: 100% 16px;
+  text-decoration: none;
+}
+
+#links a:hover {
+  color: white;
+  background-color: black;
+}
