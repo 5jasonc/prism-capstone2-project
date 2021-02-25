@@ -50,3 +50,23 @@ nav, #links {
   color: white;
   background-color: black;
 }
+
+.learnmorebg{
+  height: auto;
+  background-color: #111;
+  height: 100vh;
+}
+
+.learnmorebg h1, .learnmorebg h2, .learnmorebg p{
+  color: white;
+  text-align: center;
+  padding-top: 32px;
+  max-width: 32em;
+  margin: auto;
+  font-size: 18px;
+}
+
+.learnmorebg h1{
+  padding-top: 136px;
+  font-size: 96px;
+}
