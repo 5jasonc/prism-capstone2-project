@@ -1,9 +1,41 @@
 "use strict";
 
+// Function should kick off program
 const init = () => {
   console.log('Main script running...');
+
+  // Load config to connect to firebase
+  const firebaseConfig = {
+		apiKey: "AIzaSyC7YDYaXNuS0Q3sTxJDi66vGGl5maDwMNQ",
+		authDomain: "prism-capstone2-project.firebaseapp.com",
+		databaseURL: "https://prism-capstone2-project-default-rtdb.firebaseio.com/",
+		storageBucket: "prism-capstone2-project.appspot.com",
+	};
+	
+  // Initialize app and connect to database
+	firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
 };
 
+// Adds 20 wishes to the DB. Don't run this function unless needed
+// Must pass a database reference
+const seedDB = (database) => {
+  // Create dummy wish data
+  const wishData = {};
+  for(let i = 0; i < 20; i++) {
+    const wish = {
+      wish: `I wish for ${i} dollars.`
+    };
+    wishData[`wish${i}`] = wish;
+  }
+
+  // Add dummy wish data to database
+  const updates = {};
+  updates['/wishes/'] = wishData;
+  database.ref().update(updates);
+};
+
+// Calls init function once DOM finishes loading
 window.onload = () => { 
   init(); 
 };
