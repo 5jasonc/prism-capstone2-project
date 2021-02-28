@@ -6,14 +6,14 @@ const init = () => {
 
   // Load config to connect to firebase
   const firebaseConfig = {
-		apiKey: "AIzaSyC7YDYaXNuS0Q3sTxJDi66vGGl5maDwMNQ",
-		authDomain: "prism-capstone2-project.firebaseapp.com",
-		databaseURL: "https://prism-capstone2-project-default-rtdb.firebaseio.com/",
-		storageBucket: "prism-capstone2-project.appspot.com",
-	};
-	
+    apiKey: "AIzaSyC7YDYaXNuS0Q3sTxJDi66vGGl5maDwMNQ",
+    authDomain: "prism-capstone2-project.firebaseapp.com",
+    databaseURL: "https://prism-capstone2-project-default-rtdb.firebaseio.com/",
+    storageBucket: "prism-capstone2-project.appspot.com",
+  };
+
   // Initialize app and connect to database
-	firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 };
 
@@ -22,7 +22,7 @@ const init = () => {
 const seedDB = (database) => {
   // Create dummy wish data
   const wishData = {};
-  for(let i = 0; i < 20; i++) {
+  for (let i = 0; i < 20; i++) {
     const wish = {
       wish: `I wish for ${i} dollars.`
     };
@@ -36,30 +36,32 @@ const seedDB = (database) => {
 };
 
 // Calls init function once DOM finishes loading
-window.onload = () => { 
-  init(); 
+window.onload = () => {
+  init();
 };
+
+
 
 /*++++++++++Three.js++++++++++*/
 //Connected the canvas to the #app html canvas Jason set up on
 const canvas = document.querySelector('#app');
 //Renders the 3.js on to the canvas
-const renderer = new THREE.WebGLRenderer({canvas});
+const renderer = new THREE.WebGLRenderer({
+  canvas
+});
 //Appends to html
-document.body.appendChild( renderer.domElement );
+document.body.appendChild(renderer.domElement);
 
 //Setting up the scene for the 3D to be in 
 const fov = 75;
-const aspect = 2;  // the canvas default
+const aspect = 2; // the canvas default
 const near = 0.1;
 const far = 5;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 2;
 
 //Setting the 3D stuff 
-const scene = new THREE.Scene();
-
-{
+const scene = new THREE.Scene(); {
   const color = 0xFFFFFF;
   const intensity = 1;
   const light = new THREE.DirectionalLight(color, intensity);
@@ -68,29 +70,44 @@ const scene = new THREE.Scene();
 }
 
 //Creating box shape
-const boxWidth = 1;
-const boxHeight = 1;
-const boxDepth = 1;
+const boxWidth = 0.2;
+const boxHeight = 0.6;
+const boxDepth = 0.2;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-function makeInstance(geometry, color, x) {
-  const material = new THREE.MeshPhongMaterial({color});
+//cretes the cube instance
+function makeInstance(geometry, color, data) {
+  const material = new THREE.MeshPhongMaterial({
+    color
+  });
 
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 
-  cube.position.x = x;
-
+  cube.position.x = Math.random(window.width);
+  console.log(cube.position.x);
+  cube.position.y = Math.random(window.height);
   return cube;
 }
 
+
+
 //Creates different cubes
 const cubes = [
-  makeInstance(geometry, 0x44aa88,  0),
-  makeInstance(geometry, 0x8844aa, -2),
-  makeInstance(geometry, 0xaa8844,  2),
+  makeInstance(geometry, 0xaa8844, 'Cat'),
+  makeInstance(geometry, 0xaa8844, 'Dog'),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
+  makeInstance(geometry, 0xaa8844),
 ];
 
+console.log(cubes);
 
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement;
