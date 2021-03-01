@@ -57,12 +57,15 @@ window.onload = () => {
 /*++++++++++Three.js++++++++++*/
 //Connected the canvas to the #app html canvas Jason set up on
 const canvas = document.querySelector('#app');
+
 //Renders the 3.js on to the canvas
 const renderer = new THREE.WebGLRenderer({
   canvas
 });
+
 //Appends to html
 document.body.appendChild(renderer.domElement);
+
 
 //Setting up the scene for the 3D to be in 
 const fov = 75;
@@ -106,8 +109,6 @@ function makeInstance(geometry, color, data) {
   return cube;
 }
 
-
-
 //Creates different cubes
 const cubes = [
   makeInstance(geometry, 0xaa8844, 'Cat'),
@@ -124,6 +125,7 @@ const cubes = [
 ];
 
 console.log(cubes);
+
 
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement;
@@ -145,6 +147,10 @@ function render(time) {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
+  //Renders the things out to html canvas
+  renderer.render(scene, camera);
+
+  requestAnimationFrame(render);
 
   cubes.forEach((cube, ndx) => {
     const speed = 1 + ndx * .1;
@@ -152,11 +158,6 @@ function render(time) {
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
-  //Renders the things out to html canvas
-  renderer.render(scene, camera);
-
-  requestAnimationFrame(render);
 }
 
 requestAnimationFrame(render);
