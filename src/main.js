@@ -15,6 +15,7 @@ const init = () => {
   // Initialize app and connect to database
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
+  seedDB(database);
 };
 
 // Adds 20 wishes to the DB. Don't run this function unless needed
@@ -32,8 +33,19 @@ const seedDB = (database) => {
   // Add dummy wish data to database
   const updates = {};
   updates['/wishes/'] = wishData;
+  //console.log(updates);
+
+
+  //print out all wishes
+  for (let i = 0; i < 20; i++) {
+    console.log(updates['/wishes/'][`wish${i}`]);
+    document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + JSON.stringify(updates['/wishes/'][`wish${i}`]);
+  }
+
+  
   database.ref().update(updates);
 };
+
 
 // Calls init function once DOM finishes loading
 window.onload = () => {
@@ -75,6 +87,8 @@ const boxHeight = 0.6;
 const boxDepth = 0.2;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
+
+
 //cretes the cube instance
 function makeInstance(geometry, color, data) {
   const material = new THREE.MeshPhongMaterial({
@@ -87,6 +101,8 @@ function makeInstance(geometry, color, data) {
   cube.position.x = Math.random(window.width);
   console.log(cube.position.x);
   cube.position.y = Math.random(window.height);
+
+  
   return cube;
 }
 
