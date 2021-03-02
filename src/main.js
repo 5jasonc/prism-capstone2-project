@@ -53,11 +53,13 @@ window.onload = () => {
 };
 
 
-
 /*++++++++++Three.js++++++++++*/
+//Use dom slider to change the camera zoom 
+let camZoom = 50;
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 20000);
-camera.position.set(0, 0, 50);
+var camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
+camera.position.set(0, 0, camZoom);
+console.log(camZoom);
 scene.add(camera);
 
 //Connected the canvas to the #app html canvas Jason set up on
@@ -66,7 +68,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas
 });
 
-renderer.setClearColor('#111111');
+renderer.setClearColor('#0d0b0e');
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 //Appends to html

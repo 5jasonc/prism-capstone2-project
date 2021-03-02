@@ -7,6 +7,9 @@
 body{
   margin: 0;
   height: 100vh;
+  background-color: #0d0b0e;
+  overflow: hidden;
+  color: white;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -18,7 +21,7 @@ p, a {
 }
 
 #app {
-  background-color: rgb(22, 22, 22);
+  background-color: #0d0b0e;
   width: 100vw;
   height: calc(100vh - 70px);
   display: block;
@@ -26,10 +29,12 @@ p, a {
 
 nav {
   height: 70px;
+
 }
 
 #title {
   margin: 15px 25px;
+  color: white;
 }
 
 #links {
@@ -45,20 +50,20 @@ nav, #links {
 }
 
 #links a {
-  color: black;
+  color: white;
   text-align: center;
   padding: 100% 16px;
   text-decoration: none;
 }
 
 #links a:hover {
-  color: white;
-  background-color: black;
+  color: #0d0b0e;
+  background-color: white;
 }
 
 .learnmorebg{
   height: auto;
-  background-color: #111;
+  background-color: #0d0b0e;
   height: 100vh;
 }
 
@@ -74,5 +79,79 @@ nav, #links {
 .learnmorebg h1{
   padding-top: 136px;
   font-size: 96px;
+}
+
+.slidecontainer{
+  position: absolute;
+  bottom: 164px;
+  left: -64px;
+  transform: rotate(-90deg);
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 240px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.247);
+  outline: none;
+  border-radius: 25px;
+  border: 2px solid white;
+  color: rgb(214, 214, 214);
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #000 inset;
+}
+
+.slider::-webkit-slider-thumb {
+  transition: 0.1s ease-in;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  background: rgb(240, 240, 240);
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.audio{
+    position: absolute;
+    right: 36px;
+    bottom: 36px;
+    height: 64px;
+    width: 64px;
+}
+
+.audio button{
+  height: 64px;
+  width: 64px;
+  font-size: 32px;
+  border: none;
+  background: none;
+  border-radius: 100rem;
+  font-size: 24px;
+  color: rgb(255, 255, 255);
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #000 inset;
+  transition: 0.1s ease-in;
+}
+
+.audio button:hover, .slider::-webkit-slider-thumb:hover{
+  transform: scale(1.1); 
+  transition: 0.1s ease-out;
 }
 
