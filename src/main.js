@@ -42,7 +42,7 @@ const seedDB = (database) => {
     document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + JSON.stringify(updates['/wishes/'][`wish${i}`]);
   }
 
-  
+
   database.ref().update(updates);
 };
 
@@ -55,109 +55,101 @@ window.onload = () => {
 
 
 /*++++++++++Three.js++++++++++*/
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 20000);
+camera.position.set(0, 0, 50);
+scene.add(camera);
+
 //Connected the canvas to the #app html canvas Jason set up on
 const canvas = document.querySelector('#app');
-
-//Renders the 3.js on to the canvas
 const renderer = new THREE.WebGLRenderer({
   canvas
 });
 
+renderer.setClearColor('#111111');
+renderer.setSize(window.innerWidth, window.innerHeight);
+
 //Appends to html
 document.body.appendChild(renderer.domElement);
 
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
 
-//Setting up the scene for the 3D to be in 
-const fov = 75;
-const aspect = 2; // the canvas default
-const near = 0.1;
-const far = 5;
-const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 2;
+//creating the jelly fish shape
+var geometry = new THREE.BoxGeometry(5, 10, 5);
+var material = new THREE.MeshNormalMaterial();
 
-//Setting the 3D stuff 
-const scene = new THREE.Scene(); {
-  const color = 0xFFFFFF;
-  const intensity = 1;
-  const light = new THREE.DirectionalLight(color, intensity);
-  light.position.set(-1, 2, 4);
-  scene.add(light);
-}
+var cube;
+//Assign what ever amount of size of list of the wishes to the cube array
+var cubes = [];
+//create many cubes
+/*https://www.youtube.com/watch?v=lshPMbN5ws8*/
+for (var x = 0; x < 1000; x++) {
+  cube = new THREE.Mesh(geometry, material);
 
-//Creating box shape
-const boxWidth = 0.2;
-const boxHeight = 0.6;
-const boxDepth = 0.2;
-const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+  cube.position.x = Math.random() * 75 - 50;
+  cube.position.y = Math.random() * 75 - 50;
+  cube.position.z = 0;
 
+  cube.rotation.x = Math.random() * 2 * Math.PI;
+  cube.rotation.y = Math.random() * 2 * Math.PI;
+  cube.rotation.z = Math.random() * 2 * Math.PI;
 
+  cube.scale.x = Math.random() + 0.5;
+  cube.scale.y = Math.random() + 0.5;
+  cube.scale.z = Math.random() + 0.5;
 
-//cretes the cube instance
-function makeInstance(geometry, color, data) {
-  const material = new THREE.MeshPhongMaterial({
-    color
-  });
-
-  const cube = new THREE.Mesh(geometry, material);
+  cube.userData.velocity = new THREE.Vector3();
+  cube.userData.velocity.x = Math.random() * 0.4 - 0.2;
+  cube.userData.velocity.y = Math.random() * 0.4 - 0.2;
+  cube.userData.velocity.z = Math.random() * 0.4 - 0.2;
   scene.add(cube);
-
-  cube.position.x = Math.random(window.width);
-  console.log(cube.position.x);
-  cube.position.y = Math.random(window.height);
-
-  
-  return cube;
+  cubes.push(cube);
 }
 
-//Creates different cubes
-const cubes = [
-  makeInstance(geometry, 0xaa8844, 'Cat'),
-  makeInstance(geometry, 0xaa8844, 'Dog'),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-  makeInstance(geometry, 0xaa8844),
-];
+//Setting up the lights
+var light = new THREE.PointLight(0xfffff, 1, 500);
+light.position.set(10, 0, 25);
+scene.add(light)
 
-console.log(cubes);
+//render it out
+renderer.render(scene, camera);
 
-
-function resizeRendererToDisplaySize(renderer) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    renderer.setSize(width, height, false);
-  }
-  return needResize;
-}
-
-//Important function This helps update refresh frame rate and keeping canvas width responsive
-function render(time) {
-  time *= 0.001;
-
-  if (resizeRendererToDisplaySize(renderer)) {
-    const canvas = renderer.domElement;
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.updateProjectionMatrix();
-  }
-  //Renders the things out to html canvas
-  renderer.render(scene, camera);
-
+var render = function () {
   requestAnimationFrame(render);
-
-  cubes.forEach((cube, ndx) => {
-    const speed = 1 + ndx * .1;
-    const rot = time * speed;
-    cube.rotation.x = rot;
-    cube.rotation.y = rot;
-  });
+  renderer.render(scene, camera);
 }
 
-requestAnimationFrame(render);
+function animate() {
+  requestAnimationFrame(animate);
+
+  //Make cubes move around
+  for (var i = 0; i < cubes.length; i++) {
+    var cube = cubes[i];
+    cube.position.add(cube.userData.velocity);
+    if (cube.position.x < -100 || cube.position.x > 100) {
+      cube.position.x = THREE.Math.clamp(cube.position.x, -100, 100);
+      cube.userData.velocity.x = -cube.userData.velocity.x;
+    }
+    if (cube.position.y < -100 || cube.position.y > 100) {
+      cube.position.y = THREE.Math.clamp(cube.position.y, -100, 100);
+      cube.userData.velocity.y = -cube.userData.velocity.y;
+    }
+    if (cube.position.z < -100 || cube.position.z > 100) {
+      cube.position.z = THREE.Math.clamp(cube.position.z, -100, 100);
+      cube.userData.velocity.z = -cube.userData.velocity.z;
+    }
+    cube.rotation.x += 0.01;
+  }
+
+  renderer.render(scene,camera)
+}
+animate();
+
+/*Change scene viewpoint*/
+// Try to use the trackball js code
+// controls = new THREE.TrackballControls(camera)
+// controls.position.addEventListener('change', render)

@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+body{
+  margin: 0;
+  height: 100vh;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: sans-serif;
 }
@@ -70,3 +75,4 @@ nav, #links {
   padding-top: 136px;
   font-size: 96px;
 }
+
