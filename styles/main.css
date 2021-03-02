@@ -14,10 +14,13 @@ body{
 
 h1, h2, h3, h4, h5, h6 {
   font-family: sans-serif;
+  color: white;
 }
 
 p, a {
   font-family: sans-serif;
+  text-decoration: none;
+  color: white;
 }
 
 #app {
@@ -81,6 +84,8 @@ nav, #links {
   font-size: 96px;
 }
 
+
+/*App styling*/
 .slidecontainer{
   position: absolute;
   bottom: 164px;
@@ -150,8 +155,71 @@ nav, #links {
   transition: 0.1s ease-in;
 }
 
-.audio button:hover, .slider::-webkit-slider-thumb:hover{
-  transform: scale(1.1); 
+.audio button:hover, .slider::-webkit-slider-thumb:hover, .makewish:hover, .explore:hover{
+  transform: scale(0.9); 
   transition: 0.1s ease-out;
 }
 
+/*Welcome screen*/
+.welcomescreen{
+  width: 100%;
+  height: 100vh;
+  background-color: #0c0c0c;
+}
+
+.welcometxt{
+  height: auto;
+  position: absolute;
+  bottom: 54px;
+  left: 64px;
+}
+
+.welcomescreen h2{
+  text-transform: uppercase;
+  font-weight: 200;
+  font-size: 24px;
+}
+
+.welcomescreen h1{
+  font-weight: 200;
+  font-size: 86px;
+}
+
+.makewish{
+  height: auto;
+  width: auto;
+  padding: 12px;
+  padding-left: 32px;
+  padding-right: 32px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  border-radius: 100rem;
+  color: rgb(255, 255, 255);
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  transition: 0.1s ease-in;
+  margin-top: 164px;
+}
+
+.explore{
+  height: auto;
+  width: auto;
+  font-size: 16px;
+  padding: 12px;
+  padding-left: 32px;
+  padding-right: 32px;
+  border: none;
+  background: none;
+  border-radius: 100rem;
+  color: rgb(255, 255, 255);
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #000 inset;
+  transition: 0.1s ease-in;
+  margin-left: 16px;
+}

@@ -28,7 +28,7 @@ const init = () => {
   document.body.appendChild(renderer.domElement);
 
   // Create camera and add to scene
-  let camZoom = 50;
+  let camZoom = 130;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
   camera.position.set(0, 0, camZoom);
@@ -112,7 +112,6 @@ function animate(renderer, scene, camera) {
 
   renderer.render(scene, camera)
 }
-
 
 // Adds 20 wishes to the DB. Don't run this function unless needed
 // Must pass a database reference

@@ -8,15 +8,16 @@
     <link href="styles/main.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>  
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/three.js" type="module"></script>
     <script src="./src/main.js" type="module"></script>
-    
+
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
     <meta property=”og:url” content=”http://www.wishingwell.com” />
     <meta property=”og:type” content=”website” />
-    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is good, use it.” />
+    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is
+        good, use it.” />
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
@@ -31,14 +32,21 @@
             <a href="listofwishes.html">Wishes</a> <!-- Maybe link to instruction page, more about project? -->
         </div>
     </nav>
-    <canvas id="app"></canvas>
-    <div class="slidecontainer">
-        <input type="range" min="0" max="200" value="130" class="slider" id="myCamRange">
-    </div>
-    <div class="audio">
-        <!-- <button><p>&#128266;</p></button> -->
-        <button><p>&#128263;</p></button>
+    <div class="welcomescreen">
+        <div class="welcometxt">
+            <h2>Welcome to</h2>
+            <h1>Digital Wishing Well</h1>
+            <button class="makewish">Create your own</button>
+            <button class="explore"><a href="index.html">Explore Community</a></button>
+        </div>
+        <div class="audio">
+            <button>
+                <p>&#128266;</p>
+            </button>
+            <!-- <button><p>&#128263;</p></button> -->
+        </div>
     </div>
 </body>
 <script src="./src/main.js" type="module"></script>
+
 </html>
