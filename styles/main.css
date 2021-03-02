@@ -23,6 +23,44 @@ p, a {
   color: white;
 }
 
+.loader{
+  position: fixed;
+  z-index: 99;
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: #0d0b0e;
+}
+
+.loader h1{
+  position: absolute;
+  width: 500px;
+  text-align: center;
+  bottom: 164px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  color: black;
+  font-size: 86px;
+  -webkit-text-fill-color: rgb(0, 0, 0); /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1px;
+  letter-spacing: 4px;
+  -webkit-text-stroke-color: rgb(255, 255, 255);
+}
+
+.loader h2{
+  position: absolute;
+  width: 500px;
+  text-align: center;
+  bottom: 124px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  font-weight: 300;
+  padding-top: 32px;
+}
+
 #app {
   background-color: #0d0b0e;
   width: 100vw;
@@ -136,6 +174,7 @@ nav, #links {
     bottom: 36px;
     height: 64px;
     width: 64px;
+    outline:none;
 }
 
 .audio button{
@@ -153,6 +192,7 @@ nav, #links {
   background-clip: content-box, border-box;
   box-shadow: 2px 1000px 1px #000 inset;
   transition: 0.1s ease-in;
+  outline:none;
 }
 
 .audio button:hover, .slider::-webkit-slider-thumb:hover, .makewish:hover, .explore:hover{

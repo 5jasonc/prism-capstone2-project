@@ -1,5 +1,11 @@
 "use strict";
 
+window.addEventListener("DOMContentLoaded", event => {
+  const audio = document.querySelector("audio");
+  audio.volume = 0.1;
+  audio.play();
+});
+
 // Holds all cubes/jellyfish
 const cubes = [];
 
@@ -55,7 +61,7 @@ const init = () => {
   const geometry = new THREE.BoxGeometry(5, 10, 5);
   const material = new THREE.MeshNormalMaterial();
 
-  for (let x = 0; x < 1000; x++) {
+  for (let x = 0; x < 500; x++) {
     const cube = new THREE.Mesh(geometry, material);
 
     cube.position.x = Math.random() * 75 - 50;
