@@ -56,10 +56,10 @@ window.onload = () => {
 /*++++++++++Three.js++++++++++*/
 //Use dom slider to change the camera zoom 
 let camZoom = 50;
+//create pull the dom element from html to here
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
 camera.position.set(0, 0, camZoom);
-console.log(camZoom);
 scene.add(camera);
 
 //Connected the canvas to the #app html canvas Jason set up on
