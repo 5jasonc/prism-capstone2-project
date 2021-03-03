@@ -1,5 +1,6 @@
 "use strict";
 
+//Plays music on website
 window.addEventListener("DOMContentLoaded", event => {
   const audio = document.querySelector("audio");
   audio.volume = 0.1;

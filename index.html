@@ -8,15 +8,17 @@
     <link href="styles/main.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>  
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/three.js" type="module"></script>
     <script src="./src/main.js" type="module"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
     <meta property=”og:url” content=”http://www.wishingwell.com” />
     <meta property=”og:type” content=”website” />
-    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is good, use it.” />
+    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is
+        good, use it.” />
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
@@ -37,10 +39,29 @@
     </div>
     <div class="audio">
         <!-- <button><p>&#128266;</p></button> -->
-        <audio src="Vitality - Benjamin Martins.mp3"></audio>
-        <button><p>&#128266;</p></button>
-        <!-- <p>&#128266;</p> -->
+        <audio src="Vitality - Benjamin Martins.mp3" id="audio"></audio>
+        <button onclick="play()">
+            <p id="play">🔊</p>
+        </button>
     </div>
 </body>
 <script src="./src/main.js" type="module"></script>
+<script>
+    //Play/Pause button
+    function play() {
+        var audio = document.getElementById('audio');
+        if (audio.paused) {
+            audio.play();
+            $('#play').removeClass('off');
+            $('#play').addClass('on');
+            console.log('it is playing.');
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            $('#play').addClass('off');
+            $('#play').removeClass('on');
+            console.log('it is on mute.');
+        }
+    }
+</script>
 </html>
