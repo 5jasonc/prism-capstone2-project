@@ -39,7 +39,7 @@
     </div>
     <div class="audio">
         <!-- <button><p>&#128266;</p></button> -->
-        <audio src="Vitality - Benjamin Martins.mp3" id="audio"></audio>
+        <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
         <button onclick="play()">
             <p id="play">🔊</p>
         </button>
@@ -52,16 +52,13 @@
         var audio = document.getElementById('audio');
         if (audio.paused) {
             audio.play();
-            $('#play').removeClass('off');
-            $('#play').addClass('on');
             console.log('it is playing.');
         } else {
             audio.pause();
             audio.currentTime = 0;
-            $('#play').addClass('off');
-            $('#play').removeClass('on');
             console.log('it is on mute.');
         }
     }
 </script>
+
 </html>
