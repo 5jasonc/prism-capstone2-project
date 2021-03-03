@@ -8,8 +8,16 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 var timestep = 0;
-
 let a = 0;
+
+const params = {
+
+	animate: true,
+	size: 12,
+	magnitude: 7
+	
+};
+
 
 
 // MY JELLY DOME
@@ -17,19 +25,19 @@ let a = 0;
 const controls = new THREE.OrbitControls(camera, renderer.domElement)
 controls.listenToKeyEvents( window ); // optional
 
-				//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
-				controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-				controls.dampingFactor = 0.05;
+controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+controls.dampingFactor = 0.05;
 
-				controls.screenSpacePanning = false;
+controls.screenSpacePanning = false;
 
-				controls.minDistance = 100;
-				controls.maxDistance = 500;
+controls.minDistance = 100;
+controls.maxDistance = 500;
 
-				controls.maxPolarAngle = Math.PI / 2;
+controls.maxPolarAngle = Math.PI / 2;
 
-const geometry = new THREE.SphereGeometry(40, 32, 32, 0, 6.3, 0, 1.7);
+const geometry = new THREE.SphereGeometry(15, 16, 16, 0, 6.3, 0, 1.7);
 
 const material = new THREE.MeshBasicMaterial( {
 	color: 0xffffff,
@@ -50,17 +58,19 @@ scene.add( plane );
 // console.log( plane.geometry.attributes.position.length )
 camera.position.z = 150;
 
-// console.log(plane.geometry.getAttribute("position"))
-// console.log(plane.geometry.attributes.position);
 
-console.log(plane.geometry.index)
+
+// GUI
+const gui = new dat.GUI();
+gui.add( params, 'animate' );
+gui.add( params, 'size' ).min( 1 ).max( 15 );
+gui.add( params, 'magnitude' ).min( 1 ).max( 15 );
 
 
 const animate = function () {
     requestAnimationFrame(animate);
-    // plane.rotation.y += 0.01;
-    // plane.position.y = 3*Math.cos(Math.PI+a);
-    if ( plane.isMesh ) {
+
+    if ( plane.isMesh && params.animate) {
    
         const position = plane.geometry.attributes.position;
         const vector = new THREE.Vector3();
@@ -69,8 +79,8 @@ const animate = function () {
             // console.log("yes");
            vector.fromBufferAttribute( position, i );
            vector.applyMatrix4( plane.matrixWorld );
-            let size = 12;
-            let magnitude = 7;
+            let size = params.size;
+            let magnitude = params.magnitude;
             let dist = new THREE.Vector3(vector.x, vector.y, vector.z).sub(center);
 
             vector.normalize();
@@ -97,7 +107,7 @@ animate();
 
 
 function createPlane() {
-	let geom = new THREE.SphereGeometry(40, 32, 32, 0, 6.3, 0, 1.7);
+	let geom = new THREE.SphereGeometry(12, 12, 12, 0, 6.3, 0, 1.7);
 	let texture = new THREE.Texture(generateTexture());
 	let textureImage = texture.image;
 	texture.needsUpdate = true;
@@ -118,9 +128,6 @@ function createPlane() {
 
 function jellyMovement() {
 	let length = plane.geometry.numVertices;
-    // let length=10;
-	let amp = 2;
-	let time = Date.now() / 10;
 
 	for (i = 0; i < length; i++) {
 		let v = plane.geometry.vertices[i];
