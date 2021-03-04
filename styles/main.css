@@ -62,10 +62,17 @@ p, a {
   padding-top: 32px;
 }
 
-#app {
+#app{
   background-color: #0d0b0e;
   width: 100vw;
   height: calc(100vh - 70px);
+  display: block;
+}
+
+#stars {
+  background: radial-gradient(ellipse at bottom, #111c22, #00031E);
+  width: 100vw;
+  height: 100vh;
   display: block;
 }
 
@@ -457,4 +464,10 @@ nav, #links {
   box-shadow: 2px 1000px 1px #000 inset;
   transition: 0.1s ease-in;
   margin-left: 16px;
+}
+
+.forest{
+  position: absolute;
+  bottom: -54px;
+  width: 100%;
 }

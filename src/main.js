@@ -144,8 +144,3 @@ const seedDB = (database) => {
 window.onload = () => {
   init();
 };
-
-/*Change scene viewpoint*/
-// Try to use the trackball js code
-// controls = new THREE.TrackballControls(camera)
-// controls.position.addEventListener('change', render)

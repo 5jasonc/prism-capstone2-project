@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create A Wish</title>
+    <link href="styles/main.css" rel="stylesheet" />
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <script src="./src/three.js" type="module"></script>
+    <script src="./src/stars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Open Graphs -->
+    <meta property=”og:title” content=”Wishing Well” />
+    <meta property=”og:url” content=”http://www.wishingwell.com” />
+    <meta property=”og:type” content=”website” />
+    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is
+        good, use it.” />
+    <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
+    <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
+</head>
+
+<body>
+    <input type="checkbox" class="check" id="checked">
+    <label class="menu-btn" for="checked">
+        <span class="bar top"></span>
+        <span class="bar bottom"></span>
+    </label>
+    <label class="close-menu" for="checked"></label>
+    <nav class="drawer-menu">
+        <ul>
+            <h1>Menu</h1>
+            <li><a href="welcome.html">Home</a></li>
+            <li><a href="listofwishes.html">Make a Wish</a></li>
+            <li><a href="index.html">View Gallery</a></li>
+            <li><a href="#">See your jelly</a></li>
+            <li><a href="learnmore.html">Learn More</a></li>
+        </ul>
+        <div class="socialmedias">
+            <div class="smlink"></div>
+            <div class="smlink"></div>
+            <div class="smlink"></div>
+        </div>
+    </nav>
+    <canvas id="stars"></canvas>
+    <div class="forest">
+        <img src="svgforest.svg" width="100%" alt="forest">
+    </div>
+    <div class="audio">
+        <!-- <button><p>&#128266;</p></button> -->
+        <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+        <button onclick="play()">
+            <p id="play">🔊</p>
+        </button>
+    </div>
+</body>
+<script src="./src/main.js" type="module"></script>
+<script>
+    //Play/Pause button
+    function play() {
+        var audio = document.getElementById('audio');
+        if (audio.paused) {
+            audio.play();
+            console.log('it is playing.');
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            console.log('it is on mute.');
+        }
+    }
+</script>
+
+</html>
