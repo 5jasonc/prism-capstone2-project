@@ -31,13 +31,25 @@
         <h1><span id="counter">99</span>%</h1>
         <h2>Loading your experience</h2>
     </div> -->
-    <nav>
-        <h1 id="title">Virtual Wishing Well</h1>
-        <div id="links">
-            <a href="welcome.html">Welcome</a>
-            <a href="index.html">Make a Wish</a> <!-- Maybe link to separate page for wish form here? -->
-            <a href="learnmore.html">Learn More</a> <!-- Maybe link to instruction page, more about project? -->
-            <a href="listofwishes.html">Wishes</a> <!-- Maybe link to instruction page, more about project? -->
+    <input type="checkbox" class="check" id="checked">
+    <label class="menu-btn" for="checked">
+        <span class="bar top"></span>
+        <span class="bar bottom"></span>
+    </label>
+    <label class="close-menu" for="checked"></label>
+    <nav class="drawer-menu">
+        <ul>
+            <h1>Menu</h1>
+            <li><a href="welcome.html">Home</a></li>
+            <li><a href="listofwishes.html">Make a Wish</a></li>
+            <li><a href="index.html">View Gallery</a></li>
+            <li><a href="#">See your jelly</a></li>
+            <li><a href="learnmore.html">Learn More</a></li>
+        </ul>
+        <div class="socialmedias">
+            <div class="smlink"></div>
+            <div class="smlink"></div>
+            <div class="smlink"></div>
         </div>
     </nav>
     <div class="welcomescreen">
@@ -48,14 +60,27 @@
             <button class="explore"><a href="index.html">Explore Community</a></button>
         </div>
         <div class="audio">
-            <button>
-                <p>&#128266;</p>
-                <audio src="Vitality - Benjamin Martins.mp3"></audio>
+            <!-- <button><p>&#128266;</p></button> -->
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+            <button onclick="play()">
+                <p id="play">🔊</p>
             </button>
-            <!-- <button><p>&#128263;</p></button> -->
         </div>
     </div>
 </body>
 <script src="./src/main.js" type="module"></script>
-
+<script>
+    //Play/Pause button
+    function play() {
+        var audio = document.getElementById('audio');
+        if (audio.paused) {
+            audio.play();
+            console.log('it is playing.');
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            console.log('it is on mute.');
+        }
+    }
+</script>
 </html>
