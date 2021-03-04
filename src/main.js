@@ -8,11 +8,11 @@ window.addEventListener("DOMContentLoaded", event => {
 
 // Holds all cubes/jellyfish
 const cubes = [];
+const jellies = [];
+let a = 0;
 
 // Kick off program
 const init = () => {
-  console.log('Main script running...');
-
   // Load config to connect to firebase
   const firebaseConfig = {
     apiKey: "AIzaSyC7YDYaXNuS0Q3sTxJDi66vGGl5maDwMNQ",
@@ -40,12 +40,13 @@ const init = () => {
   camera.position.set(0, 0, camZoom);
   scene.add(camera);
 
+  // Listen for change in zoom slider
   document.querySelector('#myCamRange').addEventListener('input', e => {
     camZoom = e.target.value;
     camera.position.set(0, 0, camZoom);
   });
 
-  // Creeate lights and add to scene
+  // Create lights and add to scene
   const light = new THREE.PointLight(0xfffff, 1, 500);
   light.position.set(10, 0, 25);
   scene.add(light)
@@ -57,10 +58,11 @@ const init = () => {
     camera.updateProjectionMatrix();
   });
 
-  // Specify jellyfish shape
+  // Specify cube shape and material
   const geometry = new THREE.BoxGeometry(5, 10, 5);
   const material = new THREE.MeshNormalMaterial();
 
+  // Add 500 cubes to scene
   for (let x = 0; x < 500; x++) {
     const cube = new THREE.Mesh(geometry, material);
 
@@ -85,6 +87,9 @@ const init = () => {
     cubes.push(cube);
   }
 
+  // generateJelly('test', scene);
+  // generateJelly('test2222222', scene);
+
   // Render scene
   renderer.render(scene, camera);
 
@@ -94,7 +99,7 @@ const init = () => {
 
 
 // Loops through to animate
-function animate(renderer, scene, camera) {
+const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
 
   // Make cubes move around
@@ -116,8 +121,73 @@ function animate(renderer, scene, camera) {
     cube.rotation.x += 0.01;
   }
 
+  // Make jellies pulsate
+  // for(let j = 0; j < jellies.length; j++) {
+  //   const position = jellies[j].geometry.attributes.position;
+  //   const vector = new THREE.Vector3();
+
+  //   for ( let i = 0; i < position.count; i++ ){
+  //       // console.log("yes");
+  //       vector.fromBufferAttribute( position, i );
+  //       vector.applyMatrix4( jellies[j].matrixWorld );
+  //       let size = 12;
+  //       let magnitude = 7;
+  //       let dist = new THREE.Vector3(vector.x, vector.y, vector.z).sub(new THREE.Vector3(0, 1000, 0));
+
+  //       vector.normalize();
+  //       vector.multiplyScalar(40 + Math.sin(dist.length()/-size + a) * magnitude);
+  //       // position.setXYZ(i, vector.x, vector.y, vector.z);
+  //       position.setXYZ(i, vector.x, vector.y, vector.z);
+
+  //   }
+  //   position.needsUpdate = true;
+  //   jellies[j].geometry.verticesNeedUpdate = true;
+  //   jellies[j].geometry.normalsNeedUpdate = true;
+  //   jellies[j].geometry.computeVertexNormals();
+  //   jellies[j].geometry.computeFaceNormals();
+  //   a += 0.02;
+  // }
+  
   renderer.render(scene, camera)
-}
+};
+
+
+// Generates a jellyfish based on the specified string (wish)
+const generateJelly = (string, scene) => {
+  const jellyGeometery = new THREE.SphereGeometry(40, 32, 32, 0, 6.3, 0, 1.7);
+  const jellyMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    wireframe: true
+  });
+  console.log(hashFunc(string));
+  const jelly = new THREE.Mesh(jellyGeometery, jellyMaterial);
+  jelly.matrixAutoUpdate = true;
+  jelly.position.set(randomNum(-100, 100), randomNum(-100, 100), randomNum(-100, 100));
+  scene.add(jelly);
+  jellies.push(jelly);
+};
+
+// Get random num between min and max
+const randomNum = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+// Messing around with trying to get the hash function working
+const hashFunc = (string) => {
+  let hash = 0;
+  if(string.length === 0) return hash;
+  if(string.length < 10) {
+    for(let i = string.length; i < 10; i++) string += "_";
+  }
+  console.log(string);
+  for(let i = 0; i < string.length; i++) {
+    const char = string.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return hash
+};
+
 
 // Adds 20 wishes to the DB. Don't run this function unless needed
 // Must pass a database reference
