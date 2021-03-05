@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/three.js" type="module"></script>
+    <script src="./src/OrbitControls.js" type="module"></script>
     <script src="./src/main.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -55,9 +56,13 @@
         </div>
     </nav>
     <canvas id="app"></canvas>
-    <div class="slidecontainer">
+    <!--<div class="slidecontainer">
         <input type="range" min="0" max="200" value="130" class="slider" id="myCamRange">
-    </div>
+    </div>-->
+    <div class="controlscontainer">
+        <input type="text" id="wishInput">
+        <button type="button" id="makeWishButton">Make Wish!</button>
+    </div> 
     <div class="audio">
         <!-- <button><p>&#128266;</p></button> -->
         <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>

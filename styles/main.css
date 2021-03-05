@@ -333,6 +333,12 @@ nav, #links {
   transform: rotate(-90deg);
 }
 
+.controlscontainer{
+  position: absolute;
+  bottom: 100px;
+  left: 30px;
+}
+
 .slider {
   -webkit-appearance: none;
   width: 240px;
