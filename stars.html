@@ -10,6 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/three.js" type="module"></script>
+    <script src="./src/OrbitControls.js" type="module"></script>
     <script src="./src/stars.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -46,15 +47,20 @@
         </div>
     </nav>
     <canvas id="stars"></canvas>
-    <div class="forest">
+    <!-- <div class="forest">
         <img src="svgforest.svg" width="100%" alt="forest">
-    </div>
-    <div class="audio">
-        <!-- <button><p>&#128266;</p></button> -->
-        <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+    </div> -->
+    <div class="settings">
+        <div class="search">
+            <img src="Search.svg" style="opacity: 0.2;">
+        </div>
+        <div class="line"></div>
+        <div class="sounds">
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
         <button onclick="play()">
-            <p id="play">🔊</p>
+            <img src="Speaker.svg">
         </button>
+        </div>
     </div>
 </body>
 <script>
