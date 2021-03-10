@@ -21,7 +21,8 @@ const init = () => {
   let camZoom = 1000;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
-  camera.position.set(500, 500, camZoom);
+  camera.position.set(0, 2.5, 2.5);
+  camera.position.z = 5;
   scene.add(camera);
 
   // Set up orbit camera controls
@@ -60,7 +61,7 @@ const init = () => {
    * Choose a random sphere and make it shoot across the sky
    * 
    */
-
+  
 
   // Render scene
   renderer.render(scene, camera);
