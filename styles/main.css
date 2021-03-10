@@ -90,6 +90,53 @@ a {
   display: block;
 }
 
+.starveiw h1{
+  font-family: sofia-pro, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 24px;
+  color: white;
+  text-align: left;
+  width: 220px;
+  padding: 16px;
+}
+
+.orbitbanner{
+  animation: slide-in 0.8s cubic-bezier(.32,.7,.51,1.33);
+  display: flex;
+  position: absolute;
+  z-index: 12;
+  height: auto;
+  width: 340px;
+  bottom: 42px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 16px;
+  border-radius: 64px;
+  text-align: center;
+  background-color: #50505054;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes slide-in{
+  from{
+    bottom: -120px;
+  }
+
+  to{
+    
+    bottom: 46px;
+  }
+}
+
+.orbitbanner img{
+  height: 56px;
+  margin: 12px;
+  padding-left: 8px;
+}
+
 .logo {
   width: 164px;
   height: 164px;
@@ -135,8 +182,8 @@ a {
 .settings {
   width: 364px;
   height: 64px;
-  background: black;
-  opacity: 0.7;
+  background: rgba(0, 0, 0, 0.774);
+  backdrop-filter: blur(4px);
   border-top-left-radius: 64px;
   position: fixed;
   bottom: 0;
