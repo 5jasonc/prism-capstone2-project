@@ -22,7 +22,7 @@ const init = () => {
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
   const renderer = new THREE.WebGLRenderer({canvas});
-  renderer.setClearColor('#0d0b0e');
+  renderer.setClearColor('#111111');
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 

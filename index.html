@@ -40,6 +40,9 @@
         <span class="bar bottom"></span>
     </label>
     <label class="close-menu" for="checked"></label>
+    <div class="logo">
+        <img src="logo.png" width="100%" alt="logo of star">
+    </div>
     <nav class="drawer-menu">
         <ul>
             <h1>Menu</h1>
@@ -56,19 +59,28 @@
         </div>
     </nav>
     <canvas id="app"></canvas>
-    <!--<div class="slidecontainer">
-        <input type="range" min="0" max="200" value="130" class="slider" id="myCamRange">
-    </div>-->
-    <div class="controlscontainer">
-        <input type="text" id="wishInput">
-        <button type="button" id="makeWishButton">Make Wish!</button>
-    </div> 
-    <div class="audio">
-        <!-- <button><p>&#128266;</p></button> -->
-        <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+    <div class="controlscontainer" id="myDIV">
+        <h1>I wish</h1>
+        <input type="text" id="wishInput" placeholder="for a puppy">
+        <button type="button" id="makeWishButton">Make your wish</button>
+    </div>
+    <div class="addJellyFish">
+        <img onclick="myFunction()" src="addicon.svg" width="100%">
+    </div>
+    <div class="amountofwish">
+        <h1><span id="numWishes">005</span>Wishes made</h1>
+    </div>
+    <div class="settings">
+        <div class="search">
+            <img src="Search.svg">
+        </div>
+        <div class="line"></div>
+        <div class="sounds">
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
         <button onclick="play()">
-            <p id="play">🔊</p>
+            <img src="Speaker.svg">
         </button>
+        </div>
     </div>
 </body>
 <script src="./src/main.js" type="module"></script>
@@ -86,5 +98,14 @@
         }
     }
 </script>
-
+<script>
+    function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 </html>
