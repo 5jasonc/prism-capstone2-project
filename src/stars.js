@@ -3,9 +3,11 @@
 // Holds all cubes/jellyfish
 const cubes = [];
 const jellies = [];
+let rot = 0;
 
 // Kick off program
 const init = () => {
+
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#stars');
@@ -21,7 +23,7 @@ const init = () => {
   let camZoom = 1000;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
-  camera.position.set(0, 2.5, 2.5);
+  camera.position.set(0, 0.5, 0.5);
   camera.position.z = 5;
   scene.add(camera);
 
@@ -54,14 +56,8 @@ const init = () => {
     scene.add(sphere);
     spheres.push(sphere);
     sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()))
-  }
 
-  /*
-   * Create a shooting stars
-   * Choose a random sphere and make it shoot across the sky
-   * 
-   */
-  
+  }
 
   // Render scene
   renderer.render(scene, camera);
@@ -72,7 +68,11 @@ const init = () => {
 
 // Loops through to animate
 const animate = (renderer, scene, camera) => {
-  requestAnimationFrame(() => animate(renderer, scene, camera)); 
+  requestAnimationFrame(() => animate(renderer, scene, camera));
+
+    rot = 0.0002;
+    camera.rotation.x += Math.sin(rot);
+    camera.rotation.y += Math.sin(rot);
 
   // Rerender scene
   renderer.render(scene, camera)
