@@ -4,6 +4,12 @@
 const cubes = [];
 const jellies = [];
 
+// Tracks whether camera is following jelly or not
+let isCameraFollowingJelly = false;
+let currentJellyTarget = null;
+let camZoom = 1000;
+let controls = null;
+
 // Kick off program
 const init = () => {
   // Load config to connect to firebase
@@ -27,14 +33,13 @@ const init = () => {
   document.body.appendChild(renderer.domElement);
 
   // Create camera and add to scene
-  let camZoom = 1000;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
   camera.position.set(500, 500, camZoom);
   scene.add(camera);
 
   // Set up orbit camera controls
-  const controls = new THREE.OrbitControls(camera, renderer.domElement)
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
 	controls.listenToKeyEvents( window ); // optional
 
   // Listen for change in zoom slider
@@ -59,6 +64,9 @@ const init = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
   });
+
+  // Listen to click events on jellyfish
+  document.querySelector('#app').addEventListener('pointerdown', (e) => onDocumentMouseDown(e, renderer, camera, scene), false);
 
   // Specify cube shape and material
   // const geometry = new THREE.BoxGeometry(5, 10, 5);
@@ -166,9 +174,67 @@ const animate = (renderer, scene, camera) => {
     jellies[j].jelly.geometry.computeFaceNormals();
     jellies[j].a += jellies[j].aStep;
   }
+
+  // If camera is focused on jelly, move camera
+  if(isCameraFollowingJelly) {
+    // This one works but I couldn't reset the camera after to original view for some reason, and you can't use orbit controls
+    // camera.position.set(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z - 100);
+    // camera.lookAt(currentJellyTarget.position);
+
+    // if(camZoom >= 500) camZoom--;
+    // if(camera.position.x != currentJellyTarget.position.x)
+    // camera.position.set(0, 0, camZoom);
+    // camera.lookAt(currentJellyTarget.position);
+    controls.target = currentJellyTarget.position;
+    controls.update();
+    // camera.position.set(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z - 100);
+  } else {
+    // if(camZoom < 1000) camZoom++;
+    // camera.position.set(0, 0, camZoom);
+  }
   
   // Rerender scene
   renderer.render(scene, camera)
+};
+
+// When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
+const onDocumentMouseDown = (e, renderer, camera, scene) => {
+  e.preventDefault();
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
+  mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if(intersects.length > 0) {
+    if(currentJellyTarget != intersects[0].object.parent) {
+      /* for(const intersect of intersects) */ jellyClicked(intersects[0].object.parent, camera);
+    }
+  } else {
+    // isCameraFollowingJelly = false;
+  }
+};
+
+// Switches camera controls to follow a jellyfish on click
+const jellyClicked = (jelly, camera) => {
+  currentJellyTarget = jelly;
+  isCameraFollowingJelly = true;
+  // camera.position.set(jelly.position.x, jelly.position.y, jelly.position.z - 100);
+  // camera.lookAt(jelly);
+  controls.target = currentJellyTarget.position;
+  controls.dIn(0.3);
+  controls.update();
+  // camZoom = 500;
+  // camera.position.set(0, 0, camZoom);
+  // camera.lookAt(jelly.position);
+  // camera.position.set(jelly.position.x, jelly.position.y - 5, jelly.position.z);
+  // camera.lookAt(jelly);
+  // camera.rotateX(Math.PI / 2);
 };
 
 // Generates a jellyfish based on the specified string (wish)
