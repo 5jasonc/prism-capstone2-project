@@ -27,9 +27,9 @@ const init = () => {
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
-  const renderer = new THREE.WebGLRenderer({canvas});
-  renderer.setClearColor('#0d0b0e');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor( 0x000000, 0 );
   document.body.appendChild(renderer.domElement);
 
   // Create camera and add to scene
@@ -97,8 +97,8 @@ const init = () => {
   //   cubes.push(cube);
   // }
 
-  // Add 5 random jellies to the screen
-  for(let i = 0; i < 5; i++) {
+  // Add 56 random jellies to the screen
+  for(let i = 0; i < 50; i++) {
     generateJelly(`Jelly-${randomNum(-1000, 1000)}`, scene);
   }
   
@@ -136,16 +136,16 @@ const animate = (renderer, scene, camera) => {
   for(let i = 0; i < jellies.length; i++) {
     const jelly = jellies[i].jellyParent;
     jelly.translateY(jellies[i].aStep * 2 + 0.3);
-    if(jelly.position.x < -300 || jelly.position.x > 300) {
-      jelly.position.x = THREE.Math.clamp(jelly.position.x, -300, 300);
+    if(jelly.position.x < -1300 || jelly.position.x > 1300) {
+      jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
       jelly.rotateX(Math.PI);
     }
-    if(jelly.position.y < -300 || jelly.position.y > 300) {
-      jelly.position.y = THREE.Math.clamp(jelly.position.y, -300, 300);
+    if(jelly.position.y < -1300 || jelly.position.y > 1300) {
+      jelly.position.y = THREE.Math.clamp(jelly.position.y, -1300, 1300);
       jelly.rotateY(Math.PI);
     }
-    if(jelly.position.z < -300 || jelly.position.z > 300) {
-      jelly.position.z = THREE.Math.clamp(jelly.position.z, -300, 300);
+    if(jelly.position.z < -1300 || jelly.position.z > 1300) {
+      jelly.position.z = THREE.Math.clamp(jelly.position.z, -1300, 1300);
       jelly.rotateZ(Math.PI);
     }
   }
