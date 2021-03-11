@@ -40,17 +40,19 @@ const init = () => {
 
   // Set up orbit camera controls
   controls = new THREE.OrbitControls(camera, renderer.domElement);
-	controls.listenToKeyEvents( window ); // optional
+	controls.listenToKeyEvents(window);
 
-  // Listen for change in zoom slider
-  // document.querySelector('#myCamRange').addEventListener('input', e => {
-  //   camZoom = e.target.value;
-  //   camera.position.set(0, 0, camZoom);
-  // });
+  // Listen for add jelly button clicked, to bring up make wish popup
+  document.querySelector('#addJellyButton').addEventListener('click', () => {
+    const x = document.querySelector("#myDIV");
+    if(x.style.display === "") x.style.display = "inline";
+    else x.style.display = "";
+  })
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
     generateJelly(document.querySelector('#wishInput').value, scene);
+    document.querySelector('#numWishes').innerHTML = jellies.length;
   });
 
   // Create light and add to scene
@@ -101,6 +103,9 @@ const init = () => {
   for(let i = 0; i < 50; i++) {
     generateJelly(`Jelly-${randomNum(-1000, 1000)}`, scene);
   }
+
+  // Set number of wishes to number of jellies
+  document.querySelector("#numWishes").innerHTML = jellies.length;
   
   // Render scene
   renderer.render(scene, camera);
@@ -177,20 +182,8 @@ const animate = (renderer, scene, camera) => {
 
   // If camera is focused on jelly, move camera
   if(isCameraFollowingJelly) {
-    // This one works but I couldn't reset the camera after to original view for some reason, and you can't use orbit controls
-    // camera.position.set(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z - 100);
-    // camera.lookAt(currentJellyTarget.position);
-
-    // if(camZoom >= 500) camZoom--;
-    // if(camera.position.x != currentJellyTarget.position.x)
-    // camera.position.set(0, 0, camZoom);
-    // camera.lookAt(currentJellyTarget.position);
     controls.target = currentJellyTarget.position;
     controls.update();
-    // camera.position.set(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z - 100);
-  } else {
-    // if(camZoom < 1000) camZoom++;
-    // camera.position.set(0, 0, camZoom);
   }
   
   // Rerender scene
@@ -213,7 +206,7 @@ const onDocumentMouseDown = (e, renderer, camera, scene) => {
 
   if(intersects.length > 0) {
     if(currentJellyTarget != intersects[0].object.parent) {
-      /* for(const intersect of intersects) */ jellyClicked(intersects[0].object.parent, camera);
+      jellyClicked(intersects[0].object.parent);
     }
   } else {
     // isCameraFollowingJelly = false;
@@ -221,20 +214,12 @@ const onDocumentMouseDown = (e, renderer, camera, scene) => {
 };
 
 // Switches camera controls to follow a jellyfish on click
-const jellyClicked = (jelly, camera) => {
+const jellyClicked = (jelly) => {
   currentJellyTarget = jelly;
   isCameraFollowingJelly = true;
-  // camera.position.set(jelly.position.x, jelly.position.y, jelly.position.z - 100);
-  // camera.lookAt(jelly);
   controls.target = currentJellyTarget.position;
   controls.dIn(0.3);
   controls.update();
-  // camZoom = 500;
-  // camera.position.set(0, 0, camZoom);
-  // camera.lookAt(jelly.position);
-  // camera.position.set(jelly.position.x, jelly.position.y - 5, jelly.position.z);
-  // camera.lookAt(jelly);
-  // camera.rotateX(Math.PI / 2);
 };
 
 // Generates a jellyfish based on the specified string (wish)

@@ -65,11 +65,11 @@
         <input type="text" id="wishInput" placeholder="for a puppy">
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
-    <div class="addJellyFish">
-        <img onclick="myFunction()" src="addicon.svg" width="100%">
+    <div class="addJellyFish" id="addJellyButton">
+        <img src="addicon.svg" width="100%">
     </div>
     <div class="amountofwish">
-        <h1><span id="numWishes">234</span>Wishes made</h1>
+        <h1><span id="numWishes">0</span>Wishes made</h1>
     </div>
     <div class="settings">
         <div class="search">
@@ -84,29 +84,16 @@
         </div>
     </div>
 </body>
-<script src="./src/main.js" type="module"></script>
 <script>
     //Play/Pause button
     function play() {
         var audio = document.getElementById('audio');
         if (audio.paused) {
             audio.play();
-            console.log('it is playing.');
         } else {
             audio.pause();
             audio.currentTime = 0;
-            console.log('it is on mute.');
         }
     }
-</script>
-<script>
-    function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
 </script>
 </html>
