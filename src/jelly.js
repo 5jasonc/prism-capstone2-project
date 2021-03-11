@@ -1,6 +1,17 @@
 
+"use strict";
+
+import * as THREE from '../build/three.module.js';
+
+import { OrbitControls } from './jsm/controls/OrbitControls.js';
+import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+
 let camera, scene, renderer, controls;
 let parent, geometry, mesh;
+let container, composer;
+let jellyGeometry;
 let center = new THREE.Vector3(0, 4000, 0);
 var timestep = 0;
 let a = 0;
@@ -15,7 +26,12 @@ const params = {
 	
 };
 
-const material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+// const material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+
+const material = new THREE.MeshLambertMaterial( { color: 0x2194CE } );
+						// THREE.guiMaterial( gui, mesh, material, geometry );
+						// THREE.guiMeshLambertMaterial( gui, mesh, material, geometry );
+						material.side = THREE.DoubleSide;
 
 const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, opacity: 0.3, wireframe: true, transparent: true } );
 
@@ -70,16 +86,24 @@ function init(){
 	light.position.set( 0, 0, 1 );
 	scene.add( light );
 
+	scene.add( new THREE.AmbientLight( 0x404040 ) );
+
+	const pointLight = new THREE.PointLight( 0xffffff, 1 );
+	camera.add( pointLight );
+
 	// renderer
 
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.toneMapping = THREE.ReinhardToneMapping;
 	container.appendChild( renderer.domElement );	
+
+
 
 	// controls
 
-	controls = new THREE.OrbitControls(camera, renderer.domElement)
+	controls = new OrbitControls(camera, renderer.domElement)
 	controls.listenToKeyEvents( window ); // optional
 
 	// jelly
@@ -100,6 +124,18 @@ function init(){
 	gui.add( params, 'wireframe' ).onChange( function () {
 		addJelly();
 	} );
+
+
+	const renderScene = new RenderPass( scene, camera );
+
+	const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+	bloomPass.threshold = 0;
+	bloomPass.strength = 1.5;
+	bloomPass.radius = 0;
+
+	composer = new EffectComposer( renderer );
+	composer.addPass( renderScene );
+	composer.addPass( bloomPass );
 }
 
 function animate() {
@@ -133,6 +169,6 @@ function animate() {
 
     }
 
-    renderer.render(scene, camera); 
+    composer.render(scene, camera); 
 
 };
