@@ -44,15 +44,18 @@ const init = () => {
 
   // Listen for add jelly button clicked, to bring up make wish popup
   document.querySelector('#addJellyButton').addEventListener('click', () => {
+    console.log('test');
     const x = document.querySelector("#myDIV");
     if(x.style.display === "") x.style.display = "inline";
     else x.style.display = "";
-  })
+  });
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
     generateJelly(document.querySelector('#wishInput').value, scene);
     document.querySelector('#numWishes').innerHTML = jellies.length;
+    document.querySelector('#addJellyButton').click();
+    jellyClicked(jellies[jellies.length - 1].jellyParent);
   });
 
   // Create light and add to scene
