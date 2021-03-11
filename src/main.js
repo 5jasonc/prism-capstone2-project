@@ -1,5 +1,10 @@
 "use strict";
 
+import { OrbitControls } from './jsm/controls/OrbitControls.js';
+import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+
 // Holds all cubes/jellyfish
 const cubes = [];
 const jellies = [];
