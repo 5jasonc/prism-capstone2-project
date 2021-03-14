@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Digital Wishing Well</title>
     <link href="styles/main.css" rel="stylesheet" />
+    <link href="styles/welcome.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
@@ -30,50 +31,62 @@
         <h1><span id="counter">99</span>%</h1>
         <h2>Loading your experience</h2>
     </div> -->
-    <input type="checkbox" class="check" id="checked">
-    <label class="menu-btn" for="checked">
-        <span class="bar top"></span>
-        <span class="bar bottom"></span>
-    </label>
-    <label class="close-menu" for="checked"></label>
-    <div class="logo">
-        <a href="welcome.html"><img src="logo.png" width="100%" alt="logo of star"></a>
-    </div>
-    <nav class="drawer-menu">
-        <ul>
-            <h1>Menu</h1>
-            <li><a href="welcome.html">Home</a></li>
-            <li><a href="listofwishes.html">Make a Wish</a></li>
-            <li><a href="index.html">View Gallery</a></li>
-            <li><a href="#">See your jelly</a></li>
-            <li><a href="learnmore.html">Learn More</a></li>
-        </ul>
-        <div class="socialmedias">
-            <div class="smlink"></div>
-            <div class="smlink"></div>
-            <div class="smlink"></div>
-        </div>
-    </nav>
     <div class="welcomescreen">
-        <div class="welcometxt">
-            <h2>Welcome to</h2>
-            <h1>The Digital Wishing Well</h1>
-            <button class="makewish"><a href="stars.html">Create your own</a></button>
-            <button class="explore"><a href="index.html">Explore Community</a></button>
+
+   
+        
+      
+
+
+        <input type="checkbox" class="check" id="checked">
+        <label class="menu-btn" for="checked">
+            <span class="bar top"></span>
+            <span class="bar bottom"></span>
+        </label>
+        <label class="close-menu" for="checked"></label>
+        <div class="logo">
+            <a href="welcome.html"><img src="logo.png" width="100%" alt="logo of star"></a>
         </div>
-        <div class="settings">
-            <div class="search">
-                <img src="Search.svg" style="opacity: 0.2;">
+        <nav class="drawer-menu">
+            <ul>
+                <h1>Menu</h1>
+                <li><a href="welcome.html">Home</a></li>
+                <li><a href="listofwishes.html">Make a Wish</a></li>
+                <li><a href="index.html">View Gallery</a></li>
+                <li><a href="#">See your jelly</a></li>
+                <li><a href="learnmore.html">Learn More</a></li>
+            </ul>
+            <div class="socialmedias">
+                <div class="smlink"></div>
+                <div class="smlink"></div>
+                <div class="smlink"></div>
             </div>
-            <div class="line"></div>
-            <div class="sounds">
-                <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
-            <button onclick="play()">
-                <img src="Speaker.svg">
-            </button>
-            </div>
-        </div>
+        </nav>
+
+
+
+
+                <div class="welcometxt">
+                    <h2>Welcome to</h2>
+                    <h1>The Digital Wishing Well</h1>
+                    <button class="makewish"><a href="stars.html">Create your own</a></button>
+                    <button class="explore"><a href="index.html">Explore Community</a></button>
+                </div>
+                <div class="settings">
+                    <div class="search">
+                        <img src="Search.svg" style="opacity: 0.2;">
+                    </div>
+                    <div class="line"></div>
+                    <div class="sounds">
+                        <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+                    <button onclick="play()">
+                        <img src="Speaker.svg">
+                    </button>
+                    </div>
+                </div>
+
     </div>
+    
 </body>
 <script>
     //Play/Pause button

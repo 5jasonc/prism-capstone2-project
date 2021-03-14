@@ -1,0 +1,49 @@
+@media screen and (max-width: 900px) {
+    .addJellyFish {
+        scale: 0.5;
+        bottom: -10px;
+        z-index: 1;
+    }
+
+    .amountofwish {
+        scale: 0.7;
+        left: -54px;
+        bottom: -10px;
+    }
+    .settings {
+        scale: 0.7;
+        right: -54px;
+        bottom: -10px;
+    }
+  }
+  
+  @media screen and (max-width: 450px) {
+    .addJellyFish {
+        scale: 0.4;
+        bottom: -10px;
+        z-index: 1;
+    }
+
+    .amountofwish {
+        scale: 0.7;
+        left: -54px;
+    }
+    .settings {
+        scale: .6;
+        right: -90px;
+        bottom: -25px;
+        height: 80px;
+    }
+    .amountofwish {
+        scale: .6;
+        left: -90px;
+        bottom: -25px;
+        height: 80px;
+    }
+
+    @media screen and (min-width: 350px) {
+        body {
+            width:350px !important;
+        }
+    }
+  }

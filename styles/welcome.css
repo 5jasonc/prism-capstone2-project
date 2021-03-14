@@ -1,0 +1,40 @@
+
+@media screen and (max-width: 900px) {
+  .settings {
+    scale: .5;
+    right: -91px;
+    bottom: -17px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .makeWish {
+    scale: .8;
+  }
+  
+  .explore {
+    scale: .8;
+    margin-left: 0px !important;
+  }
+
+  .welcometxt button {
+    scale: .8;
+  }
+
+  .welcomescreen h1 {
+    font-size: 7vw;
+    max-width: 100%;
+  }
+
+  .welcometxt {
+    text-align: center;
+    padding-top: 250px;
+    left: 0px !important;
+    bottom: 115px;
+  }
+
+  .menu-btn {
+    scale: 0.8;
+    margin-left: 0px !important;
+  }
+}
