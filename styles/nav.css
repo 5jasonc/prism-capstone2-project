@@ -1,0 +1,30 @@
+@media screen and (max-width: 768px) {
+    ul {
+        position: absolute;
+        left: -175px;
+        bottom: 0px;
+        top: 100px;
+        list-style-type: none;
+        text-decoration: none;
+        margin-left: 42px;
+        scale: 0.6;
+    }
+    .socialmedias {
+        position: absolute;
+        right: 10px;
+        bottom: -10px;
+        scale: 0.5;
+    }
+    
+    .menu-btn {
+        scale: .7;
+        right: 10px;
+        top: 10px;
+    }
+
+    .logo {
+        top: -40px;
+        scale: .6;
+        left: -35px;
+    }
+}
