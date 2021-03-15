@@ -40,10 +40,27 @@
         bottom: -25px;
         height: 80px;
     }
-
-    @media screen and (min-width: 350px) {
-        body {
-            width:350px !important;
-        }
+    .controlscontainer h1 {
+        top: 200px;
+    }
+    .controlscontainer input[type="text"] {
+        border: none;
+            border-bottom-color: currentcolor;
+            border-bottom-style: none;
+            border-bottom-width: medium;
+        border-bottom: 1px solid white;
+        background-color: black;
+        max-width: 350px;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 270px;
+        font-size: 24px;
+        text-align: center;
+        padding-bottom: 23px;
+        color: white;
+        outline: none;
     }
   }
