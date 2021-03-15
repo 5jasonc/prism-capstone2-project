@@ -37,4 +37,27 @@
     scale: 0.8;
     margin-left: 0px !important;
   }
+
+  .autolayout{
+    justify-content: center;
+  }
+
+  .drawer-menu ul{
+    left: 16px;
+  }
+
+  .drawer-menu ul li a{
+    font-size: 26px;
+    padding: 0;
+  }
+
+  .menu-btn{
+    right: 24px;
+    top: 24px;
+  }
+
+  .logo{
+    left: -16px;
+    top: -16px;
+  }
 }
