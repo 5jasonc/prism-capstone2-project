@@ -7,8 +7,6 @@ let rot = 0;
 
 // Kick off program
 const init = () => {
-
-
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#stars');
   const renderer = new THREE.WebGLRenderer({
@@ -44,6 +42,15 @@ const init = () => {
   });
 
 
+   //Load in the make a wish window
+  //  document.querySelector('#addJellyButton').addEventListener('click', () => {
+  //   console.log('test');
+  //   const x = document.querySelector("#myDIV");
+  //   if (x.style.display === "") x.style.display = "inline";
+  //   else x.style.display = "";
+  //   });
+
+  let sphere
   //create stars
   let spheres = [];
   for (let i = 1; i < 1200; i++) {
@@ -52,12 +59,17 @@ const init = () => {
       color: new THREE.Color(1, randomArbitrary(190, 220) / 255, Math.round(Math.random()))
     });
 
-    let sphere = new THREE.Mesh(geometry, material);
+    sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
     spheres.push(sphere);
     sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()))
-
   }
+
+  //When on click on any sphere it will reseize
+  window.addEventListener('click', () => {
+    console.log(sphere)
+    //sphere.scale.set(23, 23, 23)
+  });
 
   // Render scene
   renderer.render(scene, camera);
@@ -70,7 +82,7 @@ const init = () => {
 const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
 
-    rot = 0.0002;
+    rot = 0.00009;
     camera.rotation.x += Math.sin(rot);
     camera.rotation.y += Math.sin(rot);
 
