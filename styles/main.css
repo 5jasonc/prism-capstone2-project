@@ -5,7 +5,8 @@
 
 }
 
-a, button{
+a,
+button {
   font-family: sofia-pro, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -90,7 +91,7 @@ a {
   display: block;
 }
 
-.starveiw h1{
+.starveiw h1 {
   font-family: sofia-pro, sans-serif;
   font-weight: 500;
   font-style: normal;
@@ -102,14 +103,14 @@ a {
   padding: 16px;
 }
 
-.orbitbanner{
-  animation: slide-in 0.8s cubic-bezier(.32,.7,.51,1.33);
+.orbitbanner {
+  animation: slide-in 0.8s cubic-bezier(.32, .7, .51, 1.33);
   display: flex;
   position: absolute;
   z-index: 12;
   height: auto;
   width: 340px;
-  bottom: 42px;
+  top: 32px;
   left: 0;
   right: 0;
   margin: auto;
@@ -120,18 +121,17 @@ a {
   backdrop-filter: blur(4px);
 }
 
-@keyframes slide-in{
-  from{
-    bottom: -120px;
+@keyframes slide-in {
+  from {
+    top: -120px;
   }
 
-  to{
-    
-    bottom: 46px;
+  to {
+    top: 32px;
   }
 }
 
-.orbitbanner img{
+.orbitbanner img {
   height: 56px;
   margin: 12px;
   padding-left: 8px;
@@ -337,6 +337,10 @@ ul {
   background-color: black;
   opacity: 0.7;
   transition: 0.2s ease-in;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #000 inset;
 }
 
 .bar {
@@ -379,7 +383,7 @@ ul {
   background: #999;
 }
 
-.menu-btn:hover{
+.menu-btn:hover {
   transition: 0.2s ease-in;
   transform: scale(0.95);
 }
@@ -452,7 +456,7 @@ ul {
   text-align: center;
 }
 
-.aboutus h1{
+.aboutus h1 {
   text-transform: uppercase;
   font-size: 32px;
   letter-spacing: 4px;
@@ -464,7 +468,7 @@ ul {
   margin-top: 232px;
 }
 
-.aboutus h2{
+.aboutus h2 {
   padding-top: 32px;
   font-size: 6vw;
   max-width: 960px;
@@ -472,7 +476,7 @@ ul {
   text-align: center;
 }
 
-.aboutus .about p, .purpose p {
+.aboutus .about p{
   color: white;
   text-align: center;
   padding-top: 32px;
@@ -487,7 +491,41 @@ ul {
   font-weight: 100;
 }
 
-.meetteam{
+.purpose p {
+  color: white;
+  text-align: center;
+  padding-top: 32px;
+  max-width: 1000px;
+  margin: auto;
+  font-size: 18px;
+  padding-top: 32px;
+  padding: 32px;
+  font-size: 36px;
+  line-height: 48px;
+  font-weight: 100;
+}
+
+/*Style scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #0d0b0e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0d0b0e;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.meetteam {
   max-width: 1200px;
   margin: auto;
   color: white;
@@ -495,55 +533,55 @@ ul {
   padding: 32px;
 }
 
-.meetteam h1{
+.meetteam h1 {
   padding-bottom: 72px;
 }
 
-.autolayout{
+.autolayout {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
 }
 
-.teamitems{
+.teamitems {
   width: auto;
   height: auto;
   padding-bottom: 32px;
 }
 
-.teamitems img{
+.teamitems img {
   height: 300px;
   width: 300px;
 }
 
-.teamitems h4{
+.teamitems h4 {
   margin-top: 32px;
   padding-bottom: 16px;
 }
 
-.teamitems h5{
+.teamitems h5 {
   font-size: 32px;
   padding-bottom: 64px;
 }
 
-.support{
+.support {
   height: auto;
   padding: 32px;
   padding-bottom: 164px;
 }
 
-.support h1{
+.support h1 {
   padding-bottom: 32px;
 }
 
-.support .smlink{
-  height: 150px; 
-  width: 150px; 
+.support .smlink {
+  height: 150px;
+  width: 150px;
   border-radius: 150px;
 }
 
-footer{
+footer {
   color: white;
   width: 100%;
   text-align: center;
@@ -705,8 +743,48 @@ footer{
   outline: none;
 }
 
-.forest {
-  position: absolute;
-  bottom: -76px;
+#storycover{
+  display: block;
   width: 100%;
+  height: 100%;
+  opacity: 1;
+  animation: fadeout 0.2s ease-in;
+  background-color: black;
 }
+
+@keyframes fadeout{
+  0%{
+    opacity: 1;
+  }
+
+  100%{
+    opacity: 0;
+  }
+}
+
+#storycover h1, #starcaught h1{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100vh/2);
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: 100;
+  font-family: sofia-pro, sans-serif;
+  font-size: 28px;
+  line-height:42px;
+}
+
+#click{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 164px;
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: 100;
+  font-family: sofia-pro, sans-serif;
+  font-size: 28px;
+  line-height:42px;
+}
+
