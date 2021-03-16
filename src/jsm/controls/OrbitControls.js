@@ -23,6 +23,10 @@ var OrbitControls = function ( object, domElement ) {
 	this.object = object;
 	this.domElement = domElement;
 
+  // My hacky method of allowing me to zoom camera in on jelly target
+  this.dIn = dollyIn;
+  this.dOut = dollyOut;
+
 	// Set to false to disable this control
 	this.enabled = true;
 

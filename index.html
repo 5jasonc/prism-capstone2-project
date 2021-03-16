@@ -5,38 +5,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Digital Wishing Well</title>
-    <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
+    <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/index.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
-    <script src="./src/three.js" type="module"></script>
-    <script src="./src/OrbitControls.js" type="module"></script>
     <script src="./src/main.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Open Graphs -->
-    <meta property=”og:title” content=”Wishing Well” />
-    <meta property=”og:url” content=”http://www.wishingwell.com” />
-    <meta property=”og:type” content=”website” />
-    <meta property=”og:description” content=”Your entertaining and descriptive copy here, if your meta description is
-        good, use it.” />
+    <meta property="og:title" content="Wishing Well" />
+    <meta property="og:url" content="http://www.wishingwell.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Your entertaining and descriptive copy here, if your meta description is
+        good, use it." />
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
 
-<body>
-    <!-- <nav> -->
-        <!-- <h1 id="title">Virtual Wishing Well</h1> -->
-        <!-- <div id="links"> -->
-            <!-- <a href="welcome.html">Welcome</a> -->
-            <!-- <a href="index.html">Make a Wish</a> Maybe link to separate page for wish form here? -->
-            <!-- <a href="learnmore.html">Learn More</a> Maybe link to instruction page, more about project? -->
-            <!-- <a href="listofwishes.html">Wishes</a> Maybe link to instruction page, more about project? -->
-        <!-- </div> -->
-    <!-- </nav> -->
-
+<body>  
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
         <span class="bar top"></span>
@@ -79,22 +67,10 @@
         <div class="line"></div>
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
-        <button onclick="play()">
+        <button id="playButton">
             <img src="Speaker.svg">
         </button>
         </div>
     </div>
 </body>
-<script>
-    //Play/Pause button
-    function play() {
-        var audio = document.getElementById('audio');
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-            audio.currentTime = 0;
-        }
-    }
-</script>
 </html>

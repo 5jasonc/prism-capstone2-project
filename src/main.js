@@ -1,5 +1,6 @@
 "use strict";
 
+import * as THREE from '../build/three.module.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
@@ -25,6 +26,18 @@ const init = () => {
     storageBucket: "prism-capstone2-project.appspot.com",
   };
 
+  // Change volume and setup event for play/pause music button
+  const audio = document.querySelector('#audio');
+  audio.volume = 0.1;
+  document.querySelector('#playButton').addEventListener('click', () => {
+    if(audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  });
+
   // Initialize app and connect to database
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
@@ -32,9 +45,11 @@ const init = () => {
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
-  const renderer = new THREE.WebGLRenderer({canvas, alpha: true});
+  const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: false}); // change antialias?
+  renderer.setPixelRatio(window.devicePixelRatio); // keep this?
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( 0x000000, 0 );
+  // renderer.setClearColor(0x000000, 0); // need this?
+  // renderer.toneMapping = THREE.ReinhardToneMapping;
   document.body.appendChild(renderer.domElement);
 
   // Create camera and add to scene
@@ -44,7 +59,7 @@ const init = () => {
   scene.add(camera);
 
   // Set up orbit camera controls
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
 	controls.listenToKeyEvents(window);
 
   // Listen for add jelly button clicked, to bring up make wish popup
@@ -64,9 +79,19 @@ const init = () => {
   });
 
   // Create light and add to scene
-  const light = new THREE.PointLight(0xfffff, 1, 500);
-  light.position.set(10, 0, 25);
-  scene.add(light)
+  // Which light source should we use?
+  // const light = new THREE.PointLight(0xfffff, 1, 500); // point light
+  // light.position.set(10, 0, 25);
+  // scene.add(light)
+
+  const light = new THREE.PointLight(0xffffff, 1); // point light attached to camera
+	camera.add(light);
+
+  // scene.add( new THREE.AmbientLight( 0x404040 ) ); // ambient light
+
+  // const light = new THREE.DirectionalLight( 0xffffff ); // directional light
+	// light.position.set( 0, 0, 1 );
+	// scene.add( light );
 
   // Listen for window resize and update renderer accordingly
   window.addEventListener('resize', () => {
@@ -116,10 +141,22 @@ const init = () => {
   document.querySelector("#numWishes").innerHTML = jellies.length;
   
   // Render scene
-  renderer.render(scene, camera);
+  // renderer.render(scene, camera); // don't need this fairly certain
+
+  // Add bloom effects
+  const renderScene = new RenderPass(scene, camera);
+
+	const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+	bloomPass.threshold = 0;
+	bloomPass.strength = 0.75;
+	bloomPass.radius = 0.5;
+
+	const composer = new EffectComposer(renderer);
+	composer.addPass(renderScene);
+	composer.addPass(bloomPass);
 
   // Begin animation
-  animate(renderer, scene, camera);
+  animate(composer, scene, camera);
 };
 
 // Loops through to animate
@@ -241,9 +278,15 @@ const generateJelly = (string, scene) => {
 
   // create jelly shape and material
   const jellyGeometery = new THREE.SphereGeometry(10, jellyWidthSegments, jellyHeightSegments, 0, 6.3, 0, 1.7);
-  const jellyMaterial = new THREE.MeshBasicMaterial({
+  // const jellyMaterial = new THREE.MeshBasicMaterial({
+  //   color: `#${jellyColor}`,
+  //   wireframe: true
+  // });
+  const jellyMaterial = new THREE.MeshMatcapMaterial({ // 1. MeshLambert, 2. MeshMatCap, 3. MeshToon
     color: `#${jellyColor}`,
-    wireframe: true
+    side: THREE.DoubleSide,
+    opacity: 0.8,
+    transparent: true
   });
 
   // add jelly object to parent so we can move jelly without changing local coordinates and therefore messing up animation of jellies
