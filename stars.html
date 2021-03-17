@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create A Wish</title>
+    <title>Living Wish</title>
+    <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -44,9 +45,21 @@
             <li><a href="aboutus.html">About us</a></li>
         </ul>
         <div class="socialmedias">
-            <div class="smlink"></div>
-            <div class="smlink"></div>
-            <div class="smlink"></div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="facebookicon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="twittericon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="copyicon.svg" alt="Copy icon">
+                </a>
+            </div>
         </div>
     </nav>
     <div id="storycover">
@@ -62,16 +75,12 @@
     </div>
     <div class="starveiw">
         <canvas id="stars"></canvas>
-        <div class="orbitbanner">
+        <div class="orbitbanner" id="orbitbanner">
             <img src="orbit.svg" alt="orbit icon">
             <h1>Click and drag to explore</h1>
         </div>
     </div>
-    <div class="settings">
-        <div class="search">
-            <img src="Search.svg" style="opacity: 0.2;">
-        </div>
-        <div class="line"></div>
+    <div class="settings" style="width: 164px;">
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
             <button onclick="play()">
@@ -98,7 +107,8 @@
     setTimeout(
         function () {
             document.getElementById("storycover").style.display = "none";
-        }, 4000
+            //$( "#storycover" ).fadeOut( "slow" );
+        }, 5000
     );
 </script>
 
