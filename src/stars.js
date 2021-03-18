@@ -50,11 +50,6 @@ const init = () => {
   //   else x.style.display = "";
   //   });
 
-  let shootingStars = new THREE.SphereGeometry( 0.2, 12, 12 );
-  const shootingStarsMaterial = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-  const shootingStarsSphere = new THREE.Mesh( shootingStars, shootingStarsMaterial );
-  scene.add( shootingStarsSphere );
-
   let sphere
   //create stars
   let spheres = [];
@@ -70,11 +65,16 @@ const init = () => {
     sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()))
   }
 
-  //When on click on any sphere it will reseize
-  window.addEventListener('click', () => {
-    console.log(sphere)
-    //sphere.scale.set(23, 23, 23)
-  });
+  //Camera viewport size only screen size of the shooting stars
+
+  //Shotting stars functions
+  let dx, dy;
+
+  //Make shotting star select bubble size large so its easy to click onto
+
+  //Make the clickable element center to camera viewport
+
+  //Make
 
   // Render scene
   renderer.render(scene, camera);
@@ -87,9 +87,9 @@ const init = () => {
 const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
 
-    // rot = 0.00009;
-    // camera.rotation.x += Math.sin(rot);
-    // camera.rotation.y += Math.sin(rot);
+    rot = 0.00003;
+    camera.rotation.x += Math.sin(rot);
+    camera.rotation.y += Math.sin(rot);
 
   // Rerender scene
   renderer.render(scene, camera)
