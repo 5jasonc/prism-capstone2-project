@@ -40,8 +40,8 @@ const init = () => {
 
   // Initialize app and connect to database
   firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-  seedDB(database);
+  const dbRef = firebase.database().ref('/wishes/');
+  // seedDB(database);
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
@@ -72,8 +72,9 @@ const init = () => {
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
-    generateJelly(document.querySelector('#wishInput').value, scene);
-    document.querySelector('#numWishes').innerHTML = jellies.length;
+    dbRef.push({
+      wish: document.querySelector('#wishInput').value
+    });
     document.querySelector('#addJellyButton').click();
     jellyClicked(jellies[jellies.length - 1].jellyParent);
   });
@@ -133,15 +134,15 @@ const init = () => {
   // }
 
   // Add 56 random jellies to the screen
-  for(let i = 0; i < 50; i++) {
-    generateJelly(`Jelly-${randomNum(-1000, 1000)}`, scene);
-  }
+  // for(let i = 0; i < 50; i++) {
+  //   generateJelly(`Jelly-${randomNum(-1000, 1000)}`, scene);
+  // }
 
   // Set number of wishes to number of jellies
-  document.querySelector("#numWishes").innerHTML = jellies.length;
-  
-  // Render scene
-  // renderer.render(scene, camera); // don't need this fairly certain
+  // document.querySelector("#numWishes").innerHTML = jellies.length;
+
+  // Load wishes from database and generate jellies
+  loadWishes(dbRef, scene);
 
   // Add bloom effects
   const renderScene = new RenderPass(scene, camera);
@@ -327,28 +328,36 @@ const hashFunc = (s) => {
 
 // Adds 20 wishes to the DB. Don't run this function unless needed
 // Must pass a database reference
-const seedDB = (database) => {
-  // Create dummy wish data
-  const wishData = {};
-  for (let i = 0; i < 20; i++) {
-    const wish = {
-      wish: `I wish for ${i} dollars.`
-    };
-    wishData[`wish${i}`] = wish;
-  }
+// const seedDB = (database) => {
+//   // Create dummy wish data
+//   const wishData = {};
+//   for (let i = 0; i < 20; i++) {
+//     const wish = {
+//       wish: `I wish for ${i} dollars.`
+//     };
+//     wishData[`wish${i}`] = wish;
+//   }
 
-  // Add dummy wish data updates
-  const updates = {};
-  updates['/wishes/'] = wishData;
+//   // Add dummy wish data updates
+//   const updates = {};
+//   updates['/wishes/'] = wishData;
 
-  //print out all wishes
-  for (let i = 0; i < 20; i++) {
-    console.log(updates['/wishes/'][`wish${i}`]);
-    // document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + JSON.stringify(updates['/wishes/'][`wish${i}`]);
-  }
+//   //print out all wishes
+//   for (let i = 0; i < 20; i++) {
+//     console.log(updates['/wishes/'][`wish${i}`]);
+//     // document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + JSON.stringify(updates['/wishes/'][`wish${i}`]);
+//   }
 
-  // Update DB
-  database.ref().update(updates);
+//   // Update DB
+//   database.ref().update(updates);
+// };
+
+// Loads and returns all wishes in database
+const loadWishes = (dbRef, scene) => {
+  dbRef.on('child_added', (data) => {
+    generateJelly(data.val().wish, scene);
+    document.querySelector("#numWishes").innerHTML = jellies.length;
+  });
 };
 
 // Calls init function once DOM finishes loading
