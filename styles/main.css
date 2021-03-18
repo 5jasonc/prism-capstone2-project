@@ -631,7 +631,7 @@ footer {
   width: 100%;
   text-align: center;
   position: relative;
-  top: 400px;
+  top: 250px;
   letter-spacing: 4px;
   font-weight: 100;
   font-size: 48px;
@@ -640,14 +640,14 @@ footer {
 .controlscontainer input[type=text] {
   border: none;
   border-bottom: 1px solid white;
-  background-color: black;
+  background-color: #0000;
   max-width: 900px;
   width: 100%;
   position: absolute;
   left: 0;
   right: 0;
   margin: auto;
-  top: 500px;
+  bottom: 200px;
   font-size: 128px;
   text-align: center;
   padding-bottom: 23px;
@@ -671,7 +671,7 @@ footer {
   left: 0;
   right: 0;
   margin: auto;
-  bottom: 25%;
+  bottom: 100px;
   transition: 0.2s ease-in;
   outline: none;
 }
