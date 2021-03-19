@@ -13,6 +13,7 @@ const jellies = [];
 // Tracks whether camera is following jelly or not
 let isCameraFollowingJelly = false;
 let currentJellyTarget = null;
+
 let camZoom = 1000;
 let controls = null;
 
@@ -45,12 +46,15 @@ const init = () => {
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
-  const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: false}); // change antialias?
+  const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F?
   renderer.setPixelRatio(window.devicePixelRatio); // keep this?
   renderer.setSize(window.innerWidth, window.innerHeight);
   // renderer.setClearColor(0x000000, 0); // need this?
-  // renderer.toneMapping = THREE.ReinhardToneMapping;
+  // renderer.toneMapping = THREE.ReinhardToneMapping; // keep this?
   document.body.appendChild(renderer.domElement);
+
+  // Start texture loader
+  const loader = new THREE.TextureLoader();
 
   // Create camera and add to scene
   const scene = new THREE.Scene();
@@ -142,14 +146,14 @@ const init = () => {
   // document.querySelector("#numWishes").innerHTML = jellies.length;
 
   // Load wishes from database and generate jellies
-  loadWishes(dbRef, scene);
+  loadWishes(dbRef, scene, loader);
 
   // Add bloom effects
   const renderScene = new RenderPass(scene, camera);
 
 	const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
 	bloomPass.threshold = 0;
-	bloomPass.strength = 0.75;
+	bloomPass.strength = 1.5;
 	bloomPass.radius = 0.5;
 
 	const composer = new EffectComposer(renderer);
@@ -157,12 +161,15 @@ const init = () => {
 	composer.addPass(bloomPass);
 
   // Begin animation
-  animate(composer, scene, camera);
+  const clock = new THREE.Clock();
+  animate(composer, scene, camera, clock);
 };
 
 // Loops through to animate
-const animate = (renderer, scene, camera) => {
-  requestAnimationFrame(() => animate(renderer, scene, camera));
+const animate = (renderer, scene, camera, clock) => {
+  const delta = clock.getDelta();
+
+  requestAnimationFrame(() => animate(renderer, scene, camera, clock));
 
   // Make cubes move around
   // for (let i = 0; i < cubes.length; i++) {
@@ -203,12 +210,12 @@ const animate = (renderer, scene, camera) => {
 
   // Make jellies pulsate
   for(let j = 0; j < jellies.length; j++) {
-    const position = jellies[j].jelly.geometry.attributes.position;
+    const position = jellies[j].jellyMesh.geometry.attributes.position;
     const vector = new THREE.Vector3();
 
     for(let i = 0; i < position.count; i++){
         vector.fromBufferAttribute(position, i);
-        vector.applyMatrix4(jellies[j].jelly.matrix);
+        vector.applyMatrix4(jellies[j].jellyMesh.matrix);
         let size = 12;
         let magnitude = 7;
         let dist = new THREE.Vector3(vector.x, vector.y, vector.z).sub(new THREE.Vector3(0, 1000, 0));
@@ -219,10 +226,10 @@ const animate = (renderer, scene, camera) => {
 
     }
     position.needsUpdate = true;
-    jellies[j].jelly.geometry.verticesNeedUpdate = true;
-    jellies[j].jelly.geometry.normalsNeedUpdate = true;
-    jellies[j].jelly.geometry.computeVertexNormals();
-    jellies[j].jelly.geometry.computeFaceNormals();
+    jellies[j].jellyMesh.geometry.verticesNeedUpdate = true;
+    jellies[j].jellyMesh.geometry.normalsNeedUpdate = true;
+    jellies[j].jellyMesh.geometry.computeVertexNormals();
+    jellies[j].jellyMesh.geometry.computeFaceNormals();
     jellies[j].a += jellies[j].aStep;
   }
 
@@ -233,7 +240,8 @@ const animate = (renderer, scene, camera) => {
   }
   
   // Rerender scene
-  renderer.render(scene, camera)
+  renderer.render(delta);
+  // renderer.render(scene, camera)
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
@@ -269,7 +277,7 @@ const jellyClicked = (jelly) => {
 };
 
 // Generates a jellyfish based on the specified string (wish)
-const generateJelly = (string, scene) => {
+const generateJelly = (string, scene, loader) => {
   // generate unique hash for string, map to specific jelly properties
   const jellyCode = hashFunc(string);
   const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
@@ -277,32 +285,50 @@ const generateJelly = (string, scene) => {
   const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
   const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
 
-  // create jelly shape and material
-  const jellyGeometery = new THREE.SphereGeometry(10, jellyWidthSegments, jellyHeightSegments, 0, 6.3, 0, 1.7);
-  // const jellyMaterial = new THREE.MeshBasicMaterial({
-  //   color: `#${jellyColor}`,
-  //   wireframe: true
-  // });
-  const jellyMaterial = new THREE.MeshMatcapMaterial({ // 1. MeshLambert, 2. MeshMatCap, 3. MeshToon
-    color: `#${jellyColor}`,
-    side: THREE.DoubleSide,
-    opacity: 0.8,
-    transparent: true
+  // define jelly geometry and material/texture
+  const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
+
+  const texture = loader.load("../uv-lines.png");
+  texture.center.set = (0.5, 0.5);
+  
+  const outerMaterial = new THREE.MeshMatcapMaterial({
+    color: `#${jellyColor}`,// 0xe256cd,
+    transparent: true,
+    opacity: 0.25,
+    depthWrite: false,
+    side: THREE.DoubleSide
   });
 
-  // add jelly object to parent so we can move jelly without changing local coordinates and therefore messing up animation of jellies
-  const jelly = new THREE.Mesh(jellyGeometery, jellyMaterial);
+  const innerMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.65,
+    depthWrite: false,
+    map: texture,
+    side: THREE.DoubleSide
+  });
+
+  // create jelly mesh for outer layer and inner layer
+  const jellyMesh = new THREE.Mesh(jellyGeometery, outerMaterial);
+  jellyMesh.depthWrite = false;
+  const jellySubMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
+  jellySubMesh.depthWrite = false;
+  jellySubMesh.scale.set(0.98,0.65,0.98);
+
+  // Create parent to hold jelly so we can change position without changing local coordinates
   const parent = new THREE.Object3D();
   parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
   parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
 
-  // add jellies to scene
-  parent.add(jelly);
+  // add jelly meshes to parent and parent to scene
+  parent.add(jellyMesh);
+  parent.add(jellySubMesh);
 	scene.add(parent);
 
   // add jellies to list to track and aniamte
   jellies.push({
-    jelly,
+    jellyMesh,
+    jellySubMesh,
     jellyParent: parent,
     aStep: jellyAnimSpeed,
     a: 0
@@ -353,9 +379,9 @@ const hashFunc = (s) => {
 // };
 
 // Loads and returns all wishes in database
-const loadWishes = (dbRef, scene) => {
+const loadWishes = (dbRef, scene, loader) => {
   dbRef.on('child_added', (data) => {
-    generateJelly(data.val().wish, scene);
+    generateJelly(data.val().wish, scene, loader);
     document.querySelector("#numWishes").innerHTML = jellies.length;
   });
 };
