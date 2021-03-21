@@ -1,10 +1,10 @@
 @font-face{
   font-family: 'AgrandierGrand';
-  src: url('./fonts/Agrandier-Grand.eot'); /* IE9 Compat Modes */
-  src: url('./fonts/Agrandier-Grand.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('./fonts/Agrandier-Grand.woff2') format('woff2'), /* Super Modern Browsers */
-       url('./fonts/Agrandier-Grand.woff') format('woff'), /* Pretty Modern Browsers */
-       url('./fonts/Agrandier-Grand.ttf')  format('truetype'); /* Safari, Android, iOS */
+  src: url('../fonts/Agrandir-Grand.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Agrandir-Grand.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Agrandir-Grand.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/Agrandir-Grand.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../fonts/Agrandir-Grand.ttf')  format('truetype'); /* Safari, Android, iOS */
        /* url('./fonts/Agrandier-Grand.svg#svgFontName') format('svg'); Legacy iOS */
   font-weight: normal;
   font-size: normal;
