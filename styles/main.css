@@ -395,6 +395,7 @@ nav {
   font-weight: 700;
   font-style: normal;
   letter-spacing: 5px;
+  padding-bottom: 32px;
 }
 
 ul {
@@ -407,24 +408,41 @@ ul {
 }
 
 .drawer-menu li {
-  width: 800px;
+  width: auto;
   transition: 0.2s ease-in;
+  overflow: hidden;
 }
 
 .drawer-menu li a {
+  position: relative;
+  top: 0px;
+  opacity: 1;
+  animation: slideDown 0.8s ease-in-out;
+  animation-delay: calc(var(--animation-order) * 180ms);
+  animation-fill-mode: both;
   display: block;
   height: auto;
   line-height: 72px;
   color: #fff;
-  font-size: 86px;
+  font-size: 8vw;
+  line-height: 8.2vw;
   text-decoration: none;
-  padding-top: 48px;
-  font-family: ivypresto-headline, serif;
+  font-family: 'AgrandierGrand', sans-serif;
   font-weight: 100;
   font-style: normal;
   letter-spacing: 2px;
-  transition: 0.2s ease-in;
   transform-origin: left;
+}
+
+@keyframes slideDown{
+  0%{
+    top: -300px;
+    opacity: 0;
+  }
+  100%{
+    top: 0px;
+    opacity: 1;
+  }
 }
 
 .drawer-menu li a:hover {
@@ -432,8 +450,6 @@ ul {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   transition: 0.2s ease-in;
-  transform: scale(1.05);
-
 }
 
 /* checkbox */
@@ -516,12 +532,7 @@ ul {
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0);
-  -webkit-transition-property: all;
-  transition-property: all;
-  -webkit-transition-duration: .3s;
-  transition-duration: .3s;
-  -webkit-transition-delay: 0s;
-  transition-delay: 0s;
+  transition: 0.2s ease-in;
   visibility: hidden;
   opacity: 0;
 }
