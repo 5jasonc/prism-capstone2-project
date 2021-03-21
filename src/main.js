@@ -4,11 +4,39 @@ import * as THREE from '../build/three.module.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
 
-// Holds all cubes/jellyfish
-const cubes = [];
+const vertexShader = ` 
+			varying vec3 vPosition;
+
+      void main() {
+        vPosition = position;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        float ps = 1.-distance(vPosition, vec3(0.));
+        gl_PointSize = 10.*ps;
+        gl_Position = projectionMatrix * mvPosition;
+      }
+`;
+
+const fragmentShader = `
+			uniform vec3 color;
+      varying vec3 vPosition;
+
+      void main() {
+        vec2 uv = gl_PointCoord.xy;
+        float dist = smoothstep(1.-distance(vec2(.5), uv), 0., .5);
+        float alph = 1.-distance(vPosition, vec3(0.));
+        float finalph = dist*alph*4.;
+        if (finalph < .2) discard;
+        vec3 color = vec3(1,1,1);
+        gl_FragColor = vec4(color, finalph);
+      }
+`;
+
+// Holds all jellies and particles in scene
 const jellies = [];
+let particles;
 
 // Tracks whether camera is following jelly or not
 let isCameraFollowingJelly = false;
@@ -57,7 +85,7 @@ const init = () => {
   // Listen for add search button is clicked, to bring up search wish popup
   document.querySelector('#searchButton').addEventListener('click', () => {
     const x = document.querySelector("#searchJelly");
-    if(x.style.display === "") x.style.display = "block";
+    if(x.style.display !== "block") x.style.display = "block";
     else x.style.display = "none";
   });
 
@@ -76,6 +104,27 @@ const init = () => {
     jellyClicked(jellies[jellies.length - 1].jellyParent);
   });
 
+  // Listen for changes in search term
+  document.querySelector('#searchtxt').addEventListener('input', (e) => {
+    const wishResult = document.querySelector('#wishSearchResult');
+    const searchtxt = e.target.value;
+    const jellyResults = jellies.filter(jelly => jelly.wish.includes(searchtxt));
+    wishResult.innerHTML = jellyResults.length;
+  });
+
+  // Listen for search button click
+  document.querySelector('#startSearchButton').addEventListener('click', () => {
+    const searchtxt = document.querySelector('#searchtxt').value;
+    const jelliesToRemove = jellies.filter(jelly => !jelly.wish.includes(searchtxt));
+    const jelliesToAdd = jellies.filter(jelly => jelly.wish.includes(searchtxt));
+    jelliesToRemove.forEach((jelly) => scene.remove(jelly.jellyParent));
+    jelliesToAdd.forEach((jelly) => {
+      if(!scene.children.includes(jelly.jellyParent)) scene.add(jelly.jellyParent);
+    });
+    const x = document.querySelector("#searchJelly");
+    if(x.style.display === "block") x.style.display = "none";
+  });
+
   // Create light and add to scene
   // Which light source should we use?
   // const light = new THREE.PointLight(0xfffff, 1, 500); // point light
@@ -91,6 +140,9 @@ const init = () => {
 	// light.position.set( 0, 0, 1 );
 	// scene.add( light );
 
+  // Add particles to scene
+  createParticleSystem(scene);
+
   // Listen for window resize and update renderer accordingly
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -101,47 +153,10 @@ const init = () => {
   // Listen to click events on jellyfish
   document.querySelector('#app').addEventListener('pointerdown', (e) => onDocumentMouseDown(e, renderer, camera, scene), false);
 
-  // Specify cube shape and material
-  // const geometry = new THREE.BoxGeometry(5, 10, 5);
-  // const material = new THREE.MeshNormalMaterial();
-
-  // Add 500 cubes to scene
-  // for (let x = 0; x < 500; x++) {
-  //   const cube = new THREE.Mesh(geometry, material);
-
-  //   cube.position.x = Math.random() * 75 - 50;
-  //   cube.position.y = Math.random() * 75 - 50;
-  //   cube.position.z = 0;
-
-  //   cube.rotation.x = Math.random() * 2 * Math.PI;
-  //   cube.rotation.y = Math.random() * 2 * Math.PI;
-  //   cube.rotation.z = Math.random() * 2 * Math.PI;
-
-  //   cube.scale.x = Math.random() + 0.5;
-  //   cube.scale.y = Math.random() + 0.5;
-  //   cube.scale.z = Math.random() + 0.5;
-
-  //   cube.userData.velocity = new THREE.Vector3();
-  //   cube.userData.velocity.x = Math.random() * 0.4 - 0.2;
-  //   cube.userData.velocity.y = Math.random() * 0.4 - 0.2;
-  //   cube.userData.velocity.z = Math.random() * 0.4 - 0.2;
-  
-  //   scene.add(cube);
-  //   cubes.push(cube);
-  // }
-
-  // Add 56 random jellies to the screen
-  // for(let i = 0; i < 50; i++) {
-  //   generateJelly(`Jelly-${randomNum(-1000, 1000)}`, scene);
-  // }
-
-  // Set number of wishes to number of jellies
-  // document.querySelector("#numWishes").innerHTML = jellies.length;
-
   // Load wishes from database and generate jellies
   loadWishes(dbRef, scene, loader);
 
-  // Add bloom effects
+  // Add bloom, film grain effects
   const renderScene = new RenderPass(scene, camera);
 
 	const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
@@ -149,9 +164,18 @@ const init = () => {
 	bloomPass.strength = 1.5;
 	bloomPass.radius = 0.5;
 
+  const filmPass = new FilmPass(
+		0.15,   // noise intensity
+		0.025,  // scanline intensity
+		0,    // scanline count
+		false,  // grayscale
+	);
+	filmPass.renderToScreen = true;
+
 	const composer = new EffectComposer(renderer);
 	composer.addPass(renderScene);
 	composer.addPass(bloomPass);
+  composer.addPass(filmPass);
 
   // Begin animation
   const clock = new THREE.Clock();
@@ -164,28 +188,14 @@ const animate = (renderer, scene, camera, clock) => {
 
   requestAnimationFrame(() => animate(renderer, scene, camera, clock));
 
-  // Make cubes move around
-  // for (let i = 0; i < cubes.length; i++) {
-  //   const cube = cubes[i];
-  //   cube.position.add(cube.userData.velocity);
-  //   if (cube.position.x < -100 || cube.position.x > 100) {
-  //     cube.position.x = THREE.Math.clamp(cube.position.x, -100, 100);
-  //     cube.userData.velocity.x = -cube.userData.velocity.x;
-  //   }
-  //   if (cube.position.y < -100 || cube.position.y > 100) {
-  //     cube.position.y = THREE.Math.clamp(cube.position.y, -100, 100);
-  //     cube.userData.velocity.y = -cube.userData.velocity.y;
-  //   }
-  //   if (cube.position.z < -100 || cube.position.z > 100) {
-  //     cube.position.z = THREE.Math.clamp(cube.position.z, -100, 100);
-  //     cube.userData.velocity.z = -cube.userData.velocity.z;
-  //   }
-  //   cube.rotation.x += 0.01;
-  // }
-
   // Make jellies move around, make them turn around if they hit walls
   for(let i = 0; i < jellies.length; i++) {
     const jelly = jellies[i].jellyParent;
+
+    // testing out random movement
+    jelly.rotateX((Math.PI / 1000) * Math.random());
+    jelly.rotateZ((Math.PI / 1000) * Math.random());
+
     jelly.translateY(jellies[i].aStep * 2 + 0.3);
     if(jelly.position.x < -1300 || jelly.position.x > 1300) {
       jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
@@ -234,7 +244,6 @@ const animate = (renderer, scene, camera, clock) => {
   
   // Rerender scene
   renderer.render(delta);
-  // renderer.render(scene, camera)
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
@@ -324,8 +333,53 @@ const generateJelly = (string, scene, loader) => {
     jellySubMesh,
     jellyParent: parent,
     aStep: jellyAnimSpeed,
-    a: 0
+    a: 0,
+    wish: string
   });
+};
+
+const createParticleSystem = (scene) => {
+	const geometry = new THREE.BufferGeometry();
+
+	const N = 1000;
+	// const vertices = new Float32Array(
+	//   [...Array(N)].map((_) => Math.random()*2-1)
+	// );
+	const vertices = new Float32Array(N);
+	let c = 0;
+	while (c < N) {
+	  // const u = Math.random() * 2 - 1,
+	  //   a = Math.random() * 2 * 3.14,
+	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
+	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
+	  //   z = u
+	  const theta = Math.random() * 2 * Math.PI,
+		phi = Math.acos(2 * Math.random() - 1),
+		r = Math.pow(Math.random(), 1 / 3),
+		x = r * Math.sin(phi) * Math.cos(theta),
+		y = r * Math.sin(phi) * Math.sin(theta),
+		z = r * Math.cos(phi);
+	
+	  vertices[c] = x;
+	  vertices[c + 1] = y;
+	  vertices[c + 2] = z;
+	  c += 3;
+	}
+	geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+	
+	const shaderMaterial = new THREE.ShaderMaterial({
+	  uniforms: {},
+	  vertexShader: vertexShader,
+	  fragmentShader: fragmentShader,
+	  transparent: true,
+	  depthWrite: false
+	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
+	});
+	
+	particles = new THREE.Points(geometry, shaderMaterial);
+	particles.scale.set(500, 500, 500);
+	scene.add(particles);
+	particles.rotation.z = -0.5;
 };
 
 // Get random num between min and max
@@ -344,32 +398,6 @@ const hashFunc = (s) => {
       h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
   return ((h ^ h >>> 16) >>> 0).toString();
 };
-
-// Adds 20 wishes to the DB. Don't run this function unless needed
-// Must pass a database reference
-// const seedDB = (database) => {
-//   // Create dummy wish data
-//   const wishData = {};
-//   for (let i = 0; i < 20; i++) {
-//     const wish = {
-//       wish: `I wish for ${i} dollars.`
-//     };
-//     wishData[`wish${i}`] = wish;
-//   }
-
-//   // Add dummy wish data updates
-//   const updates = {};
-//   updates['/wishes/'] = wishData;
-
-//   //print out all wishes
-//   for (let i = 0; i < 20; i++) {
-//     console.log(updates['/wishes/'][`wish${i}`]);
-//     // document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + JSON.stringify(updates['/wishes/'][`wish${i}`]);
-//   }
-
-//   // Update DB
-//   database.ref().update(updates);
-// };
 
 // Loads and returns all wishes in database
 const loadWishes = (dbRef, scene, loader) => {
