@@ -1,3 +1,15 @@
+@font-face{
+  font-family: 'AgrandierGrand';
+  src: url('./fonts/Agrandier-Grand.eot'); /* IE9 Compat Modes */
+  src: url('./fonts/Agrandier-Grand.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/Agrandier-Grand.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/Agrandier-Grand.woff') format('woff'), /* Pretty Modern Browsers */
+       url('./fonts/Agrandier-Grand.ttf')  format('truetype'); /* Safari, Android, iOS */
+       /* url('./fonts/Agrandier-Grand.svg#svgFontName') format('svg'); Legacy iOS */
+  font-weight: normal;
+  font-size: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -814,7 +826,7 @@ footer {
   top: 40%;
   font-size: 12vw;
   text-align: center;
-  font-family: ivypresto-headline, serif;
+  font-family: 'AgrandierGrand', sans-serif;
   font-weight: 100;
   font-style: normal;
 }
