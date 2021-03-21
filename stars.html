@@ -82,10 +82,11 @@
         <input type="text" id="wishInput" placeholder="for a puppy">
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
-    <div class="settings" style="width: 164px;">
+    <div class="settings" style="width: 164px; background-color: transparent; margin-bottom: 32px;">
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
             <button onclick="play()">
+                <div id="crossbar"></div>
                 <img src="Speaker.svg">
             </button>
         </div>
@@ -94,14 +95,15 @@
 <script>
     //Play/Pause button
     function play() {
+        var element = document.getElementById("crossbar");
         var audio = document.getElementById('audio');
         if (audio.paused) {
             audio.play();
-            console.log('it is playing.');
+            element.style.display = "none";
         } else {
             audio.pause();
             audio.currentTime = 0;
-            console.log('it is on mute.');
+            element.style.display = "block";
         }
     }
 </script>

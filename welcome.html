@@ -72,17 +72,17 @@
     </nav>
     
     <div class="welcomescreen">
-        
         <div class="welcometxt">
             <h2>Welcome to</h2>
-            <h1>The Digital Wishing Well</h1>
-            <button class="makewish"><a href="stars.html">Make your wish</a></button>
-            <button class="explore"><a href="index.html">Explore Community</a></button>
+            <h1>Wish Bowl</h1>
         </div>
-        <div class="settings" style="width: 164px;">
+        <button class="makewish"><a href="stars.html">&#8592; Wish</a></button>
+        <button class="explore"><a href="index.html">Explore &#8594;</a></button>
+        <div class="settings" style="width: 164px; background-color: transparent; margin-bottom: 32px;">
             <div class="sounds">
                 <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
-                <button onclick="play()">
+                <button onclick="play()" id="playbutton">
+                    <div id="crossbar"></div>
                     <img src="Speaker.svg">
                 </button>
             </div>
@@ -93,12 +93,15 @@
 <script>
     //Play/Pause button
     function play() {
+        var element = document.getElementById("crossbar");
         var audio = document.getElementById('audio');
         if (audio.paused) {
             audio.play();
+            element.style.display = "none";
         } else {
             audio.pause();
             audio.currentTime = 0;
+            element.style.display = "block";
         }
     }
 </script>

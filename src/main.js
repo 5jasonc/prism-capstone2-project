@@ -27,18 +27,6 @@ const init = () => {
     storageBucket: "prism-capstone2-project.appspot.com",
   };
 
-  // Change volume and setup event for play/pause music button
-  const audio = document.querySelector('#audio');
-  audio.volume = 0.1;
-  document.querySelector('#playButton').addEventListener('click', () => {
-    if(audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-  });
-
   // Initialize app and connect to database
   firebase.initializeApp(firebaseConfig);
   const dbRef = firebase.database().ref('/wishes/');
@@ -66,12 +54,17 @@ const init = () => {
   controls = new OrbitControls(camera, renderer.domElement);
 	controls.listenToKeyEvents(window);
 
-  // Listen for add jelly button clicked, to bring up make wish popup
-  document.querySelector('#addJellyButton').addEventListener('click', () => {
-    console.log('test');
-    const x = document.querySelector("#myDIV");
-    if(x.style.display === "") x.style.display = "inline";
-    else x.style.display = "";
+  // Listen for add search button is clicked, to bring up search wish popup
+  document.querySelector('#searchButton').addEventListener('click', () => {
+    const x = document.querySelector("#searchJelly");
+    if(x.style.display === "") x.style.display = "block";
+    else x.style.display = "none";
+  });
+
+  // Listens for cancel button to hide search wish popup
+  document.querySelector('#cancelbtn').addEventListener('click', () => {
+    const x = document.querySelector("#searchJelly");
+    if(x.style.display === "block") x.style.display = "none";
   });
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
