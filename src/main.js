@@ -95,6 +95,13 @@ const init = () => {
     if(x.style.display === "block") x.style.display = "none";
   });
 
+  // Listens for add jelly button clicked, opens make a wish menu
+  document.querySelector('#addJellyButton').addEventListener('click', () => {
+    const x = document.querySelector("#myDIV");
+    if(x.style.display === "") x.style.display = "inline";
+    else x.style.display = "";
+  });
+
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
     dbRef.push({
