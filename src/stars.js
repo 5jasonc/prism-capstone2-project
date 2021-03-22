@@ -9,10 +9,12 @@ let rot = 0;
 const init = () => {
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#stars');
+  const aboutCanvas = document.querySelector('#particles');
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true
   });
+
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0);
   document.body.appendChild(renderer.domElement);

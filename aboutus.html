@@ -4,21 +4,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wishful ✧ About Us</title>
+    <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
-    <link href="styles/welcome.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
     <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
-    <!-- This is when we use FireBase, these versions might be outdated however.
-        <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-database.js"></script>
-        -->
-
     <script src="./src/three.js" type="module"></script>
-    <script src="./src/main.js" type="module"></script>
-
+    <script src="./src/stars.js" type="module"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
     <meta property=”og:url” content=”http://www.wishingwell.com” />
@@ -28,7 +22,6 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
-
 <body>
 
     <input type="checkbox" class="check" id="checked">
@@ -44,7 +37,7 @@
         <ul>
             <h1>Menu</h1>
             <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
-            <li><a href="stars.html" style="--animation-order: 2;">Make a Wish</a></li>
+            <li><a href="stars.html" style="--animation-order: 2;">Share a Wish</a></li>
             <li><a href="index.html" style="--animation-order: 3;">View Gallery</a></li>
             <li><a href="aboutus.html" style="--animation-order: 4;">About us</a></li>
         </ul>
@@ -66,14 +59,32 @@
             </div>
         </div>
     </nav>
+    <!-- <canvas id="stars" style="position: absolute; left: 0; bottom: 0; right: 0; top: 0; z-index: -1;"></canvas> -->
     <section class="aboutus" style="overflow: auto;">
         <div class="about">
-            <h1>ABOUT US</h1>
-            <h2>Welcome to the Living Wish</h2>
-            <p>Long short passage of the whole project is about. The words maybe be two or three sentances.</p>
+            <h1><span class="colortext">About Us</span></h1>
+            <h2>Welcome to Wishful</h2>
+        </div>
+        <div class="brief">
+            <div class="half">
+                <h1><span class="colortext">How</span> do we spark hope?</h1>
+                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the future and find comradery with others.</p>
+            </div>
+            <div class="half">
+                <img src="" alt="image place holder">
+            </div>
+        </div>
+        <div class="brief">
+            <div class="half">
+                <img src="" alt="image place holder">
+            </div>
+            <div class="half">
+                <h1><span class="colortext">Why</span> the Jellyfish?</h1>
+                <p>Jellyfish have a symbolic connection to personal reflection, by making a wish you are giving life to a moment of vulnerability.</p>
+            </div>
         </div>
         <div class="meetteam">
-            <h1>Meet the team</h1>
+            <h1>A <span class="colortext">team</span> made it happen</h1>
             <div class="autolayout">
                 <div class="teamitems">
                     <img src="alex.png" width="100%" alt="picture of Alex">
@@ -109,11 +120,14 @@
                 </div>
             </div>
         </div>
-        <div class="purpose">
-            <h1>Our Purpose</h1>
-            <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and discouraged.</p>
-            <br>
-            <p>Living wish is an enchanting, exploratory experience to allow people to express their hope for the future and find comradery with others.</p>
+        <div class="brief">
+            <div class="half">
+                <h1>Our <span class="colortext">Purpose</span></h1>
+                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and discouraged.</p>
+            </div>
+            <div class="half">
+                <img src="" alt="image place holder">
+            </div>
         </div>
         <div class="support" style="max-width: 720px; margin: auto;">
             <h1>Share</h1>
