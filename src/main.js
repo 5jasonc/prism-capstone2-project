@@ -125,6 +125,13 @@ const init = () => {
     if(x.style.display === "block") x.style.display = "none";
   });
 
+  // Listen for right click event and stop following jelly
+  document.querySelector('#app').addEventListener('contextmenu', () => {
+    isCameraFollowingJelly = false;
+    const wishText = document.querySelector('#wishText');
+    wishText.style.display = 'none';
+  });
+
   // Create light and add to scene
   // Which light source should we use?
   // const light = new THREE.PointLight(0xfffff, 1, 500); // point light
@@ -238,7 +245,7 @@ const animate = (renderer, scene, camera, clock) => {
 
   // If camera is focused on jelly, move camera
   if(isCameraFollowingJelly) {
-    controls.target = currentJellyTarget.position;
+    controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
     controls.update();
   }
   
@@ -261,19 +268,18 @@ const onDocumentMouseDown = (e, renderer, camera, scene) => {
   const intersects = raycaster.intersectObjects(scene.children, true);
 
   if(intersects.length > 0) {
-    if(currentJellyTarget != intersects[0].object.parent) {
-      jellyClicked(intersects[0].object.parent);
-    }
-  } else {
-    // isCameraFollowingJelly = false;
+    if(currentJellyTarget != intersects[0].object.parent) jellyClicked(intersects[0].object.parent);
   }
 };
 
-// Switches camera controls to follow a jellyfish on click
+// Switches camera controls to follow a jellyfish on click and display wish
 const jellyClicked = (jelly) => {
+  const wishText = document.querySelector('#wishText');
+  wishText.innerHTML = jelly.userData.wish;
+  wishText.style.display = 'block';
   currentJellyTarget = jelly;
   isCameraFollowingJelly = true;
-  controls.target = currentJellyTarget.position;
+  controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
   controls.dIn(0.3);
   controls.update();
 };
@@ -321,6 +327,7 @@ const generateJelly = (string, scene, loader) => {
   const parent = new THREE.Object3D();
   parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
   parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
+  parent.userData.wish = string;
 
   // add jelly meshes to parent and parent to scene
   parent.add(jellyMesh);

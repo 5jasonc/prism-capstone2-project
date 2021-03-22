@@ -993,3 +993,9 @@ footer {
   line-height:42px;
 }
 
+#wishText {
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 60%;
+}
