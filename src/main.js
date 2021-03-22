@@ -98,17 +98,21 @@ const init = () => {
   // Listens for add jelly button clicked, opens make a wish menu
   document.querySelector('#addJellyButton').addEventListener('click', () => {
     const x = document.querySelector("#myDIV");
-    if(x.style.display === "") x.style.display = "inline";
-    else x.style.display = "";
+    if(x.style.display !== "inline") x.style.display = "inline";
+    else x.style.display = "none";
+
   });
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
-    dbRef.push({
-      wish: document.querySelector('#wishInput').value
-    });
+    const wish = document.querySelector('#wishInput').value;
+    if(wish.trim() !== "") {
+      dbRef.push({
+        wish: document.querySelector('#wishInput').value
+      });
+      jellyClicked(jellies[jellies.length - 1].jellyParent);
+    }
     document.querySelector('#addJellyButton').click();
-    jellyClicked(jellies[jellies.length - 1].jellyParent);
   });
 
   // Listen for changes in search term
@@ -275,20 +279,24 @@ const onDocumentMouseDown = (e, renderer, camera, scene) => {
   const intersects = raycaster.intersectObjects(scene.children, true);
 
   if(intersects.length > 0) {
-    if(currentJellyTarget != intersects[0].object.parent) jellyClicked(intersects[0].object.parent);
+    jellyClicked(intersects[0].object.parent);
   }
 };
 
 // Switches camera controls to follow a jellyfish on click and display wish
 const jellyClicked = (jelly) => {
   const wishText = document.querySelector('#wishText');
-  wishText.innerHTML = jelly.userData.wish;
+  wishText.innerHTML = `I wish ${jelly.userData.wish}`;
   wishText.style.display = 'block';
+
+  controls.target = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
+  if(currentJellyTarget != jelly) {
+    controls.dIn(0.3);
+    controls.update();
+  }
+
   currentJellyTarget = jelly;
   isCameraFollowingJelly = true;
-  controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
-  controls.dIn(0.3);
-  controls.update();
 };
 
 // Generates a jellyfish based on the specified string (wish)
@@ -303,7 +311,7 @@ const generateJelly = (string, scene, loader) => {
   // define jelly geometry and material/texture
   const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
 
-  const texture = loader.load("../uv-lines.png");
+  const texture = loader.load("uv-lines.png");
   texture.center.set = (0.5, 0.5);
   
   const outerMaterial = new THREE.MeshMatcapMaterial({
