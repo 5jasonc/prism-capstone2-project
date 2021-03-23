@@ -118,6 +118,8 @@ a {
 .orbitbanner {
   animation: slide-in 1s cubic-bezier(.32, .7, .51, 1.33);
   display: flex;
+  animation-delay: calc(var(--animation-order) * 9000ms);
+  animation-fill-mode: both;
   position: absolute;
   z-index: 12;
   height: 64px;
