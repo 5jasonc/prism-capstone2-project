@@ -226,11 +226,6 @@ a {
   height: auto;
 }
 
-.settings .sounds img{
-  position: relative;
-  top: -6px;
-}
-
 #crossbar{
   display: none;
   position: absolute;
@@ -874,13 +869,13 @@ footer {
 
 .welcomescreen h2 {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 20px;
   font-family: sofia-pro, sans-serif;
   font-style: normal;
-  letter-spacing: 2px;
   position: relative;
-  top: 40%;
+  top: 36%;
+  letter-spacing: 5px;
 }
 
 .welcomescreen h1 {
@@ -893,6 +888,17 @@ footer {
   font-style: normal;
 }
 
+.welcomescreen p{
+  position: relative;
+  top: 42%;
+  font-size: 20px;
+  font-family: sofia-pro, sans-serif;
+  line-height: 32px;
+  font-weight: 100;
+  max-width: 420px;
+  margin: auto;
+}
+
 .makewish {
   text-transform: uppercase;
   letter-spacing: 4px;
@@ -901,21 +907,15 @@ footer {
   top: calc(100vh/2);
   height: 64px;
   width: auto;
-  padding: 12px;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding: 18px;
+  background-color: transparent;
   font-size: 20px;
   border: none;
-  background: none;
-  border-radius: 100rem;
-  color: rgb(255, 255, 255);
-  border: solid 1px transparent;
-  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  box-shadow: 2px 1000px 1px #000 inset;
-  transition: 0.1s ease-in;
+  color: white;
+  padding-right: 0;
+  transition: 0.2s ease-in;
   margin-left: 16px;
+  border-bottom: 1px solid white;
 }
 
 .explore {
@@ -926,26 +926,20 @@ footer {
   top: calc(100vh/2);
   height: 64px;
   width: auto;
+  padding: 18px;
+  padding-left: 0;
+  background-color: transparent;
   font-size: 20px;
-  padding: 12px;
-  padding-left: 32px;
-  padding-right: 32px;
   border: none;
-  background: none;
-  border-radius: 100rem;
-  color: rgb(255, 255, 255);
-  border: solid 1px transparent;
-  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  box-shadow: 1px 1000px 1px #000 inset;
-  transition: 0.1s ease-in;
+  color: white;
+  transition: 0.2s ease-in;
   margin-left: 16px;
+  border-bottom: 1px solid white;
 }
 
 .makewish:hover,
 .explore:hover {
-  transition: 0.1s ease-in;
+  transition: 0.2s ease-in;
   transform: scale(0.95);
   outline: none;
 }
