@@ -1,6 +1,7 @@
 
 "use strict";
 
+
 import * as THREE from '../build/three.module.js';
 
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
@@ -11,7 +12,7 @@ import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { BokehPass } from './jsm/postprocessing/BokehPass.js';
 
 let camera, scene, renderer, controls;
-let parent, geometry, mesh, subMesh;
+let parent, geometry, mesh, subMesh, wireframeMesh;
 let container, composer;
 let jellyGeometry;
 let particles;
@@ -33,7 +34,7 @@ const params = {
 	segments: 16,
 	wireframe: false,
 	focus: 100.0,
-	aperture: 8,
+	aperture: 2,
 	maxblur: 0.025
 
 };
@@ -43,15 +44,19 @@ const params = {
 const texture = loader.load( "../uv-lines.png" );
 texture.center.set = (0.5, 0.5);
 
-const outerMaterial = new THREE.MeshPhongMaterial({ color: 0xe256cd, transparent: true, opacity: 0.25, depthWrite: false})
+const outerMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.15, depthWrite: false})
 outerMaterial.side = THREE.DoubleSide;
-const innerMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.65, depthWrite: false, map: texture})
+const innerMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.25, depthWrite: false, map: texture})
 innerMaterial.side = THREE.DoubleSide;
+
+const wireframeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 1, transparent: true });
 
 const material = new THREE.MeshLambertMaterial( { color: 0x2194CE} );
 material.side = THREE.DoubleSide;
 
-const wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0xe256cd, wireframe: true } );
+// PINK: 0xe256cd
+let localPlane;
+let capturer;
 
 const vertexShader = ` 
 			varying vec3 vPosition;
@@ -146,11 +151,11 @@ function addGeometry( geometry ) {
 	// 3D shape
 	if (params.wireframe) {
 		mesh = new THREE.Mesh( geometry, wireframeMaterial );
-		subMesh = new THREE.Mesh( geometry, wireframeMaterial );
+		// subMesh = new THREE.Mesh( geometry, wireframeMaterial );
 	} else {
 		mesh = new THREE.Mesh( geometry, outerMaterial );
 		subMesh = new THREE.Mesh( geometry, innerMaterial );
-		// let wireframeMesh = new THREE.Mesh( geometry, wireframeMaterial );
+		// wireframeMesh = new THREE.Mesh( geometry, wireframeMaterial );
 		// mesh.add( wireframeMesh );
 	}
 
@@ -166,13 +171,14 @@ init();
 animate();
 
 function init(){
+	
 
 	container = document.getElementById( 'container' );
 
 	// camera
 
 	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
-	camera.position.set( 0, 10, 150 );
+	camera.position.set( 0, 0, 300 );
 
 	// scene
 
@@ -199,7 +205,7 @@ function init(){
 	container.appendChild( renderer.domElement );	
 
 	// particle system
-	createParticleSystem();
+	// createParticleSystem();
 
 	// controls
 
@@ -210,6 +216,10 @@ function init(){
 
 	parent = new THREE.Object3D();
 	scene.add( parent );
+
+	// Establish Wireframe Clipping
+	// localPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
+	// wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true, clippingPlanes: [localPlane] } );
 
 	addJelly();
 	subMesh.scale.set(0.98,0.65,0.98)
@@ -260,17 +270,30 @@ function init(){
 	composer.addPass( renderScene );
 	composer.addPass( bloomPass );
 	composer.addPass(filmPass);
-	composer.addPass(bokehPass);
+	// composer.addPass(bokehPass);
+
+	// renderer.clippingPlanes = [ localPlane ]; // GUI sets it to globalPlanes
+	// renderer.localClippingEnabled = true;
+
+	//CCapture
+	capturer = new CCapture( { format: 'png', quality: 100, timeLimit: 24, autoSaveTime: 0 } );
+	capturer.start();
+
+	
 
 }
 
+
+
 function animate() {
 	var delta = clock.getDelta();
-	
-    requestAnimationFrame(animate);
 
-	particles.rotation.y+=0.001;
+    requestAnimationFrame(animate);
+	
+	// particles.rotation.y+=0.001;
 	// subMesh.scale = 0.785;
+	// localPlane.constant = a * -25;
+
     if ( mesh.isMesh && params.animate) {
    
         const position = mesh.geometry.attributes.position;
@@ -294,12 +317,24 @@ function animate() {
         mesh.geometry.normalsNeedUpdate = true;
         mesh.geometry.computeVertexNormals();
         mesh.geometry.computeFaceNormals();
-        a += 0.02;
+        
 		
     }
+	a += 0.05;
+	// if(wireframeMesh.material.opacity > 0){
+	// wireframeMesh.material.opacity = wireframeMesh.material.opacity - (a*0.0005);
+	// }
+	// if(mesh.material.opacity < 0.15){
+	// mesh.material.opacity = mesh.material.opacity + (a*0.0005);
+	// }
+	// if(subMesh.material.opacity < 0.25){
+	// 	subMesh.material.opacity = subMesh.material.opacity + (a*0.0005);
+	// }
 
-	composer.render(delta);
-    // composer.render(scene, camera); 
+	// composer.render(delta);
+	
+    composer.render(scene, camera); 
+	capturer.capture( renderer.domElement );
 
 	
 };

@@ -21,7 +21,7 @@
     scale: .8;
   }
 
-  .welcomescreen h1 {
+  #welcomescreen h1 {
     font-size: 7vw;
     max-width: 100%;
   }
@@ -34,4 +34,18 @@
   }
 
 
+}
+
+body{
+  background: radial-gradient(#000259, #01032C);
+
+}
+
+#container{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }

@@ -854,10 +854,9 @@ footer {
 }
 
 /*Welcome screen*/
-.welcomescreen {
+#welcomescreen {
   width: 100%;
   height: 100vh;
-  background: radial-gradient(#000259, #01032C);
 }
 
 .welcometxt {
@@ -867,7 +866,7 @@ footer {
   text-align: center;
 }
 
-.welcomescreen h2 {
+#welcomescreen h2 {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 20px;
@@ -878,17 +877,17 @@ footer {
   letter-spacing: 5px;
 }
 
-.welcomescreen h1 {
+#welcomescreen h1 {
   position: relative;
   top: 40%;
   font-size: 12vw;
   text-align: center;
-  font-family: 'AgrandierGrand', sans-serif;
+  font-family: 'Times', sans-serif;
   font-weight: 100;
   font-style: normal;
 }
 
-.welcomescreen p{
+#welcomescreen p{
   position: relative;
   top: 42%;
   font-size: 20px;
