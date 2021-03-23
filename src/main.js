@@ -285,9 +285,12 @@ const onDocumentMouseDown = (e, renderer, camera, scene) => {
 
 // Switches camera controls to follow a jellyfish on click and display wish
 const jellyClicked = (jelly) => {
+  //makes the wish box appear with all item of wish text
+  const wishBox = document.querySelector('#wishtxtbox');
   const wishText = document.querySelector('#wishText');
-  wishText.innerHTML = `I wish ${jelly.userData.wish}`;
+  wishText.innerHTML = `${jelly.userData.wish}`;
   wishText.style.display = 'block';
+  wishBox.style.display = 'block';
 
   controls.target = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
   if(currentJellyTarget != jelly) {
