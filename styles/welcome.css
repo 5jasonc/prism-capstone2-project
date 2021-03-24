@@ -1,11 +1,135 @@
 
+
+
+.mobileWrapper {
+  width: 300px;
+  margin-left: auto;
+}
+
+.makewishmobile{
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  position: absolute;
+  left: 70px;
+  bottom: 150px;
+  height: 64px;
+  width: auto;
+
+  background-color: rgba(221, 64, 241, .2); 
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 36px;
+}
+.exploremobile{
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  position: absolute;
+  right: 70px;
+  height: 64px;
+  width: auto;
+
+  background-color: #F2387C;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 36px;
+}
+
+
 @media screen and (max-width: 900px) {
   .settings {
     scale: .5;
     right: -91px;
     bottom: -17px;
   }
+  .makewish{
+    display: none;
+  }
+  .explore{
+    display: none;
+  }
+  .makewishmoblie{
+    display: block;
+    bottom: 150px;
+  }
+  .exploremobile{
+    display: block;
+    bottom: 150px;
+  }
+  .mobileWrapper {
+    display: block;
+  }
+  .welcometxt h2 {
+    display: none;
+  }
+  .welcometxt h1 {
+
+  }
+  .welcometxt p {
+
+  }
+
 }
+
+@media screen and (min-width: 900px) {
+
+  .makewish{
+    display: block;
+  }
+  .explore{
+    display: block;
+  }
+  .makewishmoblie{
+    display: none;
+  }
+  .exploremobile{
+    display: none;
+  }
+  .mobileWrapper {
+    display: none;
+  }
+  .welcometxt h2 {
+    display: display;
+  }
+
+
+}
+
+
+text-transform: uppercase;
+letter-spacing: 4px;
+position: absolute;
+left: 32px;
+top: calc(100vh/2);
+height: 64px;
+width: auto;
+padding: 18px;
+    padding-right: 18px;
+background-color: transparent;
+font-size: 20px;
+border: none;
+    border-bottom-color: currentcolor;
+    border-bottom-style: none;
+    border-bottom-width: medium;
+color: white;
+padding-right: 0;
+transition: 0.2s ease-in;
+margin-left: 16px;
+border-bottom: 1px solid white;
+
 
 @media screen and (max-width: 550px) {
   .makeWish {
@@ -32,7 +156,6 @@
     left: 0px !important;
     bottom: 115px;
   }
-
 
 }
 
