@@ -17,7 +17,7 @@
     }
   }
   
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 500px) {
     .addJellyFish {
         scale: 0.4;
         bottom: -10px;
@@ -26,19 +26,21 @@
 
     .amountofwish {
         scale: 0.7;
-        left: -54px;
+        left: -65px;
     }
     .settings {
         scale: .6;
         right: -90px;
         bottom: -25px;
         height: 80px;
+        background: rgb(26, 26, 26) !important;
     }
     .amountofwish {
         scale: .6;
-        left: -90px;
+        left: -65px;
         bottom: -25px;
         height: 80px;
+        background: rgb(26, 26, 26) !important;
     }
     .controlscontainer h1 {
         top: 200px;

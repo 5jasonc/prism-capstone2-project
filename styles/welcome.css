@@ -10,8 +10,8 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  left: 70px;
-  bottom: 150px;
+  left: 25%;
+  top: 75%;
   height: 64px;
   width: auto;
 
@@ -31,7 +31,7 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  right: 70px;
+  right: 25%;
   height: 64px;
   width: auto;
 
@@ -67,7 +67,7 @@
   }
   .exploremobile{
     display: block;
-    bottom: 150px;
+    top: 75%;
   }
   .mobileWrapper {
     display: block;
@@ -76,10 +76,14 @@
     display: none;
   }
   .welcometxt h1 {
-
+    top: 50% !important;
   }
   .welcometxt p {
+    top: 50% !important;
+  }
 
+  .settings {
+    display: none;
   }
 
 }
@@ -92,7 +96,7 @@
   .explore{
     display: block;
   }
-  .makewishmoblie{
+  .makewishmobile{
     display: none;
   }
   .exploremobile{
@@ -102,33 +106,15 @@
     display: none;
   }
   .welcometxt h2 {
-    display: display;
+    display: block;
+  }
+  .settings {
+    display: block;
   }
 
 
 }
 
-
-text-transform: uppercase;
-letter-spacing: 4px;
-position: absolute;
-left: 32px;
-top: calc(100vh/2);
-height: 64px;
-width: auto;
-padding: 18px;
-    padding-right: 18px;
-background-color: transparent;
-font-size: 20px;
-border: none;
-    border-bottom-color: currentcolor;
-    border-bottom-style: none;
-    border-bottom-width: medium;
-color: white;
-padding-right: 0;
-transition: 0.2s ease-in;
-margin-left: 16px;
-border-bottom: 1px solid white;
 
 
 @media screen and (max-width: 550px) {
@@ -155,6 +141,13 @@ border-bottom: 1px solid white;
     padding-top: 250px;
     left: 0px !important;
     bottom: 115px;
+  }
+
+  .makewishmobile{
+    left: 20px !important;
+  }
+  .exploremobile{
+    right: 20px !important;
   }
 
 }
