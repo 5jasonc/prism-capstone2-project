@@ -58,7 +58,6 @@ const init = () => {
   // Initialize app and connect to database
   firebase.initializeApp(firebaseConfig);
   const dbRef = firebase.database().ref('/wishes/');
-  // seedDB(database);
 
   // Initialize Three.js canvas and renderer, add to DOM
   const canvas = document.querySelector('#app');
@@ -100,7 +99,6 @@ const init = () => {
     const x = document.querySelector("#myDIV");
     if(x.style.display !== "inline") x.style.display = "inline";
     else x.style.display = "none";
-
   });
 
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
@@ -123,40 +121,47 @@ const init = () => {
     wishResult.innerHTML = jellyResults.length;
   });
 
+  // Hides the text box showing a jellies wish
+  const hideWishText = () => {
+    isCameraFollowingJelly = false;
+    const wishText = document.querySelector('#wishText');
+    const wishBox = document.querySelector('#wishtxtbox');
+    wishText.style.display = 'none';
+    wishBox.style.display = 'none';
+  };
+
   // Listen for search button click
-  document.querySelector('#startSearchButton').addEventListener('click', () => {
+  document.querySelector('#startSearchButton').addEventListener('click', (e) => {
     const searchtxt = document.querySelector('#searchtxt').value;
     const jelliesToRemove = jellies.filter(jelly => !jelly.wish.includes(searchtxt));
     const jelliesToAdd = jellies.filter(jelly => jelly.wish.includes(searchtxt));
-    jelliesToRemove.forEach((jelly) => scene.remove(jelly.jellyParent));
+
+    controls.target = new THREE.Vector3(0, 0, 0);
+    controls.update();
+
+    jelliesToRemove.forEach((jelly) => {
+      scene.remove(jelly.jellyParent);
+    });
     jelliesToAdd.forEach((jelly) => {
       if(!scene.children.includes(jelly.jellyParent)) scene.add(jelly.jellyParent);
     });
+
+    // set camera back to original position and focus
+    camera.position.set(500, 500, camZoom);
+    controls.target = new THREE.Vector3(0, 0, 0);
+    controls.update();
+    hideWishText();
+
     const x = document.querySelector("#searchJelly");
     if(x.style.display === "block") x.style.display = "none";
   });
 
   // Listen for right click event and stop following jelly
-  document.querySelector('#app').addEventListener('contextmenu', () => {
-    isCameraFollowingJelly = false;
-    const wishText = document.querySelector('#wishText');
-    wishText.style.display = 'none';
-  });
+  document.querySelector('#app').addEventListener('contextmenu', hideWishText);
 
-  // Create light and add to scene
-  // Which light source should we use?
-  // const light = new THREE.PointLight(0xfffff, 1, 500); // point light
-  // light.position.set(10, 0, 25);
-  // scene.add(light)
-
+  // Add light to scene
   const light = new THREE.PointLight(0xffffff, 1); // point light attached to camera
 	camera.add(light);
-
-  // scene.add( new THREE.AmbientLight( 0x404040 ) ); // ambient light
-
-  // const light = new THREE.DirectionalLight( 0xffffff ); // directional light
-	// light.position.set( 0, 0, 1 );
-	// scene.add( light );
 
   // Add particles to scene
   createParticleSystem(scene);
@@ -288,7 +293,7 @@ const jellyClicked = (jelly) => {
   //makes the wish box appear with all item of wish text
   const wishBox = document.querySelector('#wishtxtbox');
   const wishText = document.querySelector('#wishText');
-  wishText.innerHTML = `${jelly.userData.wish}`;
+  wishText.innerHTML = jelly.userData.wish;
   wishText.style.display = 'block';
   wishBox.style.display = 'block';
 
@@ -339,7 +344,7 @@ const generateJelly = (string, scene, loader) => {
   jellyMesh.depthWrite = false;
   const jellySubMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
   jellySubMesh.depthWrite = false;
-  jellySubMesh.scale.set(0.98,0.65,0.98);
+  jellySubMesh.scale.set(0.98, 0.65, 0.98);
 
   // Create parent to hold jelly so we can change position without changing local coordinates
   const parent = new THREE.Object3D();
