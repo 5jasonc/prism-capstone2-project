@@ -116,9 +116,19 @@ const init = () => {
   // Listen for changes in search term
   document.querySelector('#searchtxt').addEventListener('input', (e) => {
     const wishResult = document.querySelector('#wishSearchResult');
+    const wishBannerResults = document.querySelector('#wishBannerSearchResult');
     const searchtxt = e.target.value;
+    document.getElementById("searchTxt").innerHTML = searchtxt;
     const jellyResults = jellies.filter(jelly => jelly.wish.includes(searchtxt));
     wishResult.innerHTML = jellyResults.length;
+    wishBannerResults.innerHTML = jellyResults.length;
+    //temp be 25 wishes but I want it to size of itself so it doesn't pop up. Only amount of search is true display flex.
+    if(jellyResults.length == 25){
+      document.getElementById("bannerBar").style.display = "none";
+    }
+    else{
+      document.getElementById("bannerBar").style.display = "flex";
+    }
   });
 
   // Hides the text box showing a jellies wish

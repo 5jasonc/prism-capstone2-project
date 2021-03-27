@@ -62,10 +62,16 @@
             </div>
         </div>
     </nav>
+    <div class="banner" id="bannerBar">
+        <button id="backbutton">
+            <img src="ArrowUUpLeft.svg" alt="back button">
+        </button>
+        <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned "<span id="searchTxt"></span>"</h1>
+    </div>
     <canvas id="app"></canvas>
     <div class="searchWindow" id="searchJelly">
         <h1>Search</h1>
-        <input type="text" id="searchtxt" placeholder="Fluffy puppy">
+        <input type="text" id="searchtxt" autocomplete="off" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
             <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
             <button class="viewall" id="startSearchButton">View All</button>
@@ -73,6 +79,7 @@
         </div>
     </div>
     <div id="wishtxtbox">
+        <img class="jellyline" src="pointerline.svg" width="200px">
         <div class="smlinks">
             <a href="#" style="padding-right: 8px;"><img src="ArrowUUpLeft.svg" height="100%" alt="share icon"></a>
             <a href="#"><img src="LinkSimple.svg" height="100%" alt="share icon"></a>
