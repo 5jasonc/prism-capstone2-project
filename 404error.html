@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wishful: Admin</title>
+    <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/welcome.css" rel="stylesheet" />
@@ -66,52 +66,42 @@
             </div>
         </div>
     </nav>
-    <div class="admin">
-        <h1 style="padding-left: 16px;">Wishes to audit</h1>
-        <div class="auditwishes">
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>No go</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>Fluffy puppy</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>Happy ending</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>Happy ending</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>Some bad text goes in here from the rejected database</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>rejected database stuff goes here</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
-            </div>
-            <div class="cards">
-                <h3>Wish for</h3>
-                <h2>Happy ending</h2>
-                <button style="background-color: green;">Approve</button>
-                <button style="background-color: rgb(218, 25, 25);">Disapprove</button>
+   
+    <div class="settings" style="width: 164px; z-index: 2;">
+        <div class="sounds">
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+            <button onclick="play()" id="playbutton">
+                <div id="crossbar"></div>
+                <img src="Speaker.svg">
+            </button>
+        </div>
+    </div>
+    <div class="404error">
+        <div class="searchWindow" style="z-index: 1; background-color: transparent;">
+            <h1>Oh no, your jellyfish is not found, try again!</h1>
+            <!-- Wills wireframe jellyfish mesh -->
+            <div id="meshjelly"></div>
+            <input type="text" id="searchtxt" placeholder="469386">
+            <div class="buttoncontrollers">
+                <button class="viewall" id="startSearchButton">Find Jellyfish</button>
             </div>
         </div>
     </div>
 </body>
+<script>
+    //Play/Pause button
+    function play() {
+        var element = document.getElementById("crossbar");
+        var audio = document.getElementById('audio');
+        if (audio.paused) {
+            audio.play();
+            element.style.display = "none";
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            element.style.display = "block";
+        }
+    }
+</script>
+
 </html>
