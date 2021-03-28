@@ -63,26 +63,31 @@
             </div>
         </div>
     </nav>
-    <div id="storycover">
+    <div id="storycover" style="z-index: 12;">
         <h1>We all have wishes.</h1>
     </div>
-    <div class="starveiw">
+    <div class="starveiw" id="div1" style="z-index: 2;">
+        <h1>Catch a falling star to begin</h1>
         <canvas id="stars"></canvas>
-        <div class="orbitbanner" id="orbitbanner" style="--animation-order: 1">
-            <img src="orbit.svg" alt="orbit icon">
-            <h1>Click and drag to explore</h1>
+        <img onclick = "replace('div1','div2')" src="whitestar.svg" width="400px" style="position: absolute; left: 0; right: 0; margin: auto; top: 32%; z-index: 3;">
+    </div>
+    <div class="starcaught" id="div2" onclick = "replace('div2','myDIV')">
+        <div class="starsvg">
+            <img src="whitestar.svg" width="500px">
         </div>
+        <h1>You caught one!<h1>
+                <h1>Get ready to make a wish</h1>
+                <h3>Tap to continue</h3>
     </div>
-       <!-- <div id="starcaught">
-           <h1>You caught one! <br>Get ready to make a wish</h1>
-           <h3>Tap to continue</h3>
-       </div> -->
-    <div class="controlscontainer" id="myDIV">
+    <div class="controlscontainer" id="myDIV" onclick = "replace('myDIV','div4')" style="display: block; position: relative; height: 100vh; z-index: 1;">
         <h1>I wish</h1>
-        <input type="text" id="wishInput" placeholder="for a puppy">
-        <button type="button" id="makeWishButton">Make your wish</button>
+        <input type="text" id="wishInput" placeholder="for something...">
+        <button type="button" id="makeWishButton">Share your wish</button>
     </div>
-    <div class="settings" style="width: 164px; background-color: transparent; margin-bottom: 32px;">
+    <div class="showJelly" id="div4">
+        <h1>Your Jelly!</h1>
+    </div>
+    <div class="settings" style="width: 164px; z-index: 12;">
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
             <button onclick="play()">
@@ -92,6 +97,12 @@
         </div>
     </div>
 </body>
+<script type="text/javascript">
+    function replace(hide, show) {
+        document.getElementById(hide).style.display = "none";
+        document.getElementById(show).style.display = "block";
+    }
+</script>
 <script>
     //Play/Pause button
     function play() {
@@ -110,7 +121,7 @@
 <script>
     setTimeout(
         function () {
-            $( "#storycover" ).fadeOut(4000);
+            $("#storycover").fadeOut(4000);
         }, 5000
     );
 </script>

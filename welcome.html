@@ -13,10 +13,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
-    <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="./src/three.js" type="module"></script>
     <script type="module" src="./src/welcome.js"></script>
 
@@ -75,36 +73,32 @@
             </div>
         </div>
     </nav>
-    
+
     <div id="welcomescreen">
         <div class="welcometxt">
             <h2>Welcome to</h2>
-            <h1>Wishful</h1>
+            <img src="wishfultxt.svg" width="100%" alt="Wishful">
             <p>Share a wish with the world and watch it come to life as a personalized digital jellyfish. </p>
         </div>
+
         <button class="makewish"><a href="stars.html">&#8592; Wish</a></button>
         <button class="explore"><a href="index.html">Explore &#8594;</a></button>
-
-            <button class="makewishmobile"><a href="stars.html">Wish</a></button>
-            <button class="exploremobile"><a href="index.html">Explore</a></button>
-
-
-
-        <div class="settings" style="width: 164px;">
-            <div class="sounds">
-                <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
-                <button onclick="play()" id="playbutton">
-                    <div id="crossbar"></div>
-                    <img src="Speaker.svg">
-                </button>
-            </div>
-        </div>
-        
-    </div>
-    <div id="container"></div> 
     
+        <button class="makewishmobile"><a href="stars.html">Wish</a></button>
+        <button class="exploremobile"><a href="index.html">Explore</a></button>
+    
+    </div>
+    <div class="settings" style="width: 164px;">
+        <div class="sounds">
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+            <button onclick="play()">
+                <div id="crossbar"></div>
+                <img src="Speaker.svg">
+            </button>
+        </div>
+    </div>
+    <div id="container"></div>
     <!-- <div id="container" style="height: 100%"></div> -->
-
 </body>
 <script>
     //Play/Pause button
