@@ -106,7 +106,9 @@ const init = () => {
     const wish = document.querySelector('#wishInput').value;
     if(wish.trim() !== "") {
       dbRef.push({
-        wish: document.querySelector('#wishInput').value
+        wish: document.querySelector('#wishInput').value,
+        approved: null,
+        userID: getUserID()
       });
       jellyClicked(jellies[jellies.length - 1].jellyParent);
     }
@@ -149,9 +151,7 @@ const init = () => {
     controls.target = new THREE.Vector3(0, 0, 0);
     controls.update();
 
-    jelliesToRemove.forEach((jelly) => {
-      scene.remove(jelly.jellyParent);
-    });
+    jelliesToRemove.forEach((jelly) => scene.remove(jelly.jellyParent));
     jelliesToAdd.forEach((jelly) => {
       if(!scene.children.includes(jelly.jellyParent)) scene.add(jelly.jellyParent);
     });
@@ -427,6 +427,16 @@ const randomNum = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+// Gets stored userID, or if none exists, generates new one, stores in local storage, and returns new ID
+const getUserID = () => {
+  let userID = localStorage.getItem('prism-wishful-user');
+  if(!userID) {
+    userID = `user-${Date.now()}-${Math.floor(Math.random() * 999)}`;
+    localStorage.setItem('prism-wishful-user', userID);
+  }
+  return userID;
+};
+
 // Maps input number within specified range to specified output with specified range
 const mapNumToRange = (input, minInput, maxInput, minOutput, maxOutput) => {
   return (input - minInput) * (maxOutput - minOutput) / (maxInput - minInput) + minOutput;
@@ -439,10 +449,13 @@ const hashFunc = (s) => {
   return ((h ^ h >>> 16) >>> 0).toString();
 };
 
-// Loads and returns all wishes in database
+// Loads all wishes in database and generates jellies for them if they are approved or owned by user
 const loadWishes = (dbRef, scene, loader) => {
+  const userID = getUserID();
   dbRef.on('child_added', (data) => {
-    generateJelly(data.val().wish, scene, loader);
+    const wishObj = data.val();
+    if(!wishObj.approved && wishObj.userID !== userID) return;
+    generateJelly(wishObj.wish, scene, loader);
     document.querySelector("#numWishes").innerHTML = jellies.length;
   });
 };

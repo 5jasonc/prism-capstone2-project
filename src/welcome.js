@@ -45,8 +45,6 @@ const params = {
 };
 
 $('#welcomescreen').on('mousemove', onDocumentMouseMove);
-init();
-animate();
 
 function init() {
 
@@ -155,3 +153,8 @@ function addCubes(n) {
 		scene.add(cube);
 	}
 }
+
+window.onload = () => {
+  init();
+  animate();
+};
