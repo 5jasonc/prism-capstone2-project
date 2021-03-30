@@ -27,7 +27,7 @@
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
 
-<body>
+<body style="background: linear-gradient(#060606, #00022E);">
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
         <span class="bar top"></span>
@@ -63,29 +63,29 @@
             </div>
         </div>
     </nav>
-    <div id="storycover" style="z-index: 12;">
+    <!-- <div id="storycover" style="z-index: 12;">
         <h1>We all have wishes.</h1>
-    </div>
-    <div class="starveiw" id="div1" style="z-index: 2;">
-        <h1>Catch a falling star to begin</h1>
+    </div> -->
+    <div class="starveiw">
         <canvas id="stars"></canvas>
-        <img onclick = "replace('div1','div2')" src="whitestar.svg" width="400px" style="position: absolute; left: 0; right: 0; margin: auto; top: 32%; z-index: 3;">
-    </div>
-    <div class="starcaught" id="div2" onclick = "replace('div2','myDIV')">
-        <div class="starsvg">
-            <img src="whitestar.svg" width="500px">
+        <div class="starcircle" id="starcicle" onclick="starsFadeOut()">
+            <img src="colorStar.svg" width="100%">
         </div>
-        <h1>You caught one!<h1>
-                <h1>Get ready to make a wish</h1>
-                <h3>Tap to continue</h3>
-    </div>
-    <div class="controlscontainer" id="myDIV" onclick = "replace('myDIV','div4')" style="display: block; position: relative; height: 100vh; z-index: 1;">
-        <h1>I wish</h1>
-        <input type="text" id="wishInput" placeholder="for something...">
-        <button type="button" id="makeWishButton">Share your wish</button>
-    </div>
-    <div class="showJelly" id="div4">
-        <h1>Your Jelly!</h1>
+        <h1 id="starTxt">Catch a falling star to begin</h1>
+        <div class="starcaught" id="starCaughtTxt">
+            <h2>You caught one!<h2>
+            <h2>Get ready to share a wish!</h2>
+            <h3 id="tapTap">Tap to continue</h3>
+        </div>
+        <div class="controlscontainer" id="addWishInput">
+            <h1>I wish</h1>
+            <input type="text" id="wishInput" placeholder="for a puppy">
+            <button type="button" id="makeWishButton">Make your wish</button>
+        </div>
+        <!-- Animating the Jellyfish gets dipped into the water -->
+        <div class="jellyAnimation"></div>
+        <!-- See your Jelly Fish before it gets add into the world -->
+        <canvas id="jelly"></canvas>
     </div>
     <div class="settings" style="width: 164px; z-index: 12;">
         <div class="sounds">
@@ -97,11 +97,23 @@
         </div>
     </div>
 </body>
-<script type="text/javascript">
-    function replace(hide, show) {
-        document.getElementById(hide).style.display = "none";
-        document.getElementById(show).style.display = "block";
-    }
+<script>
+    //when pressing the star you caught, it will fade out the catch star it fades out the stars canvas bg
+    $("#starcicle").click(function () {
+        $("#stars").fadeOut("slow");
+        $("#starTxt").fadeOut("slow");
+    });
+
+    //When tap on screen to continue, loads in add wish screen and fade out star caught txt
+    $("#tapTap").click(function () {
+        $('#addWishInput').fadeIn();
+        $("#starCaughtTxt").fadeOut("slow");
+    });
+
+    //when on click make wish button, it will fade out the screen to make wish so we can see the jelly fish animation comes in play
+    $("#makeWishButton").click(function () {
+        $("#addWishInput").fadeOut("slow");
+    });
 </script>
 <script>
     //Play/Pause button
