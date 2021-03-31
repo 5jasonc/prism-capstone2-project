@@ -4,6 +4,24 @@
 const cubes = [];
 const jellies = [];
 let rot = 0;
+let jellyGeometry;
+let parent, mesh, subMesh, sphere;
+
+const outerMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 1,
+  depthWrite: false
+});
+
+outerMaterial.side = THREE.DoubleSide;
+const innerMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 1,
+  depthWrite: false
+})
+innerMaterial.side = THREE.DoubleSide;
 
 // Kick off program
 const init = () => {
@@ -44,7 +62,7 @@ const init = () => {
   });
 
 
-   //Load in the make a wish window
+  //Load in the make a wish window
   //  document.querySelector('#addJellyButton').addEventListener('click', () => {
   //   console.log('test');
   //   const x = document.querySelector("#myDIV");
@@ -52,7 +70,6 @@ const init = () => {
   //   else x.style.display = "";
   //   });
 
-  let sphere
   //create stars
   let spheres = [];
   for (let i = 1; i < 1200; i++) {
@@ -76,7 +93,13 @@ const init = () => {
 
   //Make the clickable element center to camera viewport
 
-  //Make
+  //Make the jellyfish as a star
+  parent = new THREE.Object3D();
+  scene.add(parent);
+
+  //adds jellyfish to the stars
+  addJelly()
+  subMesh.scale.set(0.99, 0.9, 0.98);
 
   // Render scene
   renderer.render(scene, camera);
@@ -85,13 +108,46 @@ const init = () => {
   animate(renderer, scene, camera);
 };
 
+//Jellyfish circle
+function addJelly() {
+
+  let jellyFace = 3;
+  let jellySize = 0.1;
+
+  jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
+  addGeometry(jellyGeometry);
+
+}
+
+function addGeometry(geometry) {
+
+  mesh = new THREE.Mesh(geometry, outerMaterial);
+  subMesh = new THREE.Mesh(geometry, innerMaterial);
+
+  mesh.depthWrite = false;
+  subMesh.depthWrite = false;
+  parent.add(mesh);
+  parent.add(subMesh);
+
+}
+
 // Loops through to animate
 const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
 
-    rot = 0.00003;
-    camera.rotation.x += Math.sin(rot);
-    camera.rotation.y += Math.sin(rot);
+  rot = 0.00003;
+  camera.rotation.x += Math.sin(rot);
+  camera.rotation.y += Math.sin(rot);
+
+  //Animate the jellyfish movoment
+
+  /*When click on shooting star change var of 
+   * jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
+   * Set jellyFace to 1.7 to give it a half dome look
+   * Need to resize to 1 for jelly size to blow up the jellyfish
+   * Then when we do actions of things we can set loc of y of jellyfish to move depends on GUI is doing.
+   */
+
 
   // Rerender scene
   renderer.render(scene, camera)
