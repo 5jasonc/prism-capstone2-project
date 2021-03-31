@@ -125,12 +125,12 @@ const init = () => {
     wishResult.innerHTML = jellyResults.length;
     wishBannerResults.innerHTML = jellyResults.length;
     //temp be 25 wishes but I want it to size of itself so it doesn't pop up. Only amount of search is true display flex.
-    if(jellyResults.length == 25){
-      document.getElementById("bannerBar").style.display = "none";
-    }
-    else{
+    // if(jellyResults.length == 25){
+    //   document.getElementById("bannerBar").style.display = "none";
+    // }
+    // else{
       document.getElementById("bannerBar").style.display = "flex";
-    }
+    // }
   });
 
   // Hides the text box showing a jellies wish
@@ -142,9 +142,10 @@ const init = () => {
     wishBox.style.display = 'none';
   };
 
-  // Listen for search button click
-  document.querySelector('#startSearchButton').addEventListener('click', (e) => {
-    const searchtxt = document.querySelector('#searchtxt').value;
+  // Triggers jellyfish search
+  const startSearch = (searchtxt) => {
+    // const jellyResults = jellies.filter(jelly => jelly.wish.includes(searchtxt));
+    // if(jellyResults.length < 0) return;
     const jelliesToRemove = jellies.filter(jelly => !jelly.wish.includes(searchtxt));
     const jelliesToAdd = jellies.filter(jelly => jelly.wish.includes(searchtxt));
 
@@ -164,6 +165,15 @@ const init = () => {
 
     const x = document.querySelector("#searchJelly");
     if(x.style.display === "block") x.style.display = "none";
+  };
+  
+  // Listen for search button click
+  document.querySelector('#startSearchButton').addEventListener('click', () => startSearch(document.querySelector('#searchtxt').value));
+
+  // Hide search banner and get rid of search filter when back button clicked
+  document.querySelector('#backbutton').addEventListener('click', () => {
+    document.getElementById("bannerBar").style.display = "none";
+    startSearch("");
   });
 
   // Listen for right click event and stop following jelly
@@ -454,7 +464,7 @@ const loadWishes = (dbRef, scene, loader) => {
   const userID = getUserID();
   dbRef.on('child_added', (data) => {
     const wishObj = data.val();
-    if(!wishObj.approved && wishObj.userID !== userID) return;
+    if((wishObj.approved == undefined && wishObj.userID !== userID) || wishObj.approved == false) return;
     generateJelly(wishObj.wish, scene, loader);
     document.querySelector("#numWishes").innerHTML = jellies.length;
   });
