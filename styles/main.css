@@ -10,6 +10,10 @@
   font-size: normal;
 }
 
+::selection{
+  background: transparent;
+}
+
 * {
   margin: 0;
   padding: 0;
