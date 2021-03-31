@@ -6,19 +6,22 @@ const jellies = [];
 let rot = 0;
 let jellyGeometry;
 let parent, mesh, subMesh, sphere;
+let jellyOpacity = 0.2;
 
 const outerMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   transparent: true,
-  opacity: 1,
+  opacity: jellyOpacity,
   depthWrite: false
 });
+
+
 
 outerMaterial.side = THREE.DoubleSide;
 const innerMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   transparent: true,
-  opacity: 1,
+  opacity: jellyOpacity,
   depthWrite: false
 })
 innerMaterial.side = THREE.DoubleSide;
@@ -111,7 +114,7 @@ const init = () => {
 //Jellyfish circle
 function addJelly() {
 
-  let jellyFace = 3;
+  let jellyFace = 1.7;
   let jellySize = 0.1;
 
   jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
@@ -135,11 +138,11 @@ function addGeometry(geometry) {
 const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
 
-  rot = 0.00003;
-  camera.rotation.x += Math.sin(rot);
-  camera.rotation.y += Math.sin(rot);
+  // rot = 0.00003;
+  // camera.rotation.x += Math.sin(rot);
+  // camera.rotation.y += Math.sin(rot);
 
-  //Animate the jellyfish movoment
+  //Animate the jellyfish movement
 
   /*When click on shooting star change var of 
    * jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
