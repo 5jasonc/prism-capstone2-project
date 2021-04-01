@@ -1109,6 +1109,7 @@ footer {
 }
 
 .starcaught{
+  display: none;
   position: absolute;
   bottom: calc(30%);
   left: 0;
@@ -1121,6 +1122,7 @@ footer {
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
   line-height:42px;
+  z-index: 2;
 }
 
 .starcaught h2{

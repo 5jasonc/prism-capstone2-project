@@ -68,16 +68,13 @@
     </div> -->
     <div class="starveiw">
         <canvas id="stars"></canvas>
-        <div class="starcircle" id="starcicle" onclick="starsFadeOut()">
-            
-        </div>
         <h1 id="starTxt">Catch a falling star to begin</h1>
         <div class="starcaught" id="starCaughtTxt">
             <h2>You caught one!<h2>
             <h2>Get ready to share a wish!</h2>
             <h3 id="tapTap">Tap to continue</h3>
         </div>
-        <div class="controlscontainer" id="addWishInput">
+        <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
             <input type="text" id="wishInput" placeholder="for a puppy">
             <button type="button" id="makeWishButton">Make your wish</button>
@@ -98,11 +95,7 @@
     </div>
 </body>
 <script>
-    //when pressing the star you caught, it will fade out the catch star it fades out the stars canvas bg
-    $("#starcicle").click(function () {
-        $("#stars").fadeOut("slow");
-        $("#starTxt").fadeOut("slow");
-    });
+    
 
     //When tap on screen to continue, loads in add wish screen and fade out star caught txt
     $("#tapTap").click(function () {
