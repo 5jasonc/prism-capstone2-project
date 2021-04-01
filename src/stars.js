@@ -6,7 +6,10 @@ const jellies = [];
 let rot = 0;
 let jellyGeometry;
 let parent, mesh, subMesh, sphere;
-let jellyOpacity = 0.2;
+let jellyOpacity = 1;
+let jellyFace = 3;
+let jellySize = 0.1;
+
 
 const outerMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
@@ -114,8 +117,6 @@ const init = () => {
 //Jellyfish circle
 function addJelly() {
 
-  let jellyFace = 1.7;
-  let jellySize = 0.1;
 
   jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
   addGeometry(jellyGeometry);
