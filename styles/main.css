@@ -1,17 +1,36 @@
 @font-face{
-  font-family: 'AgrandierGrand';
-  src: url('../fonts/Agrandir-Grand.eot'); /* IE9 Compat Modes */
-  src: url('../fonts/Agrandir-Grand.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/Agrandir-Grand.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../fonts/Agrandir-Grand.woff') format('woff'), /* Pretty Modern Browsers */
-       url('../fonts/Agrandir-Grand.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-family: 'GT-Super-Display-Medium';
+  src: url('../fonts/GT-Super-Display-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/GT-Super-Display-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/GT-Super-Display-Medium.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../fonts/GT-Super-Display-Medium.ttf')  format('truetype'); /* Safari, Android, iOS */
        /* url('./fonts/Agrandier-Grand.svg#svgFontName') format('svg'); Legacy iOS */
   font-weight: normal;
   font-size: normal;
 }
 
 ::selection{
-  background: transparent;
+  background: rgba(218, 218, 218, 0.11);
+}
+
+::-moz-selection { 
+  background: rgba(218, 218, 218, 0.11);
+}
+
+ /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  color: rgba(255, 255, 255, 0.322);
+  opacity: 1; 
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(255, 255, 255, 0.322);
+  opacity: 1; 
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgba(255, 255, 255, 0.322);
+  opacity: 1; 
 }
 
 * {
@@ -513,7 +532,7 @@ ul {
   font-size: 8vw;
   line-height: 8.2vw;
   text-decoration: none;
-  font-family: 'AgrandierGrand', sans-serif;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
   font-weight: 100;
   font-style: normal;
   letter-spacing: 2px;
@@ -693,7 +712,7 @@ ul {
   font-weight: bold;
   text-align: center;
   margin-top: 232px;
-  font-family: 'AgrandierGrand', sans-serif;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
 .colortext{
@@ -741,7 +760,7 @@ ul {
   max-width: 960px;
   margin: auto;
   text-align: center;
-  font-family: 'AgrandierGrand', sans-serif;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
 .aboutus .about p{
@@ -902,11 +921,11 @@ footer {
   padding-bottom: 23px;
   color: white;
   outline: none;
-  font-family: sofia-pro, sans-serif;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
 ::placeholder{
-  font-family: sofia-pro, sans-serif;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
   font-weight: 100;
 }
 
@@ -1028,11 +1047,13 @@ footer {
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  left: 32px;
+  left: 48px;
   top: calc(100vh/2);
   height: 64px;
   width: auto;
   padding: 18px;
+  padding-left: 0;
+  padding-right: 0;
   background-color: transparent;
   font-size: 20px;
   border: none;
@@ -1040,33 +1061,35 @@ footer {
   padding-right: 0;
   transition: 0.2s ease-in;
   margin-left: 16px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid transparent;
 }
 
 .explore {
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  right: 32px;
+  right: 48px;
   top: calc(100vh/2);
   height: 64px;
   width: auto;
   padding: 18px;
   padding-left: 0;
+  padding-right: 0;
   background-color: transparent;
   font-size: 20px;
   border: none;
   color: white;
   transition: 0.2s ease-in;
   margin-left: 16px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid transparent;
 }
 
 .makewish:hover,
 .explore:hover {
-  transition: 0.2s ease-in;
   transform: scale(0.95);
   outline: none;
+  border-bottom: 1px solid white;
+  transition: 0.2s ease-in;
 }
 
 #storycover{
