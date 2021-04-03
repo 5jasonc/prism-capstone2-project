@@ -219,6 +219,19 @@ a {
   transition: 0.2s ease-in;
 }
 
+.amountofwish, .settings{
+  animation: slideIn 1s cubic-bezier(.17,.67,.83,.67);
+}
+
+@keyframes slideIn {
+    0%{
+      bottom: -100px;
+    }
+    100%{
+        bottom: 0px;
+    }
+}
+
 .amountofwish {
   width: 324px;
   height: 64px;
@@ -1044,13 +1057,16 @@ footer {
 }
 
 .makewish {
+  display: flex;
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  left: 48px;
-  top: calc(100vh/2);
-  height: 64px;
-  width: auto;
+  right: 0;
+  left: 0;
+  margin: auto;
+  top: 48px;
+  height: auto;
+  width: 150px;
   padding: 18px;
   padding-left: 0;
   padding-right: 0;
@@ -1058,20 +1074,21 @@ footer {
   font-size: 20px;
   border: none;
   color: white;
-  padding-right: 0;
   transition: 0.2s ease-in;
-  margin-left: 16px;
-  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
 }
 
 .explore {
+  display: flex;
   text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
-  right: 48px;
-  top: calc(100vh/2);
-  height: 64px;
-  width: auto;
+  right: 0;
+  left: 0;
+  margin: auto;
+  bottom: 48px;
+  height: auto;
+  width: 150px;
   padding: 18px;
   padding-left: 0;
   padding-right: 0;
@@ -1080,15 +1097,29 @@ footer {
   border: none;
   color: white;
   transition: 0.2s ease-in;
-  margin-left: 16px;
   border-bottom: 1px solid transparent;
 }
 
-.makewish:hover,
+.explore h4, .makewish h4{
+  font-weight: 100;
+}
+
+.explore img, .makewish img{
+  width: 32px !important;
+  margin: 12px;
+}
+
 .explore:hover {
   transform: scale(0.95);
   outline: none;
   border-bottom: 1px solid white;
+  transition: 0.2s ease-in;
+}
+
+.makewish:hover{
+  transform: scale(0.95);
+  outline: none;
+  border-top: 1px solid white;
   transition: 0.2s ease-in;
 }
 
