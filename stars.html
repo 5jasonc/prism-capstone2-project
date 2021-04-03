@@ -76,7 +76,7 @@
         </div>
         <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
-            <input type="text" id="wishInput" placeholder="for a puppy">
+            <input type="text" id="wishInput" autocomplete="off" placeholder="for a puppy">
             <button type="button" id="makeWishButton">Make your wish</button>
         </div>
         <!-- Animating the Jellyfish gets dipped into the water -->
@@ -95,8 +95,6 @@
     </div>
 </body>
 <script>
-    
-
     //When tap on screen to continue, loads in add wish screen and fade out star caught txt
     $("#tapTap").click(function () {
         $('#addWishInput').fadeIn();

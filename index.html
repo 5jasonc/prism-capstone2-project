@@ -66,7 +66,8 @@
         <button id="backbutton">
             <img src="ArrowUUpLeft.svg" alt="back button">
         </button>
-        <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned "<span id="searchTxt"></span>"</h1>
+        <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned
+            "<span id="searchTxt"></span>"</h1>
     </div>
     <canvas id="app"></canvas>
     <div class="searchWindow" id="searchJelly">
@@ -81,11 +82,57 @@
     <div id="wishtxtbox">
         <img class="jellyline" src="pointerline.svg" width="200px">
         <div class="smlinks">
-            <a href="#" style="padding-right: 8px;"><img src="ArrowUUpLeft.svg" height="100%" alt="share icon"></a>
-            <a href="#"><img src="LinkSimple.svg" height="100%" alt="share icon"></a>
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
         </div>
         <h3>I wish</h3>
         <h2 id="wishText"></h2>
+    </div>
+    <div class="shareModal" id="ShareWindow">
+        <h2>Share</h2>
+        <h3>Wish Link</h3>
+        <div class="shareLink">
+            <h4>Some custom weblink goes here</h4>
+            <button id="copy"><img src="copy.svg" alt="copy icon"></button>
+        </div>
+        <button id="Exit" onclick="closeBtn()">
+            <img src="exit.svg" alt="copy icon">
+        </button>
+
+        <div class="shareButtons">
+            <h3>Downloads & Socials</h3>
+            <div class="flexWrap">
+                <div class="buttnLabel">
+                    <button>
+                        <img src="ar.svg" alt="copy icon">
+                    </button>
+                    <h5>AR</h5>
+                </div>
+                <div class="buttnLabel">
+                    <button>
+                        <img src="download.svg" alt="copy icon">
+                    </button>
+                    <h5>PNG</h5>
+                </div>
+                <div class="buttnLabel">
+                    <button>
+                        <img src="printer.svg" alt="copy icon">
+                    </button>
+                    <h5>Poster</h5>
+                </div>
+                <div class="buttnLabel">
+                    <button>
+                        <img src="twitteroutline.svg" alt="copy icon">
+                    </button>
+                    <h5>Twitter</h5>
+                </div>
+                <div class="buttnLabel">
+                    <button>
+                        <img src="instagram.svg" alt="copy icon">
+                    </button>
+                    <h5>Instagram</h5>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="controlscontainer" id="myDIV">
         <h1>I wish</h1>
@@ -93,7 +140,7 @@
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
     <div class="addJellyFish" id="addJellyButton">
-        <!-- <a href="stars.html"><img src="addicon.svg" width="100%"></a>  KEEPING THIS UNTIL MAKE A WISH PAGE ACTUALLY WORKS --> 
+        <!-- <a href="stars.html"><img src="addicon.svg" width="100%"></a>  KEEPING THIS UNTIL MAKE A WISH PAGE ACTUALLY WORKS -->
         <img src="addicon.svg" width="100%">
     </div>
     <div class="amountofwish">
@@ -125,6 +172,24 @@
             audio.pause();
             audio.currentTime = 0;
             element.style.display = "block";
+        }
+    }
+</script>
+<script>
+    //Share model will appear
+    function shareBtn() {
+        var x = document.getElementById("ShareWindow");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    function closeBtn(){
+        var x = document.getElementById("ShareWindow");
+        if (x.style.display === "block") {
+            x.style.display = "none";
         }
     }
 </script>

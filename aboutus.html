@@ -9,10 +9,7 @@
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
     <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
-    <script src="./src/three.js" type="module"></script>
-    <script src="./src/stars.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
     <meta property=”og:url” content=”http://www.wishingwell.com” />
@@ -22,6 +19,7 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
+
 <body>
 
     <input type="checkbox" class="check" id="checked">
@@ -68,7 +66,8 @@
         <div class="brief">
             <div class="half">
                 <h1><span class="colortext">How</span> do we spark hope?</h1>
-                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the future and find comradery with others.</p>
+                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the
+                    future and find comradery with others.</p>
             </div>
             <div class="half">
                 <img src="" alt="image place holder">
@@ -80,50 +79,64 @@
             </div>
             <div class="half">
                 <h1><span class="colortext">Why</span> the Jellyfish?</h1>
-                <p>Jellyfish have a symbolic connection to personal reflection, by making a wish you are giving life to a moment of vulnerability.</p>
+                <p>Jellyfish have a symbolic connection to personal reflection, by making a wish you are giving life to
+                    a moment of vulnerability.</p>
             </div>
         </div>
         <div class="meetteam">
             <h1>A <span class="colortext">team</span> made it happen</h1>
             <div class="autolayout">
-                <div class="teamitems">
-                    <img src="alex.png" width="100%" alt="picture of Alex">
-                    <h4>Witty hybrid</h4>
-                    <h5>Alex Kauffman</h5>
-                </div>
-                <div class="teamitems">
-                    <img src="bailey.png" width="100%" alt="picture of Bailey">
-                    <h4>Zealous Designer</h4>
-                    <h5>Bailey Cunningham</h5>
-                </div>
-                <div class="teamitems">
-                    <img src="ben.png" width="100%" alt="picture of Bailey">
-                    <h4>Keen Designer</h4>
-                    <h5>Ben Mendelsohn</h5>
-                </div>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <img style="position: relative; z-index: 32;" src="alex.png" width="100%" alt="picture of Alex">
+                        <h4>Witty hybrid</h4>
+                        <h5>Alex Kauffman</h5>
+                    </div>
+                </span>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <span data-tilt><img src="bailey.png" width="100%" alt="picture of Bailey"></span>
+                        <h4>Zealous Designer</h4>
+                        <h5>Bailey Cunningham</h5>
+                    </div>
+                </span>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <img src="ben.png" width="100%" alt="picture of Bailey">
+                        <h4>Keen Designer</h4>
+                        <h5>Ben Mendelsohn</h5>
+                    </div>
+                </span>
             </div>
             <div class="autolayout">
-                <div class="teamitems">
-                    <img src="gabe.png" width="100%" alt="picture of this person">
-                    <h4>Crafty Coder</h4>
-                    <h5>Gabe Viet</h5>
-                </div>
-                <div class="teamitems">
-                    <img src="jason.png" width="100%" alt="picture of this person">
-                    <h4>wonderus Coder</h4>
-                    <h5>Jason Streeter</h5>
-                </div>
-                <div class="teamitems">
-                    <img src="will.png" width="100%" alt="picture of this person">
-                    <h4>Adventurous hybrid</h4>
-                    <h5>Will McCloskey</h5>
-                </div>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <img src="gabe.png" width="100%" alt="picture of this person">
+                        <h4>Crafty Coder</h4>
+                        <h5>Gabe Viet</h5>
+                    </div>
+                </span>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <img src="jason.png" width="100%" alt="picture of this person">
+                        <h4>wonderus Coder</h4>
+                        <h5>Jason Streeter</h5>
+                    </div>
+                </span>
+                <span data-tilt>
+                    <div class="teamitems">
+                        <img src="will.png" width="100%" alt="picture of this person">
+                        <h4>Adventurous hybrid</h4>
+                        <h5>Will McCloskey</h5>
+                    </div>
             </div>
+            </span>
         </div>
         <div class="brief">
             <div class="half">
                 <h1>Our <span class="colortext">Purpose</span></h1>
-                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and discouraged.</p>
+                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and
+                    discouraged.</p>
             </div>
             <div class="half">
                 <img src="" alt="image place holder">
@@ -162,6 +175,7 @@
             </button>
         </div>
     </div>
+    <script src="./src/tilt.jquery.js"></script>
 </body>
 <script>
     //Play/Pause button
