@@ -89,7 +89,9 @@ const init = () => {
     spheres.push(sphere);
     sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()))
   }
+
   
+
   //Camera viewport size only screen size of the shooting stars
 
   //Shotting stars functions
@@ -116,11 +118,8 @@ const init = () => {
 
 //Jellyfish circle
 function addJelly() {
-
-
   jellyGeometry = new THREE.SphereGeometry(jellySize, 15, 15, 0, 6.283, 0, jellyFace);
   addGeometry(jellyGeometry);
-
 }
 
 function addGeometry(geometry) {
@@ -137,7 +136,6 @@ function addGeometry(geometry) {
 // Loops through to animate
 const animate = (renderer, scene, camera) => {
   requestAnimationFrame(() => animate(renderer, scene, camera));
-
   //Animate the jellyfish movement
 
   /*When click on shooting star change var of 
@@ -148,7 +146,8 @@ const animate = (renderer, scene, camera) => {
    */
 
   parent.rotation.x = 90;
-  
+
+
   // renderer scene
   renderer.domElement.addEventListener('click', onClick, false);
   const raycaster = new THREE.Raycaster();
@@ -159,22 +158,31 @@ const animate = (renderer, scene, camera) => {
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    
+
     raycaster.setFromCamera(mouse, camera);
     var intersects = raycaster.intersectObjects(scene.children, true);
- 
+
     //When it intersects to the star object, where i can blow up the jellyfish and rotate it.
     if (intersects.length > 0) {
       mesh.material.opacity = 1; // change opacity
       subMesh.material.opacity = 1; // change opacity
-      parent.position.y = 0.7;
+
+      //Tween.js animating to movement of jellyfish when caught the star
+      createjs.Tween.get(parent.position, {
+          loop: false
+        })
+        .to({
+          y: 0.8
+        }, 700, createjs.Ease.getPowInOut(3));
+
       //when pressing the star you caught, it will fade out the catch star it fades out the stars canvas bg
       $("#starTxt").fadeOut("slow");
       $('#starCaughtTxt').fadeIn();
     }
+
   }
 
-  renderer.render(scene, camera) 
+  renderer.render(scene, camera)
 };
 
 function randomArbitrary(min, max) {

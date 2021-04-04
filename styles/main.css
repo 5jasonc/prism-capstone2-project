@@ -125,7 +125,7 @@ a {
   display: block;
   position: absolute;
   top: 0;
-  background: radial-gradient(ellipse, #000259, #01032C);
+  background: linear-gradient(ellipse, #00022E, #000005);
 }
 
 .starveiw h1 {
@@ -1003,16 +1003,16 @@ footer {
   top: calc(100%/1.3);
   transition: 0.2s ease-in;
   background: rgba(141, 141, 141, 0.205);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
   color: white;
 }
 
 .controlscontainer button:hover {
   background-color: white;
-  color: black;
+  color: rgb(216, 216, 216);
   transition: 0.2s ease-in;
   transform: scale(0.95);
+  cursor: pointer;
 }
 
 /*Welcome screen*/
