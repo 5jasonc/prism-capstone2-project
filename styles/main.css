@@ -482,8 +482,8 @@ nav {
   opacity: 0;
   display: none;
   z-index: 15;
-  transition: 0.2s ease-in;
-  animation: fadein 0.4s cubic-bezier(.17,.67,.83,.67);
+  /* transition: 0.1s ease-in; */
+  animation: fadein 0.3s cubic-bezier(.17,.67,.83,.67);
 }
 
 @keyframes fadein{
@@ -535,13 +535,13 @@ ul {
   position: relative;
   top: 0px;
   opacity: 1;
-  animation: slideDown 0.8s ease-in-out;
-  animation-delay: calc(var(--animation-order) * 180ms);
+  animation: slideDown 0.4s ease;
+  animation-delay: calc(var(--animation-order) * 50ms);
   animation-fill-mode: both;
   display: block;
   height: auto;
   line-height: 72px;
-  color: #fff;
+  color: rgba(255, 255, 255, 1);
   font-size: 8vw;
   line-height: 8.2vw;
   text-decoration: none;
@@ -550,11 +550,16 @@ ul {
   font-style: normal;
   letter-spacing: 2px;
   transform-origin: left;
+  /* background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
+  background-clip: text;
+  -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  transition: color 0.15s ease-in-out;
 }
 
 @keyframes slideDown{
   0%{
-    top: -300px;
+    top: 300px;
     opacity: 0;
   }
   100%{
@@ -564,10 +569,7 @@ ul {
 }
 
 .drawer-menu li a:hover {
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: 0.2s ease-in;
+  color: rgba(217, 99, 215, 1);
 }
 
 /* checkbox */

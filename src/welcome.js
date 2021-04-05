@@ -2,6 +2,7 @@
 
 
 import * as THREE from '../build/three.module.js';
+
 import {
 	EffectComposer
 } from './jsm/postprocessing/EffectComposer.js';
@@ -30,6 +31,9 @@ let mouseX = 0;
 let mouseY = 0;
 var windowHalfX = site.Width / 2;
 var windowHalfY = site.Height / 2;
+let makewish = false;
+
+const { autoPlay, Easing, onTick, Tween } = TWEEN;
 
 const params = {
 
@@ -108,20 +112,35 @@ function init() {
 
 function animate() {
 
-
+	// CAMERA ANIMATION ON MOUSE MOVE
+	if(makewish==false){
 	camera.position.x += ((mouseX * .005) - camera.position.x) * .05;
 	camera.position.y += (-(mouseY * .005) - camera.position.y) * .05;
 
 	camera.lookAt(scene.position);
+	}
 
+	TWEEN.update();
 	requestAnimationFrame(animate);
-
-	// cube.rotation.y += 0.01;
 
 	renderer.render(scene, camera);
 
+}
 
-};
+$('.makewish').click(wish);
+
+function wish(){
+
+	makewish=true;
+
+      new TWEEN.Tween(camera.position)
+      .to({'y': 40}, 5000)
+      .easing(Easing.Circular.InOut)
+      .start();
+
+	  $('#welcomescreen').fadeTo(1000, 0)
+
+}
 
 function onDocumentMouseMove(event) {
 	mouseX = (event.clientX - windowHalfX) / 2;
@@ -150,7 +169,7 @@ function addCubes(n) {
 			cube.position.y = Math.random() * -spread;
 		}
 
-		scene.add(cube);
+		parent.add(cube);
 	}
 }
 
