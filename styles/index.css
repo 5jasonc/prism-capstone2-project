@@ -1,61 +1,18 @@
-@media screen and (max-width: 900px) {
-    .addJellyFish {
-        scale: 0.5;
-        bottom: -10px;
-        z-index: 1;
-    }
 
-    .amountofwish {
-        scale: 0.7;
-        left: -54px;
-        bottom: -10px;
-    }
-    .settings {
-        scale: 0.7;
-        right: -54px;
-        bottom: -10px;
-    }
-  }
-  
-  @media screen and (max-width: 500px) {
-    .addJellyFish {
-        scale: 0.4;
-        bottom: -10px;
-        z-index: 1;
-    }
 
-    .amountofwish {
-        scale: 0.7;
-        left: -65px;
-    }
-    .settings {
-        scale: .6;
-        right: -90px;
-        bottom: -25px;
-        height: 80px;
-        background: rgb(26, 26, 26) !important;
-    }
-    .amountofwish {
-        scale: .6;
-        left: -65px;
-        bottom: -25px;
-        height: 80px;
-        background: rgb(26, 26, 26) !important;
-    }
-    .controlscontainer {
-        background: rgba(0, 0, 0, 0.61);
-    }
+@media screen and (max-width: 500px) {
     .controlscontainer h1 {
         top: 100px;
         font-size: 20px;
         left: 20px;
         text-align: left !important;
     }
+
     .controlscontainer input[type="text"] {
         border: none;
-            border-bottom-color: currentcolor;
-            border-bottom-style: none;
-            border-bottom-width: medium;
+        border-bottom-color: currentcolor;
+        border-bottom-style: none;
+        border-bottom-width: medium;
         border-bottom: 1px solid white;
         max-width: 350px;
         width: 100%;
@@ -70,4 +27,4 @@
         color: white;
         outline: none;
     }
-  }
+}

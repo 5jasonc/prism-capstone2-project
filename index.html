@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
@@ -15,6 +17,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/main.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <!-- Open Graphs -->
     <meta property="og:title" content="Wishful" />
@@ -34,7 +37,7 @@
     </label>
     <label class="close-menu" for="checked"></label>
     <div class="logo">
-        <a href="welcome.html"><img src="logo.png" width="100%" alt="logo of star"></a>
+        <a href="welcome.html"><img src="whitestar.svg" width="100%" alt="logo of star"></a>
     </div>
     <nav class="drawer-menu">
         <ul>
@@ -138,7 +141,7 @@
     <!--Wish page here-->
     <div class="controlscontainer" id="myDIV">
         <h1>I wish</h1>
-        <input type="text" id="wishInput" maxlength = "25" placeholder="for a puppy">
+        <input type="text" id="wishInput" maxlength="25" placeholder="for a puppy">
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
     <div class="addJellyFish" id="addJellyButton">
@@ -189,7 +192,7 @@
         }
     }
 
-    function closeBtn(){
+    function closeBtn() {
         var x = document.getElementById("ShareWindow");
         if (x.style.display === "block") {
             x.style.display = "none";

@@ -1,36 +1,42 @@
-@font-face{
+@font-face {
   font-family: 'GT-Super-Display-Medium';
-  src: url('../fonts/GT-Super-Display-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/GT-Super-Display-Medium.woff2') format('woff2'), /* Super Modern Browsers */
-       url('../fonts/GT-Super-Display-Medium.woff') format('woff'), /* Pretty Modern Browsers */
-       url('../fonts/GT-Super-Display-Medium.ttf')  format('truetype'); /* Safari, Android, iOS */
-       /* url('./fonts/Agrandier-Grand.svg#svgFontName') format('svg'); Legacy iOS */
+  src: url('../fonts/GT-Super-Display-Medium.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+    url('../fonts/GT-Super-Display-Medium.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('../fonts/GT-Super-Display-Medium.woff') format('woff'),
+    /* Pretty Modern Browsers */
+    url('../fonts/GT-Super-Display-Medium.ttf') format('truetype');
+  /* Safari, Android, iOS */
+  /* url('./fonts/Agrandier-Grand.svg#svgFontName') format('svg'); Legacy iOS */
   font-weight: normal;
   font-size: normal;
 }
 
-::selection{
+::selection {
   background: rgba(218, 218, 218, 0.11);
 }
 
-::-moz-selection { 
+::-moz-selection {
   background: rgba(218, 218, 218, 0.11);
 }
 
- /* Chrome, Firefox, Opera, Safari 10.1+ */
+/* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder {
   color: rgba(255, 255, 255, 0.322);
-  opacity: 1; 
+  opacity: 1;
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: rgba(255, 255, 255, 0.322);
-  opacity: 1; 
+  opacity: 1;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: rgba(255, 255, 255, 0.322);
-  opacity: 1; 
+  opacity: 1;
 }
 
 * {
@@ -146,14 +152,14 @@ a {
   z-index: 1;
 }
 
-.starveiw{
+.starveiw {
   display: block;
   height: 100vh;
   width: 100vw;
   position: relative;
 }
 
-.starcircle{
+.starcircle {
   width: 230px;
   height: 230px;
   position: absolute;
@@ -203,7 +209,7 @@ a {
   padding-left: 8px;
 }
 
-.orbitbanner h1{
+.orbitbanner h1 {
   font-size: 18px;
   width: auto;
 }
@@ -219,17 +225,19 @@ a {
   transition: 0.2s ease-in;
 }
 
-.amountofwish, .settings{
-  animation: slideIn 1s cubic-bezier(.17,.67,.83,.67);
+.amountofwish,
+.settings {
+  animation: slideIn 1s cubic-bezier(.17, .67, .83, .67);
 }
 
 @keyframes slideIn {
-    0%{
-      bottom: -100px;
-    }
-    100%{
-        bottom: 0px;
-    }
+  0% {
+    bottom: -100px;
+  }
+
+  100% {
+    bottom: 0px;
+  }
 }
 
 .amountofwish {
@@ -278,14 +286,14 @@ a {
   position: relative;
   font-size: 32px;
   background: none;
-  border: none; 
+  border: none;
   outline: none;
   width: 32px;
   height: auto;
   cursor: pointer;
 }
 
-#crossbar{
+#crossbar {
   display: none;
   position: absolute;
   transform: rotate(45deg);
@@ -294,7 +302,7 @@ a {
   left: -2px;
   top: 12px;
   background-color: white;
-  animation: fadein 0.2s cubic-bezier(.17,.67,.83,.67);
+  animation: fadein 0.2s cubic-bezier(.17, .67, .83, .67);
 }
 
 .settings .sounds,
@@ -321,7 +329,7 @@ a {
   cursor: pointer;
 }
 
-.searchWindow{
+.searchWindow {
   position: fixed;
   z-index: 12;
   width: 100vw;
@@ -330,12 +338,12 @@ a {
   backdrop-filter: blur(38px);
 }
 
-#searchJelly{
+#searchJelly {
   display: none;
-  animation: fadein 0.4s cubic-bezier(.17,.67,.83,.67);
+  animation: fadein 0.4s cubic-bezier(.17, .67, .83, .67);
 }
 
-.searchWindow h1{
+.searchWindow h1 {
   position: relative;
   top: 30%;
   text-align: center;
@@ -345,12 +353,12 @@ a {
   letter-spacing: 1px;
 }
 
-.searchWindow h3{
+.searchWindow h3 {
   position: relative;
   text-align: center;
 }
 
-.searchWindow .buttoncontrollers{
+.searchWindow .buttoncontrollers {
   position: relative;
   max-width: 820px;
   margin: auto;
@@ -359,7 +367,7 @@ a {
   height: auto;
 }
 
-.banner{
+.banner {
   display: none;
   position: absolute;
   top: 48px;
@@ -371,10 +379,10 @@ a {
   margin: auto;
   height: 56px;
   transition: 0.2s ease-in;
-  animation: slideDown 0.8s cubic-bezier(.17,.67,.83,.67);
+  animation: slideDown 0.8s cubic-bezier(.17, .67, .83, .67);
 }
 
-.banner h1{
+.banner h1 {
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -391,7 +399,7 @@ a {
   letter-spacing: 2px;
 }
 
-.banner button{
+.banner button {
   outline: none;
   background: none;
   border: none;
@@ -404,7 +412,7 @@ a {
   -webkit-backdrop-filter: blur(24px);
 }
 
-.viewall{
+.viewall {
   letter-spacing: 2px;
   position: relative;
   margin-top: 64px;
@@ -423,13 +431,17 @@ a {
   transition: 0.2s ease-in;
 }
 
-.viewall:hover, .banner button:hover, .logo:hover, .auditwishes .cards button:hover, .cancel:hover{
+.viewall:hover,
+.banner button:hover,
+.logo:hover,
+.auditwishes .cards button:hover,
+.cancel:hover {
   transform: scale(0.95);
   transition: 0.2s ease-in;
   cursor: pointer;
 }
 
-.cancel{
+.cancel {
   margin-top: 64px;
   letter-spacing: 2px;
   position: relative;
@@ -483,23 +495,25 @@ nav {
   display: none;
   z-index: 15;
   transition: 0.2s ease-in;
-  animation: fadein 0.4s cubic-bezier(.17,.67,.83,.67);
+  animation: fadein 0.4s cubic-bezier(.17, .67, .83, .67);
 }
 
-@keyframes fadein{
-  0%{
+@keyframes fadein {
+  0% {
     opacity: 0;
   }
-  100%{
+
+  100% {
     opacity: 1;
   }
 }
 
-@keyframes fadeout{
-  0%{
+@keyframes fadeout {
+  0% {
     opacity: 1;
   }
-  100%{
+
+  100% {
     opacity: 0;
   }
 }
@@ -552,12 +566,13 @@ ul {
   transform-origin: left;
 }
 
-@keyframes slideDown{
-  0%{
+@keyframes slideDown {
+  0% {
     top: -300px;
     opacity: 0;
   }
-  100%{
+
+  100% {
     top: 0px;
     opacity: 1;
   }
@@ -697,12 +712,12 @@ ul {
   transition: 0.2s ease-in;
 }
 
-.smlink img{
+.smlink img {
   width: 100%;
   height: 100%;
 }
 
-.smlink:hover{
+.smlink:hover {
   transition: 0.2s ease-in;
   transform: scale(0.95);
   border: 1px solid rgb(226, 226, 226);
@@ -728,13 +743,13 @@ ul {
   font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
-.colortext{
+.colortext {
   background: linear-gradient(101deg, #F2387C, #DE41F2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.brief{
+.brief {
   width: 100%;
   max-width: 1400px;
   display: flex;
@@ -742,27 +757,27 @@ ul {
   margin: auto;
 }
 
-.half{
+.half {
   width: 50%;
   padding: 32px;
   margin: auto;
 }
 
-.half h1{
+.half h1 {
   text-align: left;
   line-height: 78px;
   font-size: 64px;
   padding-bottom: 32px;
 }
 
-.half p{
+.half p {
   text-align: left;
   font-size: 28px;
   line-height: 42px;
   font-weight: 100;
 }
 
-.half img{
+.half img {
   width: 100%;
   max-width: 500px;
 }
@@ -776,7 +791,7 @@ ul {
   font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
-.aboutus .about p{
+.aboutus .about p {
   color: white;
   text-align: center;
   padding-top: 32px;
@@ -908,7 +923,7 @@ footer {
 
 
 
-.showJelly{
+.showJelly {
   position: relative;
   display: block;
   width: 100%;
@@ -937,7 +952,7 @@ footer {
   font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
-::placeholder{
+::placeholder {
   font-family: 'GT-Super-Display-Medium', sans-serif;
   font-weight: 100;
 }
@@ -965,7 +980,7 @@ footer {
   font-weight: 800;
 }
 
-.controlscontainer input[type=text]{
+.controlscontainer input[type=text] {
   border: none;
   position: relative;
   border-bottom: 1px solid white;
@@ -986,7 +1001,7 @@ footer {
 
 .controlscontainer button {
   border: none;
-  background:none;
+  background: none;
   outline: none;
   border-radius: 100rem;
   padding: 12px;
@@ -1039,13 +1054,13 @@ footer {
   letter-spacing: 5px;
 }
 
-#welcomescreen img{
+#welcomescreen img {
   position: relative;
   top: 34%;
   width: 48vw;
 }
 
-#welcomescreen p{
+#welcomescreen p {
   position: relative;
   top: 40%;
   font-size: 20px;
@@ -1100,11 +1115,13 @@ footer {
   border-bottom: 1px solid transparent;
 }
 
-.explore h4, .makewish h4{
+.explore h4,
+.makewish h4 {
   font-weight: 100;
 }
 
-.explore img, .makewish img{
+.explore img,
+.makewish img {
   width: 32px !important;
   margin: 12px;
 }
@@ -1116,14 +1133,14 @@ footer {
   transition: 0.2s ease-in;
 }
 
-.makewish:hover{
+.makewish:hover {
   transform: scale(0.95);
   outline: none;
   border-top: 1px solid white;
   transition: 0.2s ease-in;
 }
 
-#storycover{
+#storycover {
   position: fixed;
   top: 0;
   left: 0;
@@ -1134,22 +1151,22 @@ footer {
   background-color: black;
 }
 
-#storycover h1{
+#storycover h1 {
   opacity: 1;
   animation: fadein 4s ease-in;
 }
 
-@keyframes fadein{
-  0%{
+@keyframes fadein {
+  0% {
     opacity: 0;
   }
 
-  100%{
+  100% {
     opacity: 1;
   }
 }
 
-#storycover h1{
+#storycover h1 {
   position: absolute;
   left: 0;
   right: 0;
@@ -1159,10 +1176,10 @@ footer {
   font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
-  line-height:42px;
+  line-height: 42px;
 }
 
-.starcaught{
+.starcaught {
   display: none;
   position: absolute;
   bottom: calc(30%);
@@ -1175,11 +1192,11 @@ footer {
   font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
-  line-height:42px;
+  line-height: 42px;
   z-index: 2;
 }
 
-.starcaught h2{
+.starcaught h2 {
   text-align: center;
   line-height: 32px;
   font-weight: 100;
@@ -1187,7 +1204,7 @@ footer {
   font-size: 32px;
 }
 
-.starcaught h3{
+.starcaught h3 {
   position: absolute;
   left: 0;
   right: 0;
@@ -1200,7 +1217,7 @@ footer {
   bottom: 32px;
 }
 
-#click{
+#click {
   position: absolute;
   left: 0;
   right: 0;
@@ -1210,7 +1227,7 @@ footer {
   font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
-  line-height:42px;
+  line-height: 42px;
 }
 
 #wishText {
@@ -1221,7 +1238,7 @@ footer {
   width: 420px;
 }
 
-#wishtxtbox{
+#wishtxtbox {
   display: none;
   position: absolute;
   top: 40%;
@@ -1236,17 +1253,17 @@ footer {
   border-radius: 24px;
 }
 
-#wishtxtbox h3{
+#wishtxtbox h3 {
   font-size: 24px;
 }
 
-#wishtxtbox .smlinks{
+#wishtxtbox .smlinks {
   width: 100%;
   height: 32px;
   margin-bottom: 14px;
 }
 
-#shareJellyBtn{
+#shareJellyBtn {
   background: none;
   border: none;
   background-color: transparent;
@@ -1254,7 +1271,7 @@ footer {
   outline: none;
 }
 
-.shareModal{
+.shareModal {
   display: none;
   position: absolute;
   width: 630px;
@@ -1270,18 +1287,18 @@ footer {
   padding: 32px;
 }
 
-.shareModal h2{
+.shareModal h2 {
   text-transform: uppercase;
   padding-bottom: 32px;
   font-size: 24px;
   letter-spacing: 2px;
 }
 
-.shareModal h3{
+.shareModal h3 {
   padding-bottom: 16px;
 }
 
-.shareLink{
+.shareLink {
   height: 64px;
   padding: 12px;
   background-color: #0C1354;
@@ -1289,27 +1306,27 @@ footer {
   position: relative;
 }
 
-.shareLink h4{
+.shareLink h4 {
   margin-top: 10px;
   margin-left: 10px;
   font-weight: 300;
   font-size: 18px;
 }
 
-.shareButtons{
+.shareButtons {
   padding-top: 32px;
 }
 
-.flexWrap{
+.flexWrap {
   display: flex;
   justify-content: space-between;
 }
 
-.buttnLabel{
+.buttnLabel {
   text-align: center;
 }
 
-.shareButtons button{
+.shareButtons button {
   width: 72px !important;
   height: 72px !important;
   border-radius: 100rem;
@@ -1321,12 +1338,12 @@ footer {
   outline: none;
 }
 
-.shareButtons button:hover{
+.shareButtons button:hover {
   background-color: #111b74 !important;
   transition: 0.2s ease-in;
 }
 
-#copy{
+#copy {
   position: absolute;
   right: 16px;
   top: 16px;
@@ -1336,12 +1353,13 @@ footer {
   outline: none;
 }
 
-#copy:hover, #Exit:hover{
+#copy:hover,
+#Exit:hover {
   opacity: 0.5;
   transition: 0.2s ease-in;
 }
 
-#Exit{
+#Exit {
   position: absolute;
   right: 32px;
   top: 32px;
@@ -1351,20 +1369,20 @@ footer {
   outline: none;
 }
 
-.shareModal button{
+.shareModal button {
   background: none;
   border: none;
   height: 32px;
   width: 32px;
 }
 
-.jellyline{
+.jellyline {
   position: absolute;
   left: -180px;
-  top: 88px;  
+  top: 88px;
 }
 
-.admin{
+.admin {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -1372,7 +1390,7 @@ footer {
   padding: 36px;
 }
 
-.auditwishes{
+.auditwishes {
   margin-top: 32px;
   overflow-y: auto;
   width: auto;
@@ -1383,7 +1401,7 @@ footer {
   justify-content: left;
 }
 
-.auditwishes .cards{ 
+.auditwishes .cards {
   height: auto;
   max-width: 540px;
   min-width: 240px;
@@ -1395,14 +1413,14 @@ footer {
   margin: 16px;
 }
 
-.auditwishes .cards h2{
+.auditwishes .cards h2 {
   padding-top: 12px;
   padding-bottom: 32px;
   line-height: 36px;
   height: 110px;
 }
 
-.auditwishes .cards button{
+.auditwishes .cards button {
   margin-right: 16px;
   background: none;
   border: none;
@@ -1415,7 +1433,7 @@ footer {
   outline: none;
 }
 
-.errorPage{
+.errorPage {
   z-index: 4444;
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
@@ -1425,7 +1443,7 @@ footer {
   position: fixed;
 }
 
-.errorPage h1{
+.errorPage h1 {
   position: relative;
   font-family: 'GT-Super-Display-Medium', sans-serif;
   text-align: center;
@@ -1434,7 +1452,7 @@ footer {
   top: calc(100vh/2.8);
 }
 
-.errorPage h2{
+.errorPage h2 {
   position: relative;
   font-weight: lighter;
   font-family: sofia-pro, sans-serif;
@@ -1448,7 +1466,7 @@ footer {
   top: calc(100vh/2.5);
 }
 
-.errorPage button{
+.errorPage button {
   letter-spacing: 2px;
   position: absolute;
   left: 0;
@@ -1470,3 +1488,108 @@ footer {
   transition: 0.2s ease-in;
 }
 
+@media screen and (max-width: 768px) {
+  .drawer-menu ul {
+    left: 0;
+    padding-bottom: 32px;
+  }
+
+  .drawer-menu li {
+    padding-bottom: 32px;
+  }
+
+  .socialmedias {
+    display: flex;
+    padding-left: 16px;
+    width: 100%;
+    left: 0;
+    bottom: 24px;
+    right: 0;
+  }
+
+  .menu-btn {
+    scale: .7;
+    right: 24px;
+    top: 24px;
+  }
+
+  .logo {
+    top: -16px;
+    scale: .6;
+    left: -16px;
+  }
+
+  .addJellyFish {
+    display: none;
+  }
+
+  .settings {
+    position: absolute;
+    bottom: 0;
+    border-radius: 0;
+    right: 0 !important;
+    width: 40% !important;
+  }
+
+  .settings .search,
+  .settings .sounds {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .searchWindow {
+    width: 100%;
+    height: 100%;
+  }
+
+  .searchWindow input[type=text] {
+    width: 86%;
+    font-size: 64px;
+    box-sizing: border-box;
+  }
+
+  .searchWindow::placeholder {
+    font-size: 32px;
+  }
+
+  .amountofwish {
+    position: absolute;
+    border-radius: 0;
+    width: 60% !important;
+  }
+
+  .amountofwish h1{
+    font-size: 16px;
+    padding-left: 0;
+  }
+
+  #app {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .drawer-menu {
+    width: 100%;
+  }
+
+  .drawer-menu ul li a {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .banner{
+    margin: 24px;
+    top: 76px;
+    height: 72px;
+  }
+
+  .banner h1{
+    padding: 0;
+    padding-top: 18px;
+    font-size: 18px;
+    text-align: center;
+    width: auto;
+    line-height: 22px;
+  }
+
+}

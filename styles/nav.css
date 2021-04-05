@@ -1,33 +1,5 @@
 @media screen and (max-width: 768px) {
-    .drawer-menu ul{
-        left: 0;
-        padding-bottom: 32px;
-    }
-
-    .drawer-menu li{
-        padding-bottom: 32px;
-    }
-    
-    .socialmedias {
-        display: flex;
-        padding-left: 16px;
-        width: 100%;
-        left: 0;
-        bottom: 24px;
-        right: 0;
-    }
-    
-    .menu-btn {
-        scale: .7;
-        right: 24px;
-        top: 24px;
-    }
-
-    .logo {
-        top: -16px;
-        scale: .6;
-        left: -16px;
-    }
+  
 
     
 }
