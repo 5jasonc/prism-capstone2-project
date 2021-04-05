@@ -17,6 +17,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
+        <!-- <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
     <script src="./src/three.js" type="module"></script>
     <script type="module" src="./src/welcome.js"></script>
 
@@ -84,14 +86,14 @@
         </div>
 
         <button class="makewish">
-            <a href="stars.html">
+            <a>
                 <img src="arrow.svg" style="transform: rotate(180deg);" alt="arrow" width="100%">
                 <h4>Wish</h4>
             </a>
         </button>
 
         <button class="explore">
-            <a href="index.html">
+            <a>
                 <h4>Explore</h4>
                 <img src="arrow.svg" alt="arrow" width="100%">
             </a>
@@ -114,6 +116,8 @@
     <!-- <div id="container" style="height: 100%"></div> -->
 </body>
 <script>
+    var audio = document.getElementById('audio');
+    audio.volume = 0.0;
     //Play/Pause button
     function play() {
         var element = document.getElementById("crossbar");
