@@ -147,7 +147,6 @@ const animate = (renderer, scene, camera) => {
 
   parent.rotation.x = 90;
 
-
   // renderer scene
   renderer.domElement.addEventListener('click', onClick, false);
   const raycaster = new THREE.Raycaster();
@@ -168,12 +167,10 @@ const animate = (renderer, scene, camera) => {
       subMesh.material.opacity = 1; // change opacity
 
       //Tween.js animating to movement of jellyfish when caught the star
-      createjs.Tween.get(parent.position, {
-          loop: false
-        })
-        .to({
-          y: 0.8
-        }, 700, createjs.Ease.getPowInOut(3));
+        new TWEEN.Tween(parent.position)
+        .to({'y': 0.8})
+        .easing(Easing.Circular.InOut)
+        .start();
 
       //when pressing the star you caught, it will fade out the catch star it fades out the stars canvas bg
       $("#starTxt").fadeOut("slow");

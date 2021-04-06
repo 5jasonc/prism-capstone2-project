@@ -138,8 +138,15 @@ function wish(){
       .easing(Easing.Circular.InOut)
       .start();
 
-	  $('#welcomescreen').fadeTo(1000, 0)
-
+	  $('#welcomescreen').fadeOut(1000, 0);
+	  $('#container').attr('style', 'background-color: black');
+	  $('.starveiw').fadeIn(3000);
+	  
+	  setTimeout(
+        function () {
+            $("#storycover").fadeOut(3000);
+        }, 5000
+    );
 }
 
 function onDocumentMouseMove(event) {
@@ -151,8 +158,9 @@ function addCubes(n) {
 
 	const geometry = new THREE.BoxGeometry(1, 1, 1);
 	const material = new THREE.MeshPhongMaterial({
-		color: 0xffffff,
-		wireframe: false
+		color: 0xf64A8A,
+		wireframe: false,
+		opacity: 0.3
 	});
 	let spread = 5;
 	let max = spread * 2;
