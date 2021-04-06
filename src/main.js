@@ -34,6 +34,9 @@ const fragmentShader = `
       }
 `;
 
+//Defines Tweening parameters + helpers
+const { autoPlay, Easing, onTick, Tween } = TWEEN;
+
 // Holds all jellies and particles in scene
 const jellies = [];
 let particles;
@@ -44,6 +47,7 @@ let currentJellyTarget = null;
 
 let camZoom = 1000;
 let controls = null;
+let cameraTween;
 
 // Kick off program
 const init = () => {
@@ -79,6 +83,8 @@ const init = () => {
 
   // Set up orbit camera controls
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+  controls.dampingFactor = 0.05;
 	controls.listenToKeyEvents(window);
 
   // Listen for add search button is clicked, to bring up search wish popup
@@ -231,6 +237,7 @@ const animate = (renderer, scene, camera, clock) => {
 
   requestAnimationFrame(() => animate(renderer, scene, camera, clock));
 
+
   // Make jellies move around, make them turn around if they hit walls
   for(let i = 0; i < jellies.length; i++) {
     const jelly = jellies[i].jellyParent;
@@ -281,9 +288,16 @@ const animate = (renderer, scene, camera, clock) => {
 
   // If camera is focused on jelly, move camera
   if(isCameraFollowingJelly) {
-    controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
-    controls.update();
+    // controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
+    
+    //Update Camera Tween
+
+    
+
   }
+
+  TWEEN.update();
+  controls.update();
   
   // Rerender scene
   renderer.render(delta);
@@ -317,14 +331,26 @@ const jellyClicked = (jelly) => {
   wishText.style.display = 'block';
   wishBox.style.display = 'block';
 
-  controls.target = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
+  // controls.target = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
+
+  // Tweens between the old camera position, and one surrounding the clicked jelly
+  var orbitTarget = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
+
+  cameraTween = new TWEEN.Tween(controls)
+  .to({'target': orbitTarget}, 2000)
+  .easing(Easing.Circular.InOut)
+  .start();
+
   if(currentJellyTarget != jelly) {
+    // Dolly zoom into jelly and update controls
     controls.dIn(0.3);
     controls.update();
   }
 
   currentJellyTarget = jelly;
   isCameraFollowingJelly = true;
+
+  controls.update();
 };
 
 // Generates a jellyfish based on the specified string (wish)

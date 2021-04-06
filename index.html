@@ -15,8 +15,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <script src="./src/main.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
     <!-- Open Graphs -->
@@ -167,6 +169,8 @@
 
 </body>
 <script>
+var audio = document.getElementById('audio');
+    audio.volume = 0.0;
     //Play/Pause button
     function play() {
         var element = document.getElementById("crossbar");
