@@ -65,78 +65,82 @@
             </div>
         </div>
     </nav>
-    <div class="banner" id="bannerBar">
-        <button id="backbutton">
-            <img src="ArrowUUpLeft.svg" alt="back button">
-        </button>
-        <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned
-            "<span id="searchTxt"></span>"</h1>
-    </div>
-    <canvas id="app"></canvas>
-    <div class="searchWindow" id="searchJelly">
-        <h1>Search</h1>
-        <input type="text" id="searchtxt" autocomplete="off" placeholder="Fluffy puppy">
-        <div class="buttoncontrollers">
-            <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
-            <button class="viewall" id="startSearchButton">View All</button>
-            <button class="cancel" id="cancelbtn">Cancel</button>
-        </div>
-    </div>
-    <div id="wishtxtbox">
-        <img class="jellyline" src="pointerline.svg" width="200px">
-        <div class="smlinks">
-            <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
-        </div>
-        <h3>I wish</h3>
-        <h2 id="wishText"></h2>
-    </div>
-    <div class="shareModal" id="ShareWindow">
-        <h2>Share</h2>
-        <h3>Wish Link</h3>
-        <div class="shareLink">
-            <h4>Some custom weblink goes here</h4>
-            <button id="copy"><img src="copy.svg" alt="copy icon"></button>
-        </div>
-        <button id="Exit" onclick="closeBtn()">
-            <img src="exit.svg" alt="copy icon">
-        </button>
+    <button id="Exit" onclick="closeBtn()">
+        <img src="exit.svg" alt="exit icon">
+    </button>
 
-        <div class="shareButtons">
-            <h3>Downloads & Socials</h3>
-            <div class="flexWrap">
-                <div class="buttnLabel">
-                    <button>
-                        <img src="ar.svg" alt="copy icon">
-                    </button>
-                    <h5>AR</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="download.svg" alt="copy icon">
-                    </button>
-                    <h5>PNG</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="printer.svg" alt="copy icon">
-                    </button>
-                    <h5>Poster</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="twitteroutline.svg" alt="copy icon">
-                    </button>
-                    <h5>Twitter</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="instagram.svg" alt="copy icon">
-                    </button>
-                    <h5>Instagram</h5>
+        <div class="banner" id="bannerBar">
+            <button id="backbutton">
+                <img src="ArrowUUpLeft.svg" alt="back button">
+            </button>
+            <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned
+                "<span id="searchTxt"></span>"</h1>
+        </div>
+        <div id="wishtxtbox">
+            <img class="jellyline" src="pointerline.svg" width="200px">
+            <div class="smlinks">
+                <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%"
+                        alt="share icon"></button>
+            </div>
+            <h3>I wish</h3>
+            <h2 id="wishText"></h2>
+        </div>
+        <canvas id="app"></canvas>
+        <div class="searchWindow" id="searchJelly">
+            <h1>Search</h1>
+            <input type="text" id="searchtxt" autocomplete="off" placeholder="Fluffy puppy">
+            <div class="buttoncontrollers">
+                <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
+                <button class="viewall" id="startSearchButton">View All</button>
+                <button class="cancel" id="cancelbtn">Cancel</button>
+            </div>
+        </div>
+
+        <div class="shareModal" id="ShareWindow">
+            <h2>Share</h2>
+            <h3>Wish Link</h3>
+            <div class="shareLink">
+                <h4>Some custom weblink goes here</h4>
+                <button id="copy"><img src="copy.svg" alt="copy icon"></button>
+            </div>
+
+
+            <div class="shareButtons">
+                <h3>Downloads & Socials</h3>
+                <div class="flexWrap">
+                    <div class="buttnLabel">
+                        <button>
+                            <img src="ar.svg" alt="copy icon">
+                        </button>
+                        <h5>AR</h5>
+                    </div>
+                    <div class="buttnLabel">
+                        <button>
+                            <img src="download.svg" alt="copy icon">
+                        </button>
+                        <h5>PNG</h5>
+                    </div>
+                    <div class="buttnLabel">
+                        <button>
+                            <img src="printer.svg" alt="copy icon">
+                        </button>
+                        <h5>Poster</h5>
+                    </div>
+                    <div class="buttnLabel">
+                        <button>
+                            <img src="twitteroutline.svg" alt="copy icon">
+                        </button>
+                        <h5>Twitter</h5>
+                    </div>
+                    <div class="buttnLabel">
+                        <button>
+                            <img src="instagram.svg" alt="copy icon">
+                        </button>
+                        <h5>Instagram</h5>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!--Wish page here-->
     <div class="controlscontainer" id="myDIV">
@@ -167,7 +171,7 @@
 
 </body>
 <script>
-var audio = document.getElementById('audio');
+    var audio = document.getElementById('audio');
     audio.volume = 0.0;
     //Play/Pause button
     function play() {
@@ -186,19 +190,16 @@ var audio = document.getElementById('audio');
 <script>
     //Share model will appear
     function shareBtn() {
-        var x = document.getElementById("ShareWindow");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+        //var x = document.getElementById("#app");
+        $('#app').css({
+            transform: 'scale(.8, 0.7)'
+        });
     }
 
     function closeBtn() {
-        var x = document.getElementById("ShareWindow");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        }
+        $('#app').css({
+            transform: 'scale(1)'
+        });
     }
 </script>
 

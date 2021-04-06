@@ -13,7 +13,7 @@
   font-size: normal;
 }
 
-@keyframes spinner{
+@keyframes spinner {
   0% {
     transform: rotate(0deg);
   }
@@ -140,7 +140,7 @@ a {
   background: radial-gradient(#000259, #01032C);
 }
 
-.logoSpinner{
+.logoSpinner {
   position: absolute;
   top: calc(100%/2.3);
   left: 0;
@@ -149,7 +149,7 @@ a {
   animation: spinner 3s linear infinite;
 }
 
-.logoSpinner logo{
+.logoSpinner logo {
   width: 32px;
 }
 
@@ -189,6 +189,7 @@ a {
   width: 100vw;
   height: calc(100vh - 70px);
   display: block;
+  transition: all 1s ease;
 }
 
 #stars {
@@ -218,7 +219,8 @@ a {
   z-index: 1;
 }
 
-.starveiw, #stars {
+.starveiw,
+#stars {
   display: none;
   height: 100vh;
   width: 100vw;
@@ -1048,7 +1050,7 @@ footer {
 }
 
 /*Welcome screen*/
-#container{
+#container {
   transition: all 3.5s ease-in;
 }
 
@@ -1061,7 +1063,7 @@ footer {
   height: 100vh;
   width: 100vw;
   position: relative;
-  text-align: center; 
+  text-align: center;
 }
 
 #welcomescreen h2 {
@@ -1084,7 +1086,7 @@ footer {
   border-bottom: 1px solid transparent;
 }
 
-#welcomescreen img:hover{
+#welcomescreen img:hover {
   border-bottom: 2px solid white;
 }
 
@@ -1381,11 +1383,17 @@ footer {
 #Exit {
   position: absolute;
   right: 32px;
-  top: 32px;
+  top: 132px;
   cursor: pointer;
   opacity: 1;
+  z-index: 0;
   transition: 0.2s ease-in;
   outline: none;
+}
+
+button {
+  background: none;
+  border: none;
 }
 
 .shareModal button {
@@ -1577,7 +1585,7 @@ footer {
     width: 60% !important;
   }
 
-  .amountofwish h1{
+  .amountofwish h1 {
     font-size: 16px;
     padding-left: 0;
   }
@@ -1585,6 +1593,7 @@ footer {
   #app {
     width: 100% !important;
     height: 100% !important;
+
   }
 
   .drawer-menu {
@@ -1596,13 +1605,13 @@ footer {
     line-height: 42px;
   }
 
-  .banner{
+  .banner {
     margin: 24px;
     top: 76px;
     height: 72px;
   }
 
-  .banner h1{
+  .banner h1 {
     padding: 0;
     padding-top: 18px;
     font-size: 18px;
