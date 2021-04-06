@@ -13,6 +13,58 @@
   font-size: normal;
 }
 
+@keyframes spinner{
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    top: -120px;
+  }
+
+  to {
+    top: 48px;
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    top: -300px;
+    opacity: 0;
+  }
+
+  100% {
+    top: 0px;
+    opacity: 1;
+  }
+}
+
 ::selection {
   background: rgba(218, 218, 218, 0.11);
 }
@@ -85,37 +137,51 @@ a {
   display: block;
   height: 100vh;
   width: 100vw;
-  background-color: #0d0b0e;
+  background: radial-gradient(#000259, #01032C);
 }
 
-.loader h1 {
+.logoSpinner{
   position: absolute;
-  width: 500px;
-  text-align: center;
-  bottom: 164px;
+  top: calc(100%/2.3);
   left: 0;
   right: 0;
   margin: auto;
-  color: black;
-  font-size: 86px;
-  -webkit-text-fill-color: rgb(0, 0, 0);
-  /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 1px;
-  letter-spacing: 4px;
-  -webkit-text-stroke-color: rgb(255, 255, 255);
+  animation: spinner 3s linear infinite;
+}
+
+.logoSpinner logo{
+  width: 32px;
 }
 
 .loader h2 {
   position: absolute;
   width: 500px;
   text-align: center;
-  bottom: 124px;
+  bottom: 24%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  color: white;
+  font-size: 32px;
+  font-weight: 100;
+  font-family: sofia-pro, sans-serif;
+  letter-spacing: 2px;
+}
+
+.loader h1 {
+  position: absolute;
+  width: 500px;
+  text-align: center;
+  bottom: 30%;
   left: 0;
   right: 0;
   margin: auto;
   text-align: center;
   font-weight: 300;
   padding-top: 32px;
+  font-size: 4vw;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
+  letter-spacing: 2px;
 }
 
 #app {
@@ -193,15 +259,7 @@ a {
   -webkit-backdrop-filter: blur(24px);
 }
 
-@keyframes slide-in {
-  from {
-    top: -120px;
-  }
 
-  to {
-    top: 48px;
-  }
-}
 
 .orbitbanner img {
   height: 32px;
@@ -230,15 +288,6 @@ a {
   animation: slideIn 1s cubic-bezier(.17, .67, .83, .67);
 }
 
-@keyframes slideIn {
-  0% {
-    bottom: -100px;
-  }
-
-  100% {
-    bottom: 0px;
-  }
-}
 
 .amountofwish {
   width: 324px;
@@ -498,25 +547,7 @@ nav {
   animation: fadein 0.4s cubic-bezier(.17, .67, .83, .67);
 }
 
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
 
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeout {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
 
 .drawer-menu h1 {
   color: white;
@@ -571,17 +602,7 @@ ul {
   transition: color 0.15s ease-in-out;
 }
 
-@keyframes slideDown {
-  0% {
-    top: -300px;
-    opacity: 0;
-  }
 
-  100% {
-    top: 0px;
-    opacity: 1;
-  }
-}
 
 .drawer-menu li a:hover {
   color: rgba(217, 99, 215, 1);
@@ -1040,7 +1061,7 @@ footer {
   height: 100vh;
   width: 100vw;
   position: relative;
-  text-align: center;
+  text-align: center; 
 }
 
 #welcomescreen h2 {
@@ -1058,6 +1079,13 @@ footer {
   position: relative;
   top: 34%;
   width: 48vw;
+  cursor: pointer;
+  padding-bottom: 32px;
+  border-bottom: 1px solid transparent;
+}
+
+#welcomescreen img:hover{
+  border-bottom: 2px solid white;
 }
 
 #welcomescreen p {
@@ -1156,15 +1184,6 @@ footer {
   animation: fadein 4s ease-in;
 }
 
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
 
 #storycover h1 {
   position: absolute;

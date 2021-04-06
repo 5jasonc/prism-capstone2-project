@@ -127,7 +127,7 @@ function animate() {
 
 }
 
-$('.makewish').click(wish);
+$('.welcometxt').click(wish);
 
 function wish(){
 
