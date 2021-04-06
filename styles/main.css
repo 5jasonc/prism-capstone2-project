@@ -152,8 +152,8 @@ a {
   z-index: 1;
 }
 
-.starveiw {
-  display: block;
+.starveiw, #stars {
+  display: none;
   height: 100vh;
   width: 100vw;
   position: relative;
@@ -907,8 +907,6 @@ footer {
   padding: 16px;
 }
 
-
-
 /*App styling*/
 .slidecontainer {
   position: absolute;
@@ -917,13 +915,9 @@ footer {
   transform: rotate(-90deg);
 }
 
-
-
 #myDIV {
   display: none;
 }
-
-
 
 .showJelly {
   position: relative;
@@ -1033,9 +1027,13 @@ footer {
 }
 
 /*Welcome screen*/
+#container{
+  transition: all 3.5s ease-in;
+}
+
 #welcomescreen {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
 .welcometxt {
