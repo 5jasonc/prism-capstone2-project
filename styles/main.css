@@ -190,6 +190,7 @@ a {
   height: calc(100vh - 70px);
   display: block;
   transition: all 1s ease;
+  z-index: 1;
 }
 
 #stars {
@@ -302,6 +303,7 @@ a {
   bottom: 0;
   padding: 16px;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 .amountofwish h1 {
@@ -331,6 +333,7 @@ a {
   padding: 18px;
   box-sizing: border-box;
   display: flex;
+  z-index: 2;
 }
 
 .settings .sounds button {
@@ -520,6 +523,7 @@ a {
   bottom: 32px;
   padding: 32px;
   border-radius: 124px;
+  z-index: 1;
   background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
 }
 
@@ -1272,6 +1276,7 @@ footer {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px); */
   border-radius: 24px;
+  z-index: 2;
 }
 
 #wishtxtbox h3 {
@@ -1319,71 +1324,69 @@ footer {
   padding-bottom: 16px;
 }
 
+.export{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 86px;
+  z-index: 0;
+  width: 75%;
+  margin: auto;
+  float: left;
+}
+
 .shareLink {
+  float: right;
+  bottom: 96px;
+  width: 318px;
   height: 64px;
-  padding: 12px;
-  background-color: #0C1354;
-  border-radius: 8px;
-  position: relative;
 }
 
 .shareLink h4 {
-  margin-top: 10px;
+  position: absolute;
+  height: auto;
   margin-left: 10px;
-  font-weight: 300;
+  font-weight: 100;
   font-size: 18px;
+  letter-spacing: 2px;
+  width: auto;
+  cursor: pointer;
 }
 
-.shareButtons {
-  padding-top: 32px;
-}
-
-.flexWrap {
-  display: flex;
-  justify-content: space-between;
+#copy {
+  cursor: pointer;
+  transition: 0.2s ease-in;
+  opacity: 1;
+  outline: none;
+  float: right;
+  cursor: pointer;
 }
 
 .buttnLabel {
   text-align: center;
 }
 
+
 .shareButtons button {
-  width: 72px !important;
-  height: 72px !important;
-  border-radius: 100rem;
-  margin-bottom: 16px;
-  margin-top: 16px;
-  background-color: #0C1354 !important;
+  float: left;
+  padding-left: 8px;
+  padding-right: 8px;
   transition: 0.2s ease-in;
   cursor: pointer;
-  outline: none;
-}
-
-.shareButtons button:hover {
-  background-color: #111b74 !important;
-  transition: 0.2s ease-in;
-}
-
-#copy {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  cursor: pointer;
-  transition: 0.2s ease-in;
-  opacity: 1;
   outline: none;
 }
 
 #copy:hover,
-#Exit:hover {
+#Exit:hover,
+.shareButtons button:hover {
   opacity: 0.5;
   transition: 0.2s ease-in;
 }
 
 #Exit {
   position: absolute;
-  right: 32px;
-  top: 132px;
+  right:10%;
+  top: 10%;
   cursor: pointer;
   opacity: 1;
   z-index: 0;
