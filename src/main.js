@@ -110,15 +110,27 @@ const init = () => {
   // Listen for make wish button being clicked, generate a new jellyfish with current wish input
   document.querySelector('#makeWishButton').addEventListener('click', () => {
     const wish = document.querySelector('#wishInput').value;
-    if(wish.trim() !== "") {
+    if(wish.trim() === "") {
+      document.querySelector('#errorText').innerHTML = `Wish can't be empty!`;
+      return;
+    }
+    $.ajax({
+      url: `https://www.purgomalum.com/service/containsprofanity?text=${wish.trim()}`
+    }).then((isWishBad) => {
+      if(isWishBad === 'true') {
+        document.querySelector('#errorText').innerHTML = `Wish is not valid! Watch your language!`;
+        return;
+      }
+
+      document.querySelector('#errorText').innerHTML = '';
       dbRef.push({
         wish: document.querySelector('#wishInput').value,
         approved: null,
         userID: getUserID()
       });
       jellyClicked(jellies[jellies.length - 1].jellyParent);
-    }
-    document.querySelector('#addJellyButton').click();
+      document.querySelector('#addJellyButton').click();
+    });
   });
 
   // Listen for changes in search term
