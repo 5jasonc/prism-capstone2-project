@@ -126,6 +126,7 @@
     <div class="controlscontainer" id="myDIV">
         <h1>I wish</h1>
         <input type="text" id="wishInput" maxlength="25" placeholder="for a puppy">
+        <span id="errorText"></span>
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
     <div class="addJellyFish" id="addJellyButton">
@@ -148,7 +149,6 @@
             </button>
         </div>
     </div>
-
 </body>
 <script>
     var audio = document.getElementById('audio');
@@ -174,12 +174,52 @@
         $('#app').css({
             transform: 'scale(.8, 0.7)'
         });
+        
+        $('.settings').fadeOut();
+        // $('.settings').css({
+        //     display: 'none'
+        // });
+
+        $('.menu-btn').fadeOut();
+        // $('.menu-btn').css({
+        //     display: 'none'
+        // });
+
+        $('.amountofwish').fadeOut();
+        // $('.amountofwish').css({
+        //     display: 'none'
+        // });
+
+        $('.addJellyFish').fadeOut();
+        // $('.addJellyFish').css({
+        //     display: 'none'
+        // });
     }
 
     function closeBtn() {
         $('#app').css({
             transform: 'scale(1)'
         });
+
+        $('.settings').fadeIn();
+        // $('.settings').css({
+        //     display: 'flex'
+        // });
+
+        $('.menu-btn').fadeIn();
+        // $('.menu-btn').css({
+        //     display: 'block'
+        // });
+
+        $('.amountofwish').fadeIn();
+        // $('.amountofwish').css({
+        //     display: 'block'
+        // });
+
+        $('.addJellyFish').fadeIn();
+        // $('.addJellyFish').css({
+        //     display: 'block'
+        // });
     }
 </script>
 
