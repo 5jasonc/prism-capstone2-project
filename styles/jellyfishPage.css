@@ -1,0 +1,18 @@
+
+@media screen and (max-width: 900px) {
+    #wishtxtbox {
+        display: none;
+        position: absolute;
+        top: 40%;
+        left: -10%;
+        height: auto;
+        width: auto;
+        padding: 32px;
+        position: absolute;
+        background: rgba(141, 141, 141, 0.205);
+        border-radius: 24px;
+        z-index: 2;
+        scale: 0.5;
+    }
+  }
+  
