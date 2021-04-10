@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>Wishful : AR</title>
+<link rel="icon" href="StarLogoIcon.png">
+<link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
+<link href="styles/main.css" rel="stylesheet" />
+<link href="styles/index.css" rel="stylesheet" />
+<!-- three.js library -->
+
+<!-- ar.js -->
+<script
+    src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js">
+</script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+<style>
+    canvas {
+        width: 100vh;
+        height: 100vw;
+    }
+
+    .backbutton {
+        width: 64px;
+        height: 64px;
+        padding: 16px;
+        background-color: transparent;
+        border-radius: 100rem;
+        position: relative;
+        top: 24px;
+        left: 24px;
+    }
+
+    .backbutton:active {
+        background-color: rgba(255, 255, 255, 0.308);
+    }
+</style>
+<script>
+    let parent, geometry, mesh, subMesh, wireframeMesh;
+
+    function init() {
+        const outerMaterial = new THREE.MeshPhongMaterial({
+            color: 0xDE41F2,
+            transparent: true,
+            opacity: 0.5,
+            depthWrite: false
+        })
+        outerMaterial.side = THREE.DoubleSide;
+
+        const innerMaterial = new THREE.MeshLambertMaterial({
+            color: 0xDE41F2,
+            transparent: true,
+            opacity: 0.5,
+            depthWrite: false
+        })
+        innerMaterial.side = THREE.DoubleSide;
+
+        // init renderer
+        const canvas = document.querySelector('#arApp');
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        document.body.appendChild(renderer.domElement);
+
+        // array of functions for the rendering loop
+        var onRenderFcts = [];
+
+        // init scene and camera
+        var scene = new THREE.Scene();
+
+        // Create a camera
+        var camera = new THREE.Camera();
+        scene.add(camera);
+
+        parent = new THREE.Object3D();
+        scene.add(parent);
+
+        //Jellyfish circle
+        function addJelly() {
+            jellyGeometry = new THREE.SphereGeometry(2, 12, 12, 0, 6.283, 0, 1.7);
+            addGeometry(jellyGeometry);
+        }
+
+        //handle arToolkitSource
+        var arToolkitSource = new THREEx.ArToolkitSource({
+            // to read from the webcam
+            sourceType: 'webcam',
+        });
+
+        arToolkitSource.init(function onReady() {
+            onResize()
+        });
+
+        // handle resize
+        window.addEventListener('resize', function () {
+            onResize()
+        });
+
+        function onResize() {
+            arToolkitSource.onResizeElement()
+            arToolkitSource.copyElementSizeTo(renderer.domElement)
+            if (arToolkitContext.arController !== null) {
+                arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+            }
+        }
+
+        //initialize arToolkitContext
+        // create atToolkitContext
+        var arToolkitContext = new THREEx.ArToolkitContext({
+            cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+            detectionMode: 'mono',
+        });
+
+        // initialize it
+        arToolkitContext.init(function onCompleted() {
+            // copy projection matrix to camera
+            camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+        });
+
+        // update artoolkit on every frame
+        onRenderFcts.push(function () {
+            if (arToolkitSource.ready === false) return
+
+            arToolkitContext.update(arToolkitSource.domElement)
+
+            // update scene.visible if the marker is seen
+            scene.visible = camera.visible
+        });
+
+        //Create a ArMarkerControls
+        // init controls for camera
+        var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+            type: 'pattern',
+            patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+            // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+            // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+            changeMatrixMode: 'cameraTransformMatrix'
+        })
+        // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+        scene.visible = false
+
+
+        //add an object in the scene
+        // add a Jellyfish
+        addJelly()
+        subMesh.scale.set(0.99, 0.9, 0.98);
+
+        function addGeometry(geometry) {
+            mesh = new THREE.Mesh(geometry, outerMaterial);
+            subMesh = new THREE.Mesh(geometry, innerMaterial);
+            mesh.depthWrite = false;
+            subMesh.depthWrite = false;
+            parent.add(mesh);
+            parent.add(subMesh);
+        }
+
+        // var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        onRenderFcts.push(function (delta) {
+            mesh.position.y = 1;
+            subMesh.position.y = 1;
+        })
+
+        //render the whole thing on the page
+        // render the scene
+        onRenderFcts.push(function () {
+            renderer.render(scene, camera);
+        })
+
+        // run the rendering loop
+        var lastTimeMsec = null
+        requestAnimationFrame(function animate(nowMsec) {
+            // keep looping
+            requestAnimationFrame(animate);
+            // measure time
+            lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
+            var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+            lastTimeMsec = nowMsec
+            // call each update function
+            onRenderFcts.forEach(function (onRenderFct) {
+                onRenderFct(deltaMsec / 1000, nowMsec / 1000)
+            });
+        });
+    }
+
+    window.onload = () => {
+        init();
+    };
+</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: sans-serif;'>
+    <input type="checkbox" class="check" id="checked">
+    <label class="menu-btn" for="checked">
+        <span class="bar top"></span>
+        <span class="bar bottom"></span>
+    </label>
+    <label class="close-menu" for="checked"></label>
+    <div class="backbutton">
+        <a href='index.html'><img src="ArrowUUpLeft.svg" width="100%"></a>
+    </div>
+
+    <nav class="drawer-menu">
+        <ul>
+            <h1>Menu</h1>
+            <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
+            <li><a href="stars.html" style="--animation-order: 2;">Share a Wish</a></li>
+            <li><a href="index.html" style="--animation-order: 3;">View Gallery</a></li>
+            <li><a href="aboutus.html" style="--animation-order: 4;">About us</a></li>
+        </ul>
+        <div class="socialmedias">
+            <div class="smlink">
+                <a href="#">
+                    <img src="facebookicon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="twittericon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="copyicon.svg" alt="Copy icon">
+                </a>
+            </div>
+        </div>
+    </nav>
+    <canvas id="arApp"></canvas>
+</body>
