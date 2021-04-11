@@ -12,27 +12,6 @@
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js">
 </script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-<style>
-    canvas {
-        width: 100vh;
-        height: 100vw;
-    }
-
-    .backbutton {
-        width: 64px;
-        height: 64px;
-        padding: 16px;
-        background-color: transparent;
-        border-radius: 100rem;
-        position: relative;
-        top: 24px;
-        left: 24px;
-    }
-
-    .backbutton:active {
-        background-color: rgba(255, 255, 255, 0.308);
-    }
-</style>
 <script>
     let parent, geometry, mesh, subMesh, wireframeMesh;
 
@@ -87,10 +66,12 @@
         var arToolkitSource = new THREEx.ArToolkitSource({
             // to read from the webcam
             sourceType: 'webcam',
+            // url of the source - valid if sourceType = image|video
+            sourceUrl : null
         });
 
         arToolkitSource.init(function onReady() {
-            onResize()
+            onResize();
         });
 
         // handle resize
@@ -160,8 +141,8 @@
         scene.add(mesh);
 
         onRenderFcts.push(function (delta) {
-            mesh.position.y = 1;
-            subMesh.position.y = 1;
+            mesh.position.y = 3;
+            subMesh.position.y = 3;
         })
 
         //render the whole thing on the page
@@ -192,6 +173,7 @@
 </script>
 
 <body style='margin : 0px; overflow: hidden; font-family: sans-serif;'>
+    <canvas id="arApp"></canvas>
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
         <span class="bar top"></span>
@@ -201,7 +183,6 @@
     <div class="backbutton">
         <a href='index.html'><img src="ArrowUUpLeft.svg" width="100%"></a>
     </div>
-
     <nav class="drawer-menu">
         <ul>
             <h1>Menu</h1>
@@ -228,5 +209,4 @@
             </div>
         </div>
     </nav>
-    <canvas id="arApp"></canvas>
 </body>
