@@ -1189,6 +1189,7 @@ footer {
   animation: fadein 4s ease-in;
 }
 
+.quotes {display: none;}
 
 #storycover h1 {
   position: absolute;
