@@ -301,7 +301,7 @@ a {
   bottom: 0;
   padding: 16px;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 2;
 }
 
 .amountofwish h1 {
@@ -1546,6 +1546,7 @@ canvas #arApp{
 @media screen and (max-width: 768px) {
   .drawer-menu ul {
     left: 0;
+    left: -8px;
     padding-bottom: 32px;
   }
 
@@ -1569,8 +1570,8 @@ canvas #arApp{
   }
 
   .logo {
-    top: 0px;
-    left: -4px;
+    top: -6px;
+    left: -12px;
   }
 
   .addJellyFish {
@@ -1579,16 +1580,28 @@ canvas #arApp{
 
   .settings {
     position: absolute;
-    bottom: 0;
+    top: 120px;
+    right: 32px;
     border-radius: 0;
-    right: 0 !important;
-    width: 40% !important;
+    width: 56px;
+    height: 56px;
+    border-radius: 100rem;
+    transition: all;
   }
 
-  .settings .search,
-  .settings .sounds {
-    padding-left: 12px;
-    padding-right: 12px;
+  .settings .line{
+    display: none;
+  }
+  .sounds{
+    display: none;
+  }
+
+  .search{
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    left: -2px;
+    top: -2px;
   }
 
   .searchWindow {
@@ -1597,20 +1610,20 @@ canvas #arApp{
   }
 
   .searchWindow input[type=text] {
-    width: 86%;
     font-size: 64px;
     box-sizing: border-box;
   }
 
-  .searchWindow::placeholder {
-    font-size: 32px;
+  input[type=text]{
+    width: 80% !important;
+    font-size: 12vw !important;
+  }
+
+  ::placeholder {
+    font-size: 12vw;
   }
 
   .amountofwish {
-    display: none !important;
-  }
-
-  .settings{
     display: none !important;
   }
 
@@ -1644,8 +1657,8 @@ canvas #arApp{
   }
 
   #wishtxtbox{
-    left: 16px;
-    right: 16px;
+    left: 24px;
+    right: 24px;
     margin: auto;
     padding: 16px;
     bottom: 32px;
@@ -1654,6 +1667,7 @@ canvas #arApp{
 
   #wishText{
     width: auto;
+    max-width: 350px;
   }
 
   #wishText h2{
