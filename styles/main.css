@@ -1012,7 +1012,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100vh/3.4);
+  bottom: calc(100vh/3.6);
   margin: auto;
   font-size: 128px;
   text-align: center;
