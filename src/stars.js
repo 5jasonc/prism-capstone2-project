@@ -167,11 +167,7 @@ const animate = (renderer, scene, camera) => {
       subMesh.material.opacity = 1; // change opacity
 
       //Tween.js animating to movement of jellyfish when caught the star
-        new TWEEN.Tween(parent.position)
-        .to({'y': 0.8})
-        .easing(Easing.Circular.InOut)
-        .start();
-
+      
       //when pressing the star you caught, it will fade out the catch star it fades out the stars canvas bg
       $("#starTxt").fadeOut("slow");
       $('#starCaughtTxt').fadeIn();

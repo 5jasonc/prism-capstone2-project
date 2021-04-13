@@ -6,6 +6,7 @@
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-status-bar-style content=black>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
@@ -18,10 +19,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
-        <!-- <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
+    <!-- <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
     <script src="./src/three.js" type="module"></script>
     <script type="module" src="./src/welcome.js"></script>
-    <!-- <script src="./src/stars.js" type="module"></script> -->
 
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
@@ -102,7 +102,8 @@
         <button class="exploremobile"><a href="index.html">Explore</a></button>
 
     </div>
-    <div class="settings" style="width: 164px; margin-bottom: 32px; background-color: transparent;">
+    <div class="settings" style="width: 164px; margin-bottom: 32px; background-color: transparent;  backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);">
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
             <button onclick="play()">
@@ -114,18 +115,19 @@
     <div id="container"></div>
     <div class="starveiw">
         <div id="storycover" style="z-index: 12;">
-            <h1>We all have wishes.</h1>
+            <h1 class="quotes">We all have wishes</h1>
+            <h1 class="quotes">Lets share your wish</h1>
         </div>
-        <canvas id="stars"></canvas>
-        <h1 id="starTxt">Catch a falling star to begin</h1>
-        <div class="starcaught" id="starCaughtTxt">
+        <!-- <canvas id="stars"></canvas> -->
+        <!-- <h1 id="starTxt">Catch a falling star to begin</h1> -->
+        <!-- <div class="starcaught" id="starCaughtTxt">
             <h2>You caught one!<h2>
                     <h2>Get ready to share a wish!</h2>
                     <h3 id="tapTap">Tap to continue</h3>
-        </div>
+        </div> -->
         <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
-            <input type="text" id="wishInput" autocomplete="off" placeholder="for a puppy">
+            <input type="text" id="wishInput" autocomplete="off" placeholder="for a puppy" maxlength="20">
             <button type="button" id="makeWishButton">Make your wish</button>
         </div>
         <!-- Animating the Jellyfish gets dipped into the water -->
@@ -151,6 +153,23 @@
             element.style.display = "block";
         }
     }
+</script>
+<script>
+    (function () {
+
+        var quotes = $(".quotes");
+        var quoteIndex = -1;
+
+        function showNextQuote() {
+            ++quoteIndex;
+            quotes.eq(quoteIndex % quotes.length)
+                .fadeIn(1000)
+                .delay(2000)
+                .fadeOut(2000, showNextQuote);
+        }
+        showNextQuote();
+
+    })();
 </script>
 
 </html>

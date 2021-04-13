@@ -10,6 +10,7 @@
     <link rel="icon" href="StarLogoIcon.png">
     <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
     <link href="styles/main.css" rel="stylesheet" />
+    <link rel="stylesheet" media="print" href="print.css">
     <link href="styles/index.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -79,6 +80,7 @@
     <div id="wishtxtbox">
         <div class="smlinks">
             <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
+            <a href="ar.html"><img style="padding-top: 8px; margin-left: 8px;" src="ar.svg" height="100%" alt="share icon"></a>
         </div>
         <h3>I wish</h3>
         <h2 id="wishText"></h2>
@@ -96,7 +98,7 @@
     <div class="export">
         <div class="shareButtons">
             <div class="buttnLabel">
-                <button>
+                <button onclick="window.print()">
                     <img src="printer.svg" alt="copy icon">
                 </button>
             </div>
@@ -174,6 +176,8 @@
         $('#app').css({
             transform: 'scale(.8, 0.7)'
         });
+
+        $('.export').fadeIn();
         
         $('.settings').fadeOut();
         // $('.settings').css({
@@ -200,6 +204,8 @@
         $('#app').css({
             transform: 'scale(1)'
         });
+
+        $('.export').fadeOut();
 
         $('.settings').fadeIn();
         // $('.settings').css({

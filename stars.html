@@ -6,6 +6,7 @@
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-status-bar-style content=black>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
@@ -15,7 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
     <script src="./src/three.js" type="module"></script>
-    <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <script src="./src/OrbitControls.js" type="module"></script>
     <script src="./src/stars.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -29,6 +30,11 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
+<style>
+    #stars, #starTxt{
+        display: block;
+    }
+</style>
 
 <body style="background: linear-gradient(#060606, #00022E);">
     <input type="checkbox" class="check" id="checked">

@@ -11,8 +11,8 @@
   letter-spacing: 4px;
   position: absolute;
   left: 25%;
-  top: 75%;
-  height: 64px;
+  top: 85%;
+  height: auto;
   width: auto;
 
   background-color: rgba(221, 64, 241, .2); 
@@ -32,7 +32,7 @@
   letter-spacing: 4px;
   position: absolute;
   right: 25%;
-  height: 64px;
+  height: auto;
   width: auto;
 
   background-color: #F2387C;
@@ -47,6 +47,8 @@
   cursor: pointer;
   border-radius: 36px;
 }
+
+
 
 
 @media screen and (max-width: 900px) {
@@ -64,10 +66,13 @@
   .makewishmoblie{
     display: block;
     bottom: 150px;
+    top: 85% !important;
+    padding: 15px;
   }
   .exploremobile{
     display: block;
-    top: 75%;
+    top: 85%;
+    padding: 15px;
   }
   .mobileWrapper {
     display: block;
@@ -79,7 +84,7 @@
     top: 50% !important;
   }
   .welcometxt p {
-    top: 50% !important;
+    top: 35% !important;
   }
 
   .settings {
