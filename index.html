@@ -10,6 +10,7 @@
     <link rel="icon" href="StarLogoIcon.png">
     <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
     <link href="styles/main.css" rel="stylesheet" />
+    <link rel="stylesheet" media="print" href="print.css">
     <link href="styles/index.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -18,8 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <script src="./src/main.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
 
     <!-- Open Graphs -->
     <meta property="og:title" content="Wishful" />
@@ -67,12 +66,24 @@
             </div>
         </div>
     </nav>
+    <button id="Exit" onclick="closeBtn()">
+        <img src="exit.svg" alt="exit icon">
+    </button>
+
     <div class="banner" id="bannerBar">
         <button id="backbutton">
             <img src="ArrowUUpLeft.svg" alt="back button">
         </button>
         <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned
             "<span id="searchTxt"></span>"</h1>
+    </div>
+    <div id="wishtxtbox">
+        <div class="smlinks">
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
+            <a href="ar.html"><img style="padding-top: 8px; margin-left: 8px;" src="ar.svg" height="100%" alt="share icon"></a>
+        </div>
+        <h3>I wish</h3>
+        <h2 id="wishText"></h2>
     </div>
     <canvas id="app"></canvas>
     <div class="searchWindow" id="searchJelly">
@@ -84,59 +95,32 @@
             <button class="cancel" id="cancelbtn">Cancel</button>
         </div>
     </div>
-    <div id="wishtxtbox">
-        <img class="jellyline" src="pointerline.svg" width="200px">
-        <div class="smlinks">
-            <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
-        </div>
-        <h3>I wish</h3>
-        <h2 id="wishText"></h2>
-    </div>
-    <div class="shareModal" id="ShareWindow">
-        <h2>Share</h2>
-        <h3>Wish Link</h3>
-        <div class="shareLink">
-            <h4>Some custom weblink goes here</h4>
-            <button id="copy"><img src="copy.svg" alt="copy icon"></button>
-        </div>
-        <button id="Exit" onclick="closeBtn()">
-            <img src="exit.svg" alt="copy icon">
-        </button>
-
+    <div class="export">
         <div class="shareButtons">
-            <h3>Downloads & Socials</h3>
-            <div class="flexWrap">
-                <div class="buttnLabel">
-                    <button>
-                        <img src="ar.svg" alt="copy icon">
-                    </button>
-                    <h5>AR</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="download.svg" alt="copy icon">
-                    </button>
-                    <h5>PNG</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="printer.svg" alt="copy icon">
-                    </button>
-                    <h5>Poster</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="twitteroutline.svg" alt="copy icon">
-                    </button>
-                    <h5>Twitter</h5>
-                </div>
-                <div class="buttnLabel">
-                    <button>
-                        <img src="instagram.svg" alt="copy icon">
-                    </button>
-                    <h5>Instagram</h5>
-                </div>
+            <div class="buttnLabel">
+                <button onclick="window.print()">
+                    <img src="printer.svg" alt="copy icon">
+                </button>
             </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="fb.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="twitteroutline.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="instagram.svg" alt="copy icon">
+                </button>
+            </div>
+        </div>
+        <div class="shareLink">
+            <h4>http://wishful.space/ht9sf8</h4>
+            <button id="copy"><img src="copy.svg" alt="copy icon"></button>
         </div>
     </div>
 
@@ -144,6 +128,7 @@
     <div class="controlscontainer" id="myDIV">
         <h1>I wish</h1>
         <input type="text" id="wishInput" maxlength="25" placeholder="for a puppy">
+        <span id="errorText"></span>
         <button type="button" id="makeWishButton">Make your wish</button>
     </div>
     <div class="addJellyFish" id="addJellyButton">
@@ -166,10 +151,9 @@
             </button>
         </div>
     </div>
-
 </body>
 <script>
-var audio = document.getElementById('audio');
+    var audio = document.getElementById('audio');
     audio.volume = 0.0;
     //Play/Pause button
     function play() {
@@ -188,19 +172,60 @@ var audio = document.getElementById('audio');
 <script>
     //Share model will appear
     function shareBtn() {
-        var x = document.getElementById("ShareWindow");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+        //var x = document.getElementById("#app");
+        $('#app').css({
+            transform: 'scale(.8, 0.7)'
+        });
+
+        $('.export').fadeIn();
+        
+        $('.settings').fadeOut();
+        // $('.settings').css({
+        //     display: 'none'
+        // });
+
+        $('.menu-btn').fadeOut();
+        // $('.menu-btn').css({
+        //     display: 'none'
+        // });
+
+        $('.amountofwish').fadeOut();
+        // $('.amountofwish').css({
+        //     display: 'none'
+        // });
+
+        $('.addJellyFish').fadeOut();
+        // $('.addJellyFish').css({
+        //     display: 'none'
+        // });
     }
 
     function closeBtn() {
-        var x = document.getElementById("ShareWindow");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        }
+        $('#app').css({
+            transform: 'scale(1)'
+        });
+
+        $('.export').fadeOut();
+
+        $('.settings').fadeIn();
+        // $('.settings').css({
+        //     display: 'flex'
+        // });
+
+        $('.menu-btn').fadeIn();
+        // $('.menu-btn').css({
+        //     display: 'block'
+        // });
+
+        $('.amountofwish').fadeIn();
+        // $('.amountofwish').css({
+        //     display: 'block'
+        // });
+
+        $('.addJellyFish').fadeIn();
+        // $('.addJellyFish').css({
+        //     display: 'block'
+        // });
     }
 </script>
 

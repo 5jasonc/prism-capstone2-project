@@ -127,7 +127,8 @@ function animate() {
 
 }
 
-$('.makewish').click(wish);
+$('.welcometxt').click(wish);
+$('.controlscontainer').delay( 800 ).fadeIn();
 
 function wish(){
 
@@ -144,8 +145,8 @@ function wish(){
 	  
 	  setTimeout(
         function () {
-            $("#storycover").fadeOut(3000);
-        }, 5000
+            $("#storycover").fadeOut(2000);
+        }, 7000
     );
 }
 
