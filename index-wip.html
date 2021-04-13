@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wishful</title>
+    <link rel="icon" href="StarLogoIcon.png">
+    <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
+    <link href="styles/main.css" rel="stylesheet" />
+    <link id="styleChangeLink" href="styles/index.css" rel="stylesheet" />
+    <link href="styles/nav.css" rel="stylesheet" />
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
+    <script src="./src/main-wip.js" type="module"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Open Graphs -->
+    <meta property="og:title" content="Wishful" />
+    <meta property="og:url" content="http://www.wishful.space" />
+    <meta property="og:type" content="website" />
+    <!-- WE SHOULD ADD CUSTOM DESCRIPTION HERE -->
+    <meta property="og:description" content="Your entertaining and descriptive copy here, if your meta description is good, use it." />
+    <meta property="og:image" content="https://wishful.space/ogp.jpg" />
+    <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
+</head>
+
+<body>
+    <canvas id="app"></canvas>
+
+    <!-- NAV, LOGO, MENU -->
+    <input type="checkbox" class="check" id="checked">
+    <label class="menu-btn" for="checked">
+        <span class="bar top"></span>
+        <span class="bar bottom"></span>
+    </label>
+    <label class="close-menu" for="checked"></label>
+
+    <div class="logo">
+        <a id="welcomePageButton"><img src="whitestar.svg" width="100%" alt="logo of star"></a>
+    </div>
+
+    <nav class="drawer-menu">
+        <ul>
+            <h1>Menu</h1>
+            <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
+            <li><a href="stars.html" style="--animation-order: 2;">Share a Wish</a></li>
+            <li><a href="index.html" style="--animation-order: 3;">View Gallery</a></li>
+            <li><a href="aboutus.html" style="--animation-order: 4;">About us</a></li>
+        </ul>
+        <div class="socialmedias">
+            <div class="smlink">
+                <a href="#">
+                    <img src="facebookicon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="twittericon.svg" alt="Twitter icon">
+                </a>
+            </div>
+            <div class="smlink">
+                <a href="#">
+                    <img src="copyicon.svg" alt="Copy icon">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- GALLERY PAGE -->
+    <button id="Exit" onclick="closeBtn()">
+        <img src="exit.svg" alt="exit icon">
+    </button>
+
+    <div class="banner" id="bannerBar">
+        <button id="backbutton">
+            <img src="ArrowUUpLeft.svg" alt="back button">
+        </button>
+        <h1 id="bannertxt"><span id="wishBannerSearchResult" style="font-weight: 900;">00 </span> wishes mentioned
+            "<span id="searchTxt"></span>"</h1>
+    </div>
+
+    <div id="wishtxtbox">
+        <div class="smlinks">
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
+        </div>
+        <h3>I wish</h3>
+        <h2 id="wishText"></h2>
+    </div>
+
+    <div class="searchWindow" id="searchJelly">
+        <h1>Search</h1>
+        <input type="text" id="searchtxt" autocomplete="off" placeholder="Fluffy puppy">
+        <div class="buttoncontrollers">
+            <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
+            <button class="viewall" id="startSearchButton">View All</button>
+            <button class="cancel" id="cancelbtn">Cancel</button>
+        </div>
+    </div>
+
+    <div class="export">
+        <div class="shareButtons">
+            <div class="buttnLabel">
+                <button>
+                    <img src="printer.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="fb.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="twitteroutline.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="instagram.svg" alt="copy icon">
+                </button>
+            </div>
+        </div>
+        <div class="shareLink">
+            <h4>http://wishful.space/ht9sf8</h4>
+            <button id="copy"><img src="copy.svg" alt="copy icon"></button>
+        </div>
+    </div>
+
+    <!-- TEMPORARY MAKE WISH PAGE -->
+    <div class="controlscontainer" id="myDIV">
+        <h1>I wish</h1>
+        <input type="text" id="wishInput" maxlength="25" placeholder="for a puppy">
+        <span id="errorText"></span>
+        <button type="button" id="makeWishButton">Make your wish</button>
+    </div>
+
+    <div class="addJellyFish" id="addJellyButton">
+        <img src="addicon.svg" width="100%">
+    </div>
+
+    <div class="amountofwish">
+        <h1><span id="numWishes">0</span>Wishes made</h1>
+    </div>
+
+    <!-- WELCOME PAGE -->
+    <div id="welcomescreen">
+      <div class="welcometxt">
+          <h2>Welcome to</h2>
+          <img src="wishfultxt.svg" width="100%" alt="Wishful">
+          <p>Share a wish with the world and watch it come to life as a personalized digital jellyfish. </p>
+      </div>
+      <button class="makewishmobile"><a href="stars.html">Wish</a></button>
+      <button class="exploremobile"><a href="index.html">Explore</a></button>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="settings">
+        <div class="search" id="searchButton">
+            <img src="Search.svg">
+        </div>
+        <div class="line"></div>
+        <div class="sounds">
+            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+            <button onclick="play()">
+                <div id="crossbar"></div>
+                <img style="position: relative; top: -6px;" src="Speaker.svg">
+            </button>
+        </div>
+    </div>
+</body>
+
+<script>
+    var audio = document.getElementById('audio');
+    audio.volume = 0.0;
+    //Play/Pause button
+    function play() {
+        var element = document.getElementById("crossbar");
+        var audio = document.getElementById('audio');
+        if (audio.paused) {
+            audio.play();
+            element.style.display = "none";
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+            element.style.display = "block";
+        }
+    }
+</script>
+<script>
+    //Share model will appear
+    function shareBtn() {
+        //var x = document.getElementById("#app");
+        $('#app').css({
+            transform: 'scale(.8, 0.7)'
+        });
+        $('.settings').fadeOut();
+        $('.menu-btn').fadeOut();
+        $('.amountofwish').fadeOut();
+        $('.addJellyFish').fadeOut();
+    }
+
+    function closeBtn() {
+        $('#app').css({
+            transform: 'scale(1)'
+        });
+        $('.settings').fadeIn();
+        $('.menu-btn').fadeIn();
+        $('.amountofwish').fadeIn();
+        $('.addJellyFish').fadeIn();
+    }
+</script>
+</html>
