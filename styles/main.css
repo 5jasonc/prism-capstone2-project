@@ -431,6 +431,7 @@ a {
   margin: auto;
   height: 56px;
   transition: 0.2s ease-in;
+  z-index: 12 !important;
   animation: slideDown 0.8s cubic-bezier(.17, .67, .83, .67);
 }
 
@@ -513,8 +514,8 @@ a {
 .addJellyFish {
   display: block;
   transition: 0.2s ease-in;
-  height: 124px;
-  width: 124px;
+  height: 64px;
+  width: 64px;
   position: absolute;
   margin: auto;
   left: 0;
@@ -551,8 +552,6 @@ nav {
   transition: 0.2s ease-in;
   animation: fadein 0.4s cubic-bezier(.17, .67, .83, .67);
 }
-
-
 
 .drawer-menu h1 {
   color: white;
@@ -1291,6 +1290,10 @@ footer {
   margin-bottom: 14px;
 }
 
+.arMode{
+  display: none;
+}
+
 #shareJellyBtn {
   background: none;
   border: none;
@@ -1339,7 +1342,7 @@ footer {
 }
 
 .shareLink {
-  float: right;
+  float: left;
   bottom: 96px;
   width: 318px;
   height: 64px;
@@ -1371,9 +1374,9 @@ footer {
 
 
 .shareButtons button {
-  float: left;
-  padding-left: 8px;
-  padding-right: 8px;
+  float: right;
+  padding-left: 24px;
+  padding-right: 24px;
   transition: 0.2s ease-in;
   cursor: pointer;
   outline: none;
@@ -1543,7 +1546,46 @@ canvas #arApp{
   background-color: rgba(255, 255, 255, 0.308);
 }
 
+.mobileShare{
+  display: none;
+  position: absolute;
+  z-index: 0;
+  height: 32px;
+  left: 0;
+  right: 0;
+  max-width: 360px;
+  bottom: 8%;
+  margin: auto;
+  justify-content: space-evenly;
+  padding: 6px;
+}
+
+#shareJellyBtn{
+  padding-bottom: 12px;
+}
+
+.mobileShare a{
+  width: 140px;
+}
+
+.mobileShare h4{
+  padding-left: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.mobileShare .line{
+  height: 100%;
+  width: 1px;
+  background-color: white;
+}
+
 @media screen and (max-width: 768px) {
+  .mobileShare{
+    display: flex;
+  }
+
   .drawer-menu ul {
     left: 0;
     left: -8px;
@@ -1581,12 +1623,17 @@ canvas #arApp{
   .settings {
     position: absolute;
     top: 120px;
-    right: 32px;
+    right: 24px;
     border-radius: 0;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 100rem;
     transition: all;
+  }
+
+  .settings img{
+    margin-left: 3px;
+    margin-top: 3px;
   }
 
   .settings .line{
@@ -1641,19 +1688,9 @@ canvas #arApp{
     line-height: 42px;
   }
 
-  .banner {
-    margin: 24px;
-    top: 76px;
-    height: 72px;
-  }
-
-  .banner h1 {
-    padding: 0;
-    padding-top: 18px;
-    font-size: 18px;
-    text-align: center;
-    width: auto;
-    line-height: 22px;
+  
+  .banner{
+    display: none !important;
   }
 
   #wishtxtbox{
@@ -1674,6 +1711,7 @@ canvas #arApp{
     line-height: 32px;
   }
 
+ 
   #Exit{
     position: absolute;
     right: 36px;

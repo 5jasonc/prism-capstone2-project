@@ -29,8 +29,12 @@
     <meta property="og:image" content="https://wishful.space/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
-
-<body>
+<style>
+    body{
+        background: linear-gradient(#060606, #00022E);
+    }
+</style>
+<body >
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
         <span class="bar top"></span>
@@ -78,12 +82,16 @@
             "<span id="searchTxt"></span>"</h1>
     </div>
     <div id="wishtxtbox">
-        <div class="smlinks">
+        <div class="sharelinks">
             <button id="shareJellyBtn" onclick="shareBtn()"><img src="save.svg" height="100%" alt="share icon"></button>
-            <a href="ar.html"><img style="padding-top: 8px; margin-left: 8px;" src="ar.svg" height="100%" alt="share icon"></a>
         </div>
         <h3>I wish</h3>
         <h2 id="wishText"></h2>
+    </div>
+    <div class="mobileShare">
+        <a href="ar.html" style="display: flex; justify-content: left; width: 96px;"><img src="ar.svg" height="100%" alt="share icon"><h4>View in 3D</h4></a>
+        <div class="line"></div>
+        <button style="display: flex; justify-content: left;"><img src="save.svg" height="100%" width="18px" alt="share icon"><h4>Share</h4></button>
     </div>
     <canvas id="app"></canvas>
     <div class="searchWindow" id="searchJelly">
@@ -96,32 +104,33 @@
         </div>
     </div>
     <div class="export">
-        <div class="shareButtons">
-            <div class="buttnLabel">
-                <button onclick="window.print()">
-                    <img src="printer.svg" alt="copy icon">
-                </button>
-            </div>
-            <div class="buttnLabel">
-                <button>
-                    <img src="fb.svg" alt="copy icon">
-                </button>
-            </div>
-            <div class="buttnLabel">
-                <button>
-                    <img src="twitteroutline.svg" alt="copy icon">
-                </button>
-            </div>
-            <div class="buttnLabel">
-                <button>
-                    <img src="instagram.svg" alt="copy icon">
-                </button>
-            </div>
-        </div>
         <div class="shareLink">
             <h4>http://wishful.space/ht9sf8</h4>
             <button id="copy"><img src="copy.svg" alt="copy icon"></button>
         </div>
+        <div class="shareButtons">
+            <div class="buttnLabel">
+                <button onclick="window.print()">
+                    <img src="save.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="fbfill.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="twitterfill.svg" alt="copy icon">
+                </button>
+            </div>
+            <div class="buttnLabel">
+                <button>
+                    <img src="igfill.svg" alt="copy icon">
+                </button>
+            </div>
+        </div>
+       
     </div>
 
     <!--Wish page here-->
@@ -176,56 +185,38 @@
         $('#app').css({
             transform: 'scale(.8, 0.7)'
         });
-
+        $('#wishtxtbox').css({
+            left: '8%',
+            bottom: '20%',
+            transition: 'all',
+            transition: '1s ease',
+            transform: 'scale(0.8)'
+        });
         $('.export').fadeIn();
-        
         $('.settings').fadeOut();
-        // $('.settings').css({
-        //     display: 'none'
-        // });
-
         $('.menu-btn').fadeOut();
-        // $('.menu-btn').css({
-        //     display: 'none'
-        // });
-
         $('.amountofwish').fadeOut();
-        // $('.amountofwish').css({
-        //     display: 'none'
-        // });
-
         $('.addJellyFish').fadeOut();
-        // $('.addJellyFish').css({
-        //     display: 'none'
-        // });
+        $('.logo').fadeOut();
     }
 
     function closeBtn() {
         $('#app').css({
             transform: 'scale(1)'
         });
-
         $('.export').fadeOut();
-
         $('.settings').fadeIn();
-        // $('.settings').css({
-        //     display: 'flex'
-        // });
-
         $('.menu-btn').fadeIn();
-        // $('.menu-btn').css({
-        //     display: 'block'
-        // });
-
         $('.amountofwish').fadeIn();
-        // $('.amountofwish').css({
-        //     display: 'block'
-        // });
-
         $('.addJellyFish').fadeIn();
-        // $('.addJellyFish').css({
-        //     display: 'block'
-        // });
+        $('#wishtxtbox').css({
+            left: '24px',
+            bottom: '32px',
+            transition: 'all',
+            transition: '1s ease',
+            transform: 'scale(1)'
+        });
+        $('.logo').fadeIn();
     }
 </script>
 
