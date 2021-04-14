@@ -197,7 +197,8 @@ a {
   display: block;
   position: absolute;
   top: 0;
-  background: linear-gradient(ellipse, #00022E, #000005);
+  z-index: 4 !important;
+  background:linear-gradient(#000005,#00022E);
 }
 
 .starveiw h1 {
@@ -751,9 +752,13 @@ ul {
 }
 
 .aboutus {
+  padding-top: 0;
+  margin-top: 0;
+  position: relative;
+  top: 0;
   height: 100%;
   width: 100vw;
-  background: transparent;
+  background: black;
   overflow: auto;
   text-align: center;
 }
@@ -786,8 +791,8 @@ ul {
 
 .half {
   width: 50%;
-  padding: 32px;
   margin: auto;
+  height: 900px;
 }
 
 .half h1 {
@@ -795,18 +800,18 @@ ul {
   line-height: 78px;
   font-size: 64px;
   padding-bottom: 32px;
+  font-weight: 100;
+  text-transform: none;
+  max-width: 420px;
 }
 
 .half p {
   text-align: left;
-  font-size: 28px;
-  line-height: 42px;
+  font-size: 24px;
+  color: rgb(172, 172, 172);
+  line-height: 36px;
   font-weight: 100;
-}
-
-.half img {
-  width: 100%;
-  max-width: 500px;
+  max-width: 36rem;
 }
 
 .aboutus h2 {
@@ -831,6 +836,30 @@ ul {
   line-height: 48px;
   max-width: 900px;
   font-weight: 100;
+}
+
+.about{
+  position: relative;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.about h1{
+  position: relative;
+  top: calc(100%/3);
+  font-size: 32px;
+  margin-top: 0;
+}
+
+.about img {
+  position: relative;
+  top: calc(100%/3);
+  position: relative;
+  width: 48vw;
+  cursor: pointer;
+  padding-bottom: 32px;
+  border-bottom: 1px solid transparent;
 }
 
 .purpose p {
@@ -873,12 +902,12 @@ ul {
   max-width: 1200px;
   margin: auto;
   color: white;
-  margin-top: 164px;
   padding: 32px;
 }
 
 .meetteam h1 {
   padding-bottom: 72px;
+  margin-top: 0;
 }
 
 .autolayout {
@@ -1066,6 +1095,9 @@ footer {
   width: 100vw;
   position: relative;
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 
 #welcomescreen h2 {
