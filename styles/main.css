@@ -1091,13 +1091,19 @@ footer {
 }
 
 .welcometxt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   height: 100vh;
   width: 100vw;
   position: relative;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.534);
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all 0.5s ease;
 }
 
 #welcomescreen h2 {
@@ -1117,7 +1123,7 @@ footer {
   width: 48vw;
   cursor: pointer;
   padding-bottom: 32px;
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 
 #welcomescreen img:hover {
@@ -1754,4 +1760,20 @@ canvas #arApp{
     display: none !important;
   }
 
+  .welcometxt{
+    padding-top: 0 !important;
+  }
+
+  .welcometxt p{
+    font-size: 18px !important;
+    padding: 16px;
+  }
+
+}
+
+@media screen and (max-width: 380px){
+  .welcometxt p{
+    font-size: 18px !important;
+    padding: 16px;
+  }
 }
