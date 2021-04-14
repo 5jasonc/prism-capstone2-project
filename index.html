@@ -30,11 +30,12 @@
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
 <style>
-    body{
+    body {
         background: linear-gradient(#060606, #00022E);
     }
 </style>
-<body >
+
+<body>
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
         <span class="bar top"></span>
@@ -89,9 +90,15 @@
         <h2 id="wishText"></h2>
     </div>
     <div class="mobileShare">
-        <a href="ar.html" style="display: flex; justify-content: left; width: 96px;"><img src="ar.svg" height="100%" alt="share icon"><h4>View in 3D</h4></a>
+        <a href="ar.html" style="display: flex; justify-content: left; width: 96px;"><img src="ar.svg" height="100%"
+                alt="share icon">
+            <h4>View in 3D</h4>
+        </a>
         <div class="line"></div>
-        <button style="display: flex; justify-content: left;"><img src="save.svg" height="100%" width="18px" alt="share icon"><h4>Share</h4></button>
+        <button style="display: flex; justify-content: left;"><img src="save.svg" height="100%" width="18px"
+                alt="share icon">
+            <h4>Share</h4>
+        </button>
     </div>
     <canvas id="app"></canvas>
     <div class="searchWindow" id="searchJelly">
@@ -130,7 +137,7 @@
                 </button>
             </div>
         </div>
-       
+
     </div>
 
     <!--Wish page here-->
@@ -183,15 +190,19 @@
     function shareBtn() {
         //var x = document.getElementById("#app");
         $('#app').css({
-            transform: 'scale(.8, 0.7)'
+            transform: 'scale(.8, 0.7)',
+            borderRadius: '8px'
         });
-        $('#wishtxtbox').css({
-            left: '8%',
-            bottom: '20%',
-            transition: 'all',
-            transition: '1s ease',
-            transform: 'scale(0.8)'
-        });
+        $('.sharelinks').fadeOut()
+        if ($(window).innerWidth() <= 751) {
+            $('#wishtxtbox').css({
+                left: '8%',
+                bottom: '20%',
+                transition: 'all',
+                transition: '1s ease',
+                transform: 'scale(0.8)'
+            });
+        }
         $('.export').fadeIn();
         $('.settings').fadeOut();
         $('.menu-btn').fadeOut();
@@ -202,20 +213,25 @@
 
     function closeBtn() {
         $('#app').css({
-            transform: 'scale(1)'
+            transform: 'scale(1)',
+            borderRadius: '0'
         });
+        $('.sharelinks').fadeIn()
         $('.export').fadeOut();
         $('.settings').fadeIn();
         $('.menu-btn').fadeIn();
         $('.amountofwish').fadeIn();
         $('.addJellyFish').fadeIn();
-        $('#wishtxtbox').css({
-            left: '24px',
-            bottom: '32px',
-            transition: 'all',
-            transition: '1s ease',
-            transform: 'scale(1)'
-        });
+        if ($(window).innerWidth() <= 751) {
+            $('#wishtxtbox').css({
+                left: '24px',
+                bottom: '32px',
+                transition: 'all',
+                transition: '1s ease',
+                transform: 'scale(1)'
+            });
+        }
+
         $('.logo').fadeIn();
     }
 </script>
