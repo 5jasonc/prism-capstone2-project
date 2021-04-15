@@ -197,7 +197,8 @@ a {
   display: block;
   position: absolute;
   top: 0;
-  background: linear-gradient(ellipse, #00022E, #000005);
+  z-index: 4 !important;
+  background:linear-gradient(#000005,#00022E);
 }
 
 .starveiw h1 {
@@ -431,6 +432,7 @@ a {
   margin: auto;
   height: 56px;
   transition: 0.2s ease-in;
+  z-index: 12 !important;
   animation: slideDown 0.8s cubic-bezier(.17, .67, .83, .67);
 }
 
@@ -513,8 +515,8 @@ a {
 .addJellyFish {
   display: block;
   transition: 0.2s ease-in;
-  height: 124px;
-  width: 124px;
+  height: 64px;
+  width: 64px;
   position: absolute;
   margin: auto;
   left: 0;
@@ -551,8 +553,6 @@ nav {
   transition: 0.2s ease-in;
   animation: fadein 0.4s cubic-bezier(.17, .67, .83, .67);
 }
-
-
 
 .drawer-menu h1 {
   color: white;
@@ -752,9 +752,13 @@ ul {
 }
 
 .aboutus {
+  padding-top: 0;
+  margin-top: 0;
+  position: relative;
+  top: 0;
   height: 100%;
   width: 100vw;
-  background: transparent;
+  background: black;
   overflow: auto;
   text-align: center;
 }
@@ -787,8 +791,8 @@ ul {
 
 .half {
   width: 50%;
-  padding: 32px;
   margin: auto;
+  height: 900px;
 }
 
 .half h1 {
@@ -796,18 +800,18 @@ ul {
   line-height: 78px;
   font-size: 64px;
   padding-bottom: 32px;
+  font-weight: 100;
+  text-transform: none;
+  max-width: 420px;
 }
 
 .half p {
   text-align: left;
-  font-size: 28px;
-  line-height: 42px;
+  font-size: 24px;
+  color: rgb(172, 172, 172);
+  line-height: 36px;
   font-weight: 100;
-}
-
-.half img {
-  width: 100%;
-  max-width: 500px;
+  max-width: 36rem;
 }
 
 .aboutus h2 {
@@ -832,6 +836,30 @@ ul {
   line-height: 48px;
   max-width: 900px;
   font-weight: 100;
+}
+
+.about{
+  position: relative;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.about h1{
+  position: relative;
+  top: calc(100%/3);
+  font-size: 32px;
+  margin-top: 0;
+}
+
+.about img {
+  position: relative;
+  top: calc(100%/3);
+  position: relative;
+  width: 48vw;
+  cursor: pointer;
+  padding-bottom: 32px;
+  border-bottom: 1px solid transparent;
 }
 
 .purpose p {
@@ -874,12 +902,12 @@ ul {
   max-width: 1200px;
   margin: auto;
   color: white;
-  margin-top: 164px;
   padding: 32px;
 }
 
 .meetteam h1 {
   padding-bottom: 72px;
+  margin-top: 0;
 }
 
 .autolayout {
@@ -1063,10 +1091,19 @@ footer {
 }
 
 .welcometxt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   height: 100vh;
   width: 100vw;
   position: relative;
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.534);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all 0.5s ease;
 }
 
 #welcomescreen h2 {
@@ -1086,7 +1123,7 @@ footer {
   width: 48vw;
   cursor: pointer;
   padding-bottom: 32px;
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 
 #welcomescreen img:hover {
@@ -1291,6 +1328,10 @@ footer {
   margin-bottom: 14px;
 }
 
+.arMode{
+  display: none;
+}
+
 #shareJellyBtn {
   background: none;
   border: none;
@@ -1339,7 +1380,7 @@ footer {
 }
 
 .shareLink {
-  float: right;
+  float: left;
   bottom: 96px;
   width: 318px;
   height: 64px;
@@ -1371,9 +1412,9 @@ footer {
 
 
 .shareButtons button {
-  float: left;
-  padding-left: 8px;
-  padding-right: 8px;
+  float: right;
+  padding-left: 24px;
+  padding-right: 24px;
   transition: 0.2s ease-in;
   cursor: pointer;
   outline: none;
@@ -1543,7 +1584,46 @@ canvas #arApp{
   background-color: rgba(255, 255, 255, 0.308);
 }
 
+.mobileShare{
+  display: none;
+  position: absolute;
+  z-index: 0;
+  height: 32px;
+  left: 0;
+  right: 0;
+  max-width: 360px;
+  bottom: 8%;
+  margin: auto;
+  justify-content: space-evenly;
+  padding: 6px;
+}
+
+#shareJellyBtn{
+  padding-bottom: 12px;
+}
+
+.mobileShare a{
+  width: 140px;
+}
+
+.mobileShare h4{
+  padding-left: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.mobileShare .line{
+  height: 100%;
+  width: 1px;
+  background-color: white;
+}
+
 @media screen and (max-width: 768px) {
+  .mobileShare{
+    display: flex;
+  }
+
   .drawer-menu ul {
     left: 0;
     left: -8px;
@@ -1581,12 +1661,17 @@ canvas #arApp{
   .settings {
     position: absolute;
     top: 120px;
-    right: 32px;
+    right: 24px;
     border-radius: 0;
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 100rem;
     transition: all;
+  }
+
+  .settings img{
+    margin-left: 3px;
+    margin-top: 3px;
   }
 
   .settings .line{
@@ -1641,19 +1726,9 @@ canvas #arApp{
     line-height: 42px;
   }
 
-  .banner {
-    margin: 24px;
-    top: 76px;
-    height: 72px;
-  }
-
-  .banner h1 {
-    padding: 0;
-    padding-top: 18px;
-    font-size: 18px;
-    text-align: center;
-    width: auto;
-    line-height: 22px;
+  
+  .banner{
+    display: none !important;
   }
 
   #wishtxtbox{
@@ -1674,6 +1749,7 @@ canvas #arApp{
     line-height: 32px;
   }
 
+ 
   #Exit{
     position: absolute;
     right: 36px;
@@ -1684,4 +1760,20 @@ canvas #arApp{
     display: none !important;
   }
 
+  .welcometxt{
+    padding-top: 0 !important;
+  }
+
+  .welcometxt p{
+    font-size: 18px !important;
+    padding: 16px;
+  }
+
+}
+
+@media screen and (max-width: 380px){
+  .welcometxt p{
+    font-size: 18px !important;
+    padding: 16px;
+  }
 }
