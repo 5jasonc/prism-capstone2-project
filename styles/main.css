@@ -382,6 +382,24 @@ a {
   cursor: pointer;
 }
 
+.gaugeMeter{
+  position: absolute;
+  left: 0;
+  height: auto;
+  width: 100px;
+  top: calc(100vh/2);
+  transform-origin: center;
+  padding: 12px;
+  text-align: right;
+  font-size: 24px;
+}
+
+.numMeter h4{
+  color: #ffffff;
+  font-family: sofia-pro, sans-serif;
+  font-weight: 100;
+}
+
 .searchWindow {
   position: fixed;
   z-index: 12;
