@@ -32,7 +32,7 @@ const params = {
 	animate: true,
 	size: 12,
 	magnitude: 7,
-	segments: 45,
+	segments: 5,
 	wireframe: false,
 
 };

@@ -201,7 +201,7 @@ a {
   background:linear-gradient(#000005,#00022E);
 }
 
-.starveiw h1 {
+.starview h1 {
   position: absolute;
   font-family: sofia-pro, sans-serif;
   font-weight: 500;
@@ -219,7 +219,7 @@ a {
   z-index: 1;
 }
 
-.starveiw,
+.starview,
 #stars {
   display: none;
   height: 100vh;

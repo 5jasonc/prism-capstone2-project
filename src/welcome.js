@@ -12,9 +12,8 @@ import {
 import {
 	Sky
 } from './jsm/objects/Sky.js';
-import {
-	OrbitControls
-} from './jsm/controls/OrbitControls.js';
+import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
 
 
 import {
@@ -34,7 +33,7 @@ import {
 } from './jsm/postprocessing/BokehPass.js';
 
 var site = site || {};
-site.window = $(window);
+site.window = $(window); 
 site.document = $(document);
 site.Width = site.window.width();
 site.Height = site.window.height();
@@ -46,7 +45,17 @@ let mouseY = 0;
 var windowHalfX = site.Width / 2;
 var windowHalfY = site.Height / 2;
 let makewish = false;
-let controls, water, sun, mesh;
+let controls, water, sun, mesh, particles;
+let movers = [];
+var lastTimeCalled = new Date();
+var countFramesPerSecond=0;
+var total_mass = 0;
+var lerpLookAt = new THREE.Vector3();
+var lookAt = new THREE.Vector3();
+
+var MASS_FACTOR = .01; // for display of size
+
+var SPHERE_SIDES = 12;
 
 const {
 	autoPlay,
@@ -131,8 +140,8 @@ function init() {
 
 	water = new Water(
 		waterGeometry, {
-			textureWidth: 560,
-			textureHeight: 560,
+			textureWidth: 512,
+			textureHeight: 512,
 			waterNormals: new THREE.TextureLoader().load('../waternormals.jpeg', function (texture) {
 
 				texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -197,6 +206,13 @@ function init() {
 
 	updateSun();
 
+	// Generates stars, at 0% opacity
+	generateStars();
+
+	movers.push(new Mover(1, new THREE.Vector3(-1, -1, 0), new THREE.Vector3(500, 500, -500)));
+	movers.push(new Mover(1, new THREE.Vector3(-0.5, -0.5, 0), new THREE.Vector3(800, 500, -500)));
+	movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
+
 	// TEST CUBE
 	//addCubes(10);
 
@@ -210,6 +226,220 @@ function onWindowResize() {
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
+}
+
+const vertexShader = ` 
+			varying vec3 vPosition;
+
+      void main() {
+        vPosition = position;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        float ps = 1.-distance(vPosition, vec3(0.));
+        gl_PointSize = ps*3.;
+        gl_Position = projectionMatrix * mvPosition;
+      }
+`
+
+const fragmentShader = `
+			uniform vec3 color;
+      varying vec3 vPosition;
+
+      void main() {
+        vec2 uv = gl_PointCoord.xy;
+        float dist = smoothstep(1.-distance(vec2(.5), uv), 0., .5);
+        float alph = 1.-distance(vPosition, vec3(0.));
+        float finalph = dist*alph*4.;
+        if (finalph < .2) discard;
+        vec3 color = vec3(1,1,1);
+        gl_FragColor = vec4(color, finalph);
+      }
+`
+
+function generateStars() {
+	const geometry = new THREE.BufferGeometry();
+
+	const N = 2000;
+	// const vertices = new Float32Array(
+	//   [...Array(N)].map((_) => Math.random()*2-1)
+	// );
+	const vertices = new Float32Array(N);
+	let c = 0;
+	while (c < N) {
+	  // const u = Math.random() * 2 - 1,
+	  //   a = Math.random() * 2 * 3.14,
+	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
+	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
+	  //   z = u
+	  const theta = Math.random() * 2 * Math.PI,
+		phi = Math.acos(2 * Math.random() - 1),
+		r = Math.pow(Math.random(), 1 / 3),
+		x = r * Math.sin(phi) * Math.cos(theta),
+		y = r * Math.sin(phi) * Math.sin(theta),
+		// z = r * Math.cos(phi);
+		z = 0;
+	
+	  vertices[c] = x;
+	  vertices[c + 1] = y;
+	  vertices[c + 2] = z;
+	  c += 3;
+	}
+	geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+	
+	const shaderMaterial = new THREE.ShaderMaterial({
+	  uniforms: {},
+	
+	  vertexShader: vertexShader,
+	  fragmentShader: fragmentShader,
+	  transparent: true,
+	  depthWrite: true
+	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
+	});
+	
+	particles = new THREE.Points(geometry, shaderMaterial);
+	particles.scale.set(1200,1200,1200)
+	scene.add(particles);
+	particles.rotation.z=-0.5
+	particles.position.z = -500
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+/* MOVER CLASS */
+function Mover(m,vel,loc) {
+    this.location = loc,
+    this.velocity = vel,
+    this.acceleration = new THREE.Vector3(0.0,0.0,0.0),
+    this.mass = m,
+    this.c = 0xffffff,
+    this.alive = true;
+    this.geometry = new THREE.SphereGeometry(1.0,SPHERE_SIDES,SPHERE_SIDES);
+
+    this.vertices = [];     // PATH OF MOVEMENT
+
+    this.line = new THREE.Line();       // line to display movement
+
+    this.color = this.line.material.color;
+    //this.line = THREE.Line(this.lineGeometry, lineMaterial);
+
+    this.basicMaterial =  new THREE.MeshPhongMaterial({
+        ambient: 0x111111, color: this.color, specular: this.color, shininess: 10
+    });
+
+    //this.selectionLight = new THREE.PointLight(this.color,.1);
+    //this.selectionLight.position.copy(this.location);
+    this.mesh = new THREE.Mesh(this.geometry,this.basicMaterial);
+    this.mesh.castShadow = false;
+    this.mesh.receiveShadow = true;
+
+
+    this.position = this.location;
+
+    this.index = movers.length;
+    this.selected = false;
+
+    scene.add(this.mesh);
+    //scene.add(this.selectionLight);
+    this.applyForce = function(force) {
+        if (!this.mass) this.mass = 1.0;
+        var f = force.divideScalar(this.mass);
+        this.acceleration.add(f);
+    };
+    this.update = function() {
+
+        this.velocity.add(this.acceleration);
+        this.location.add(this.velocity);
+        this.acceleration.multiplyScalar(0);
+
+        //this.selectionLight.position.copy(this.location);
+        this.mesh.position.copy(this.location);
+        if (this.vertices.length > 10000) this.vertices.splice(0,1);
+
+        this.vertices.push(this.location.clone());
+        //this.lineGeometry.verticesNeedUpdate = true;
+
+    };
+    this.eat = function(m) { // m => other Mover object
+        var newMass = this.mass + m.mass;
+
+        var newLocation = new THREE.Vector3(
+            (this.location.x * this.mass + m.location.x * m.mass)/newMass,
+            (this.location.y * this.mass + m.location.y * m.mass)/newMass,
+            (this.location.z * this.mass + m.location.z * m.mass)/newMass);
+        var newVelocity = new THREE.Vector3(
+            (this.velocity.x *this.mass + m.velocity.x * m.mass) / newMass,
+            (this.velocity.y *this.mass + m.velocity.y * m.mass) / newMass,
+            (this.velocity.z *this.mass + m.velocity.z * m.mass) / newMass);
+
+        this.location=newLocation;
+        this.velocity=newVelocity;
+        this.mass = newMass;
+
+        if (m.selected) this.selected = true;
+        this.color.lerpHSL(m.color, m.mass /  (m.mass + this.mass));
+      
+        m.kill();
+    };
+    this.kill = function () {
+        this.alive=false;
+        //this.selectionLight.intensity = 0;
+        scene.remove(this.mesh);
+    };
+    this.attract = function(m) {   // m => other Mover object
+        var force = new THREE.Vector3().subVectors(this.location,m.location);         // Calculate direction of force
+        var d = force.lengthSq();
+        if (d<0) d*=-1;
+        force = force.normalize();
+        var strength = - (10 * this.mass * m.mass) / (d);      // Calculate gravitional force magnitude
+        force = force.multiplyScalar(strength);                             // Get force vector --> magnitude * direction
+        
+        this.applyForce(force);
+    };
+    this.display = function() {
+        if (this.alive) {
+            var scale = Math.pow((this.mass*MASS_FACTOR/(4*Math.PI)), 1/3);
+            this.mesh.scale.x = scale;
+            this.mesh.scale.y = scale;
+            this.mesh.scale.z = scale;
+
+           //this.line = new THREE.Line(this.lineGeometry,lineMaterial);
+
+            //if (isMoverSelected && this.selected) {
+            //    this.selectionLight.intensity = 2;    
+            //} else {
+            //    this.selectionLight.intensity = constrain(this.mass / total_mass, .1, 1);
+            //}
+            // var emissiveColor = this.color.getHex().toString(16);
+            // emissiveColor = 1; // darkenColor(emissiveColor,1000); // (1-(total_mass-this.mass)/total_mass)*((isMoverSelected && this.selected)?.5:1));
+            // this.basicMaterial.emissive.setHex(parseInt(emissiveColor,16));
+        } else {
+            //this.selectionLight.intensity = 0;
+        }
+
+    };
+
+    // this.showTrails = function() {
+        if (!this.lineDrawn) {
+            this.lineDrawn = true;
+            scene.add(this.line);
+        } else if (this.lineDrawn === true) {
+            scene.remove(this.line);
+            var newLineGeometry = new THREE.Geometry();
+            newLineGeometry.vertices = this.vertices.slice();
+
+            newLineGeometry.verticesNeedUpdate = true;
+            if (!pause && !this.alive) {
+                if (this.lineDrawn === true) {
+                  this.vertices.shift();  
+                }
+            }
+            while (newLineGeometry.vertices.length > parseInt(100)) {
+                newLineGeometry.vertices.shift();
+            }
+            this.line = new THREE.Line(newLineGeometry, this.line.material);
+            scene.add(this.line);
+        }
+    // }
 }
 
 function animate() {
@@ -232,6 +462,36 @@ function render() {
 
 	water.material.uniforms['time'].value += 1.0 / 60.0;
 
+    var movers_alive_count = 0;
+    total_mass = 0;
+    var maximum_mass = 0.00;
+
+            for (var i = movers.length-1; i >= 0; i--) {
+                var m = movers[i];
+				m.update();
+                if (m.alive) {
+                    for (var j =  movers.length-1; j >= 0; j--) {
+                        var a = movers[j];
+                        if (movers[i].alive && movers[j].alive && i != j) {
+                            var distance = m.location.distanceTo(a.location);
+
+                            var radiusM = Math.pow((m.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
+                            var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
+
+                            if (distance < radiusM + radiusA) {
+                                // merge objects
+                                a.eat(m);
+                            }
+                            else
+                            {
+                               a.attract(m);
+                            }
+                        }
+                    }
+                }
+            }
+	
+
 	renderer.render(scene, camera);
 }
 
@@ -242,17 +502,20 @@ function wish() {
 
 	makewish = true;
 
-	new TWEEN.Tween(camera.position)
+	// Tweens camera upwards towards the sky
+	new TWEEN.Tween(camera.rotation)
 		.to({
-			'y': 100
+			'x': 0.25
 		}, 5000)
-		.easing(Easing.Circular.InOut)
+		.easing(Easing.Quadratic.InOut)
 		.start();
 
 	$('#welcomescreen').fadeOut(1000, 0);
-	$('#container').attr('style', 'background-color: black');
-	$('.starveiw').fadeIn(3000);
-	$('#container').fadeOut(5000,0)
+	// $('#container').attr('style', 'background-color: black');
+	$('.starview').fadeIn(1000);
+	// $('#container').fadeOut(5000,0)
+
+	console.log('Ready to fade stars in!');
 
 	setTimeout(
 		function () {
@@ -266,6 +529,7 @@ function onDocumentMouseMove(event) {
 	mouseY = (event.clientY - windowHalfY) / 2;
 }
 
+// Adds cubes for cursor interactivity demo
 function addCubes(n) {
 
 	const geometry = new THREE.BoxGeometry(1, 1, 1);

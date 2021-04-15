@@ -11,7 +11,7 @@
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/welcome.css" rel="stylesheet" />
-    <link href="styles/nav.css" rel="stylesheet" />
+    <!-- <link href="styles/nav.css" rel="stylesheet" /> -->
     <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
@@ -20,8 +20,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <!-- <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
-    <script src="./src/three.js" type="module"></script>
-    <script src="./src/OrbitControls.js"></script>
+    <!-- <script src="./src/three.js" type="module"></script> -->
     <script type="module" src="./src/welcome.js"></script>
 
     <!-- Open Graphs -->
@@ -78,13 +77,21 @@
         </div>
     </nav>
 
-    <div id="welcomescreen">
+     <div id="welcomescreen">
         <div class="welcometxt">
             <img src="wishfultxt.svg" width="100%" alt="Wishful">
             <p>Share a wish with the world and watch it come to life as a personalized digital jellyfish. </p>
         </div>
 
-        <!-- <button class="makewish">
+        
+
+        <button class="makewishmobile"><a href="stars.html">Wish</a></button>
+        <button class="exploremobile"><a href="index.html">Explore</a></button>
+
+    </div> 
+
+    <!-- Old buttons -->
+    <!-- <button class="makewish">
             <a>
                 <img src="arrow.svg" style="transform: rotate(180deg);" alt="arrow" width="100%">
                 <h4>Wish</h4>
@@ -98,10 +105,6 @@
             </a>
         </button> -->
 
-        <button class="makewishmobile"><a href="stars.html">Wish</a></button>
-        <button class="exploremobile"><a href="index.html">Explore</a></button>
-
-    </div>
     <div class="settings" style="width: 164px; margin-bottom: 32px; background-color: transparent;  backdrop-filter: blur(0);
     -webkit-backdrop-filter: blur(0);">
         <div class="sounds">
@@ -113,13 +116,13 @@
         </div>
     </div>
     <div id="container"></div>
-    <div class="starveiw">
-        <div id="storycover" style="z-index: 12;">
+    <div class="starview">
+        <!-- <div id="storycover" style="z-index: 12;">
             <h1 class="quotes">We all have wishes</h1>
             <h1 class="quotes">Lets share your wish</h1>
-        </div>
-        <canvas id="stars"></canvas>
-        <!-- <h1 id="starTxt">Catch a falling star to begin</h1> -->
+        </div> -->
+        <!-- <canvas id="stars"></canvas> -->
+        <h1 id="starTxt">Catch a falling star to begin</h1>
         <!-- <div class="starcaught" id="starCaughtTxt">
             <h2>You caught one!<h2>
                     <h2>Get ready to share a wish!</h2>
@@ -139,6 +142,7 @@
 </body>
 <script>
     var audio = document.getElementById('audio');
+    //temporarily muted
     audio.volume = 0.0;
     //Play/Pause button
     function play() {
