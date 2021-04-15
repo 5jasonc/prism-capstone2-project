@@ -847,7 +847,7 @@ ul {
 
 .about h1{
   position: relative;
-  top: calc(100%/3);
+  top: calc(100%/0);
   font-size: 32px;
   margin-top: 0;
 }
