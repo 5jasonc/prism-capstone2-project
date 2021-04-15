@@ -12,6 +12,9 @@ html {
     grid-template-columns: 20px 1fr 1fr 20px;
     grid-template-rows: 600px auto auto auto auto auto ;
     gap: 5px 5px;
+    max-width: 1200px;
+    margin-left:auto;
+    margin-right:auto;
     grid-template-areas:
       ". welcomewrap welcomewrap ."
       ". sparkhope img1 ."
