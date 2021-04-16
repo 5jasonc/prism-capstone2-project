@@ -35,11 +35,24 @@
 
 <body>
     <!-- Loader when computer needs to load -->
-    <!-- <div class="loader">
-        <img  class="logoSpinner" src="whitestar.svg" alt="star logo">
-        <h1>Loading...</h1>
-        <h2><span id="counter">52</span>%</h2>
-    </div> -->
+    <div class="loader">
+        <img class="logoSpinner" src="./icons/whitestar.svg" alt="star logo">
+        <h1>Loading</h1>
+        <!-- <h2><span id="counter">0</span>%</h2> -->
+    </div>
+    <script>
+        let counter = 0;
+        document.onreadystatechange = function () {
+            if (document.readyState !== "complete") {
+                document.querySelector("body").style.visibility = "hidden";
+                document.querySelector(".loader").style.visibility = "visible";
+                
+            } else {
+                document.querySelector(".loader").style.display = "none";
+                document.querySelector("body").style.visibility = "visible";
+            }
+        };
+    </script>
 
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">
