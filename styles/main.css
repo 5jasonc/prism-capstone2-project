@@ -464,13 +464,14 @@ a {
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
-  width: auto;
+  width: 100%;
   margin-left: 16px;
   border-radius: 100rem;
   font-weight: 100;
   font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .banner button {
