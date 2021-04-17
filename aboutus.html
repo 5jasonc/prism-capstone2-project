@@ -22,6 +22,18 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
+<style>
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        transition: all 0.7s ease;
+    }
+</style>
 
 <body style="overflow-y: auto;">
     <input type="checkbox" class="check" id="checked">
@@ -59,8 +71,15 @@
             </div>
         </div>
     </nav>
+    <script>
+        $(window).scroll(function () {
+            $(".bg").css("opacity", 2 - $(window).scrollTop() / 150);
+        });
+    </script>
     <!-- <canvas id="stars" style="position: absolute; left: 0; bottom: 0; right: 0; top: 0; z-index: -1;"></canvas> -->
     <section class="aboutus" style="overflow: auto;">
+            <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="Zoom_Background.mov"
+                width="100%"></video>
         <div class="about">
             <h1 style=" position: relative;
             top: calc(100vh/3);"><span class="colortext">About Us</span></h1>
