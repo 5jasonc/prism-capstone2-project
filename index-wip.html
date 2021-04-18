@@ -23,12 +23,33 @@
     <meta property="og:url" content="http://www.wishful.space" />
     <meta property="og:type" content="website" />
     <!-- WE SHOULD ADD CUSTOM DESCRIPTION HERE -->
-    <meta property="og:description" content="Your entertaining and descriptive copy here, if your meta description is good, use it." />
+    <meta property="og:description"
+        content="Your entertaining and descriptive copy here, if your meta description is good, use it." />
     <meta property="og:image" content="https://wishful.space/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
 </head>
 
 <body>
+    <!-- Loader when computer needs to load -->
+    <div class="loader">
+        <img class="logoSpinner" src="./icons/whitestar.svg" alt="star logo">
+        <h1>Loading</h1>
+        <!-- <h2><span id="counter">0</span>%</h2> -->
+    </div>
+    <script>
+        let counter = 0;
+        document.onreadystatechange = function () {
+            if (document.readyState !== "complete") {
+                document.querySelector("body").style.visibility = "hidden";
+                document.querySelector(".loader").style.visibility = "visible";
+
+            } else {
+                document.querySelector(".loader").style.display = "none";
+                document.querySelector("body").style.visibility = "visible";
+            }
+        };
+    </script>
+
     <canvas id="app"></canvas>
 
     <!-- NAV, LOGO, MENU -->
@@ -85,14 +106,15 @@
 
     <div id="wishtxtbox">
         <div class="sharelinks">
-            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/save.svg" height="100%" alt="share icon"></button>
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/save.svg" height="100%"
+                    alt="share icon"></button>
         </div>
         <h3>I wish</h3>
         <h2 id="wishText"></h2>
     </div>
     <div class="mobileShare">
-        <a href="ar.html" style="display: flex; justify-content: left; width: 96px;"><img src="./icons/ar.svg" height="100%"
-                alt="share icon">
+        <a href="ar.html" style="display: flex; justify-content: left; width: 96px;"><img src="./icons/ar.svg"
+                height="100%" alt="share icon">
             <h4>View in 3D</h4>
         </a>
         <div class="line"></div>
@@ -159,13 +181,13 @@
 
     <!-- WELCOME PAGE -->
     <div id="welcomescreen">
-      <div class="welcometxt">
-          <h2>Welcome to</h2>
-          <img src="wishfultxt.svg" width="100%" alt="Wishful">
-          <p>Share a wish with the world and watch it come to life as a personalized digital jellyfish. </p>
-      </div>
-      <button class="makewishmobile"><a href="stars.html">Wish</a></button>
-      <button class="exploremobile"><a href="index.html">Explore</a></button>
+        <div class="welcometxt">
+            <h2>Welcome to</h2>
+            <img src="wishfultxt.svg" width="100%" alt="Wishful">
+            <p>Share a wish with the world and watch it come to life as a personalized digital jellyfish. </p>
+        </div>
+        <button class="makewishmobile"><a href="stars.html">Wish</a></button>
+        <button class="exploremobile"><a href="index.html">Explore</a></button>
     </div>
 
     <!-- SETTINGS -->
@@ -275,4 +297,5 @@
         $('.logo').fadeIn();
     }
 </script>
+
 </html>
