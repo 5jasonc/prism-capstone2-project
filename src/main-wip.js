@@ -8,6 +8,8 @@ import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
 import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
+import { Water } from './jsm/objects/Water.js';
+import { Sky } from './jsm/objects/Sky.js';
 
 import {
     vertexShader, fragmentShader, firebaseConfig,
@@ -18,7 +20,10 @@ import {
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
 const jellies = [];
-let particles;
+let dbRef;
+let camera, scene, loader, renderer, controls;
+let water;
+let bloomPass, filmPass;
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
@@ -33,24 +38,25 @@ const init = () => {
 
     // Connect to FireBase
     firebase.initializeApp(firebaseConfig);
-    const dbRef = firebase.database().ref('/wishes/');
+    dbRef = firebase.database().ref('/wishes/');
 
     // Load three.js scene and resources
     const canvas = document.querySelector('#app');
-    const loader = new THREE.TextureLoader();
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
+    loader = new THREE.TextureLoader();
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
     const light = new THREE.PointLight(0xffffff, 1);
     camera.position.set(500, 500, camZoom);
     camera.add(light);
-    const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
+    renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     // renderer.setClearColor(0x000000, 0); // not sure if we will need this
     // renderer.toneMapping = THREE.ReinhardToneMapping; // look better with this?
+    renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
     const renderScene = new RenderPass(scene, camera);
-	const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-    const filmPass = new FilmPass(0.15, 0.025, 0, false);
+	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+    filmPass = new FilmPass(0.15, 0.025, 0, false);
     bloomPass.threshold = 0;
 	bloomPass.strength = 1.5;
 	bloomPass.radius = 0.5;
@@ -61,7 +67,7 @@ const init = () => {
     composer.addPass(filmPass);
 
     // Set up orbit camera controls
-    const controls = new OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 	controls.listenToKeyEvents(window);
@@ -75,28 +81,30 @@ const init = () => {
     document.querySelector('#searchButton').addEventListener('click', toggleSearchUI);
     document.querySelector('#cancelbtn').addEventListener('click', hideSearchUI);
     document.querySelector('#addJellyButton').addEventListener('click', toggleTempWishUI);
-    document.querySelector('#makeWishButton').addEventListener('click', () => makeWish(dbRef, controls, camera));
+    document.querySelector('#makeWishButton').addEventListener('click', () => makeWish());
     document.querySelector('#searchtxt').addEventListener('input', (e) => updateWishSearchText(e, jellies));
-    document.querySelector('#startSearchButton').addEventListener('click', () => startSearch(document.querySelector('#searchtxt').value, controls, camera, scene));
+    document.querySelector('#startSearchButton').addEventListener('click', () => startSearch(document.querySelector('#searchtxt').value));
     document.querySelector('#backbutton').addEventListener('click', () => {
         document.getElementById('bannerBar').style.display = 'none';
-        startSearch('', controls, camera, scene);
+        startSearch('');
     });
     canvas.addEventListener('contextmenu', () => {
         isCameraFollowingJelly = false;
         hideWishText();
     });
-    canvas.addEventListener('pointerdown', (e) => sceneClicked(e, renderer, camera, scene, controls), false);
+    canvas.addEventListener('pointerdown', (e) => sceneClicked(e), false);
 
     // Testing page transitions
     document.querySelector('#welcomePageButton').addEventListener('click', () => {
         if(currentScene === 'galleryPage') {
             hideGalleryPage();
-            loadWelcomePage(scene, camera, controls);
-            showWelcomePage();
+            unloadGalleryPage();
+            loadWelcomePage();
+            // showWelcomePage();
         } else {
             hideWelcomePage();
-            loadGalleryPage(scene, dbRef, loader);
+            unloadWelcomePage();
+            loadGalleryPage();
             showGalleryPage();
         }
         
@@ -107,17 +115,17 @@ const init = () => {
     scene.add(camera);
     
     // Start by loading galleryPage, as those are elements not hidden at top of init
-    loadGalleryPage(scene, dbRef, loader);
+    loadGalleryPage();
 
     // Begin animation
     const clock = new THREE.Clock();
-    animate(composer, scene, camera, controls, clock);
+    animate(composer, clock);
 };
 
 // Loops through to animate
-const animate = (renderer, scene, camera, controls, clock) => {
+const animate = (renderer, clock) => {
     const delta = clock.getDelta();
-    requestAnimationFrame(() => animate(renderer, scene, camera, controls, clock));
+    requestAnimationFrame(() => animate(renderer, clock));
   
     // Make jellies move around, make them turn around if they hit walls
     for(let i = 0; i < jellies.length; i++) {
@@ -163,9 +171,11 @@ const animate = (renderer, scene, camera, controls, clock) => {
     }
   
     // If camera is focused on jelly, move camera
-    if(isCameraFollowingJelly) {
+    if(isCameraFollowingJelly && currentScene === 'galleryPage') {
         controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
     }
+
+    if(currentScene === 'welcomePage') water.material.uniforms['time'].value += 1.0 / 60.0;
   
     // Update tween and orbit controls each frame
     TWEEN.update();
@@ -176,7 +186,7 @@ const animate = (renderer, scene, camera, controls, clock) => {
 };
 
 // Generates a jellyfish based on the specified string (wish)
-const generateJelly = (string, scene, loader) => {
+const generateJelly = (string) => {
     const jellyCode = hashFunc(string);
     const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
@@ -208,8 +218,9 @@ const generateJelly = (string, scene, loader) => {
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
-const sceneClicked = (e, renderer, camera, scene, controls) => {
+const sceneClicked = (e) => {
     e.preventDefault();
+    if(currentScene !== 'galleryPage') return;
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
@@ -218,11 +229,11 @@ const sceneClicked = (e, renderer, camera, scene, controls) => {
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children, true);
   
-    if(intersects.length > 0) jellyClicked(intersects[0].object.parent, controls, camera);
+    if(intersects.length > 0) jellyClicked(intersects[0].object.parent);
 };
 
 // When jelly is clicked, move camera to new jelly, zoom in, and start following it
-const jellyClicked = (jelly, controls, camera) => {
+const jellyClicked = (jelly) => {
     if(currentJellyTarget === jelly) return;
     currentJellyTarget = jelly;
     isCameraAnimating = true;
@@ -257,18 +268,18 @@ const jellyClicked = (jelly, controls, camera) => {
 };
 
 // Loads all wishes in database and generates jellies for them if they are approved or owned by user
-const loadWishes = (dbRef, scene, loader) => {
+const loadWishes = () => {
     const userID = getUserID();
     dbRef.on('child_added', (data) => {
         const wishObj = data.val();
         if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
-        generateJelly(wishObj.wish, scene, loader);
+        generateJelly(wishObj.wish);
         document.querySelector('#numWishes').innerHTML = jellies.length;
     });
 };
 
 // Checks wish is valid, if it is then adds wish to database and follows new jelly
-const makeWish = (dbRef, controls, camera) => {
+const makeWish = () => {
     const wish = document.querySelector('#wishInput').value;
     if(wish.trim() === '') {
         document.querySelector('#errorText').innerHTML = `Wish can't be empty!`;
@@ -282,7 +293,6 @@ const makeWish = (dbRef, controls, camera) => {
             document.querySelector('#errorText').innerHTML = 'Wish is not valid! Watch your language!';
             return;
         }
-
         document.querySelector('#errorText').innerHTML = '';
         dbRef.push({wish: document.querySelector('#wishInput').value, approved: null, userID: getUserID()});
         jellyClicked(jellies[jellies.length - 1].jellyParent, controls, camera);
@@ -291,10 +301,9 @@ const makeWish = (dbRef, controls, camera) => {
 };
 
 // Triggers jellyfish search
-const startSearch = (searchtxt, controls, camera, scene) => {
+const startSearch = (searchtxt) => {
     const jelliesToRemove = jellies.filter(jelly => !jelly.wish.includes(searchtxt));
     const jelliesToAdd = jellies.filter(jelly => jelly.wish.includes(searchtxt));
-
     jelliesToRemove.forEach((jelly) => scene.remove(jelly.jellyParent));
     jelliesToAdd.forEach((jelly) => {
         if(!scene.children.includes(jelly.jellyParent)) scene.add(jelly.jellyParent);
@@ -310,59 +319,99 @@ const startSearch = (searchtxt, controls, camera, scene) => {
 };
 
 // Loads all elements in three js scene for gallery page
-const loadGalleryPage = (scene, dbRef, loader) => {
-    clearScene(scene);
-    loadWishes(dbRef, scene, loader);
+const loadGalleryPage = () => {
+    loadWishes();
+    camera.position.set(500, 500, camZoom);
+    controls.target = new THREE.Vector3(0, 0, 0);
+    controls.maxPolarAngle = Math.PI;
+    controls.minDistance = 0;
+    controls.maxDistance = Infinity;
+    controls.update();
     currentScene = 'galleryPage';
 };
 
+// Unload all elements in gallery page
+const unloadGalleryPage = () => {
+    clearScene();
+    jellies.splice(0, jellies.length);
+};
+
 // Loads all elements in three js scene for welcome page
-const loadWelcomePage = (scene, camera, controls) => {
-    clearScene(scene);
+const loadWelcomePage = () => {
+    camera.position.set(0, 0, 10);
+    bloomPass.threshold = 9;
 
-    camera.position.set(500, 500, camZoom);
-    controls.target = new THREE.Vector3(0, 0, 0);
-    controls.update();
+    const light = new THREE.DirectionalLight(0xffffff);
+	light.position.set(0, 0, 10.10);
+	scene.add(light);
+    scene.add(new THREE.AmbientLight(0xffffff));
 
-    const numCubes = 10;
-    const parent = new THREE.Object3D();
-    const geometry = new THREE.BoxGeometry(100, 100, 100);
-	const material = new THREE.MeshPhongMaterial({color: 0xf64A8A, wireframe: false, opacity: 0.3});
-    // let spread = 5;
-	// let max = spread * 2;
+    const sun = new THREE.Vector3();
+    const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+    water = new Water(waterGeometry,
+        {
+            textureWidth: 512,
+            textureHeight: 512,
+            waterNormals: loader.load('../waternormals.jpeg', function (texture) {
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+            }),
+            sunDirection: new THREE.Vector3(),
+            sunColor: 0xffffff,
+            waterColor: 0xaccde8,
+            distortionScale: 6,
+            fog: scene.fog !== undefined
+        }
+	);
 
+    water.rotation.x = -Math.PI / 2;
+	scene.add(water);
 
-	// for (let i = 0; i < numCubes; i++) {
-	// 	let cube = new THREE.Mesh(geometry, material);
-	// 	if (numCubes % 1 == 0) {
-	// 		cube.position.x = ((Math.random() * max) - spread) + 1;
-	// 		cube.position.y = ((Math.random() * max) - spread) + 1;
-	// 		cube.position.z = ((Math.random() * max) - spread) + 1;
-	// 	} else {
-	// 		cube.position.x = Math.random() * -spread;
-	// 		cube.position.y = Math.random() * -spread;
-	// 	}
+    const sky = new Sky();
+	sky.scale.setScalar(10000);
+	scene.add(sky);
 
-	// 	parent.add(cube);
-	// }
-	const spread = 5;
-	const max = spread * 100;
+	const skyUniforms = sky.material.uniforms;
+	skyUniforms['turbidity'].value = 20;
+	skyUniforms['rayleigh'].value = 0.036;
+	skyUniforms['mieCoefficient'].value = 0;
+	skyUniforms['mieDirectionalG'].value = 1;
 
-	for (let i = 0; i < numCubes; i++) {
-		const cube = new THREE.Mesh(geometry, material);
-        cube.position.x = ((Math.random() * 1000) - 500) + 1;
-        cube.position.y = ((Math.random() * 1000) - 500) + 1;
-        cube.position.z = ((Math.random() * 1000) - 500) + 1;
-		parent.add(cube);
-	}
-    scene.add(parent); 
+	const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+
+    const updateSun = () => {
+        const theta = Math.PI * (parameters.inclination - 0.5);
+        const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+
+        sun.x = Math.cos(phi);
+        sun.y = Math.sin(phi) * Math.sin(theta);
+        sun.z = Math.sin(phi) * Math.cos(theta);
+
+        sky.material.uniforms['sunPosition'].value.copy(sun);
+        water.material.uniforms['sunDirection'].value.copy(sun).normalize();
+
+        scene.environment = pmremGenerator.fromScene(sky).texture;
+
+        controls.maxPolarAngle = Math.PI * 0.495;
+        controls.target.set(0, 10, 0);
+        controls.minDistance = 40.0;
+        controls.maxDistance = 200.0;
+        controls.update();
+	};
+
+    updateSun();
     currentScene = 'welcomePage';
 };
 
+const unloadWelcomePage = () => {
+    clearScene();
+};
+
 // Remove all objects in three js scene
-const clearScene = (scene) => {
+const clearScene = () => {
     for(let i = scene.children.length - 1; i >= 0; i--) {
         const obj = scene.children[i];
+        if(obj.type === 'PerspectiveCamera') continue;
         scene.remove(obj);
     }
 }
