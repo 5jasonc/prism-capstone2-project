@@ -176,7 +176,7 @@ const animate = (renderer, clock) => {
     }
 
     if(currentScene === 'welcomePage') water.material.uniforms['time'].value += 1.0 / 60.0;
-  
+    
     // Update tween and orbit controls each frame
     TWEEN.update();
     controls.update();
@@ -338,6 +338,9 @@ const unloadGalleryPage = () => {
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
+    //fix the width size of settings bar to 164
+    $('.settings').css("width", "164px");
+    
     camera.position.set(0, 0, 10);
     bloomPass.threshold = 9;
 
