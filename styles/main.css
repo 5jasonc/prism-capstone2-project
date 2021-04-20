@@ -50,6 +50,7 @@
 
   100% {
     opacity: 0;
+    visibility: hidden;
   }
 }
 
@@ -134,7 +135,8 @@ a {
   display: block;
   height: 100vh;
   width: 100vw;
-  background: radial-gradient(#000259, #01032C);
+  background: black;
+  transition: all 1s ease-in;
 }
 
 .logoSpinner {
@@ -147,7 +149,7 @@ a {
 }
 
 .logoSpinner logo {
-  width: 32px;
+  width: 36px;
 }
 
 .loader h2 {
@@ -182,7 +184,7 @@ a {
 }
 
 #app {
-  background: radial-gradient(ellipse, #000259, #01032C);
+  background: linear-gradient( #0e1d38, #02070f);
   width: 100vw;
   height: calc(100vh - 70px);
   display: block;
@@ -333,6 +335,7 @@ a {
   box-sizing: border-box;
   display: flex;
   z-index: 2;
+  transition: all 0.5s ease;
 }
 
 .settings .sounds button {
@@ -462,13 +465,14 @@ a {
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
-  width: auto;
+  width: 100%;
   margin-left: 16px;
   border-radius: 100rem;
   font-weight: 100;
   font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .banner button {
@@ -779,6 +783,7 @@ ul {
   background: black;
   overflow: auto;
   text-align: center;
+  transition:  all 0.5s ease-in;
 }
 
 .aboutus h1 {
@@ -1684,7 +1689,7 @@ canvas #arApp{
     width: 64px;
     height: 64px;
     border-radius: 100rem;
-    transition: all;
+    transition: all 0.5s ease;
   }
 
   .settings img{
@@ -1740,8 +1745,9 @@ canvas #arApp{
   }
 
   .drawer-menu ul li a {
-    font-size: 36px;
-    line-height: 42px;
+    font-size: 12vw;
+    line-height: 12vw;
+    transition: all 0.2s ease-in;
   }
 
   
@@ -1787,11 +1793,53 @@ canvas #arApp{
     padding: 16px;
   }
 
+  .aboutus{
+    width: 100%;
+    padding: 24px;
+  }
+
+  .brief{
+    width: 100%;
+    display: block;
+  }
+
+  .brief h1, .meetteam{
+    margin: auto;
+    max-width: 420px;
+  }
+
+  .brief p{
+    margin: auto;
+    max-width: 420px;
+    padding-bottom: 48px;
+  }
+
+  .brief h1{
+    margin: auto;
+    margin-top: 132px;
+  }
+
+  .half{
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
+  .half img{
+    width: 100%;
+  }
+
+  .meetteam{
+    padding: 0;
+  }
+
 }
 
 @media screen and (max-width: 380px){
+  
   .welcometxt p{
     font-size: 18px !important;
     padding: 16px;
   }
+
 }

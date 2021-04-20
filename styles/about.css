@@ -5,6 +5,15 @@ html {
 }
 
 
+video {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 
 
 .grid-container {
@@ -219,6 +228,8 @@ html {
       "a3 b1"
       "b2 b3";
   }
+
+
 }
 
 @media screen and (max-width: 450px) {
@@ -243,4 +254,48 @@ html {
       "b2" 
       "b3";
   }
+
+  .half h1{
+    scale:0.7;
+    margin-left: -60px;
+  }
+}
+
+
+.social-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 150px;
+  gap: 0px 0px;
+  grid-template-areas:
+    "facebookWrap twitterWrap linkWrap";
+}
+
+.facebookWrap { grid-area: facebookWrap; }
+
+.twitterWrap { grid-area: twitterWrap; }
+
+.linkWrap { grid-area: linkWrap; }
+
+.smlink {
+  height: 64px;
+  width: 64px;
+  border-radius: 32px;
+  margin-top: 16px;
+  border: solid 1px transparent;
+  transition: 0.2s ease-in;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.half {
+  z-index: 99;
+  position: relative;
+}
+
+img {
+  z-index: 1;
+  position: relative;
 }

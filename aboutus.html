@@ -11,6 +11,7 @@
     <link rel="icon" href="StarLogoIcon.png">
     <link href="styles/main.css" rel="stylesheet" />
     <link href="styles/nav.css" rel="stylesheet" />
+    <link href="styles/about.css" rel="stylesheet" />
     <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Open Graphs -->
@@ -22,6 +23,18 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
+<style>
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        transition: all 0.7s ease;
+    }
+</style>
 
 <body style="overflow-y: auto;">
     <input type="checkbox" class="check" id="checked">
@@ -30,7 +43,7 @@
         <span class="bar bottom"></span>
     </label>
     <label class="close-menu" for="checked"></label>
-    <div class="logo">
+    <div class="logo" style="position: fixed;">
         <a href="welcome.html"><img src="./icons/whitestar.svg" width="100%" alt="logo of star"></a>
     </div>
     <nav class="drawer-menu">
@@ -44,31 +57,40 @@
         <div class="socialmedias">
             <div class="smlink">
                 <a href="#">
-                    <img src="facebookicon.svg" alt="Twitter icon">
+                    <img src="./icons/facebookicon.svg" alt="Twitter icon">
                 </a>
             </div>
             <div class="smlink">
                 <a href="#">
-                    <img src="twittericon.svg" alt="Twitter icon">
+                    <img src="./icons/twittericon.svg" alt="Twitter icon">
                 </a>
             </div>
             <div class="smlink">
                 <a href="#">
-                    <img src="copyicon.svg" alt="Copy icon">
+                    <img src="./icons/copyicon.svg" alt="Copy icon">
                 </a>
             </div>
         </div>
     </nav>
+    <script>
+        $(window).scroll(function () {
+            $(".bg").css("opacity", 2 - $(window).scrollTop() / 150);
+        });
+    </script>
     <!-- <canvas id="stars" style="position: absolute; left: 0; bottom: 0; right: 0; top: 0; z-index: -1;"></canvas> -->
     <section class="aboutus" style="overflow: auto;">
+            <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="Zoom_Background.mov"
+                width="100%"></video>
         <div class="about">
-            <h1><span class="colortext">About Us</span></h1>
+            <h1 style=" position: relative;
+            top: calc(100vh/3);"><span class="colortext">About Us</span></h1>
             <img src="wishfultxt.svg">
         </div>
         <div class="brief">
             <div class="half">
-                <h1>A year of <span class="colortext">hopelessnes</span></h1>
-                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and discouraged.</p>
+                <h1>A year of <span class="colortext">hopelessness</span></h1>
+                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and
+                    discouraged.</p>
             </div>
             <div class="half">
                 <img src="./imgs/Globe.png" width="100%" style="margin-top: 232px;" alt="image place holder">
@@ -80,21 +102,17 @@
             </div>
             <div class="half">
                 <h1>How do we <span class="colortext">spark hope?</span></h1>
-                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the future and find comradery with others.</p>
+                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the
+                    future and find comradery with others.</p>
             </div>
-           
+
         </div>
         <div class="brief">
             <div class="half">
                 <h1>A digital <span class="colortext">wishing well</span></h1>
-                <p>The process involves transforming your personal wish into a jellyfish-like virtual creature, swimming amongst the hopes and wishes of others, and culminating a community of these personal wishes that can be shared and saved.</p>
-            </div>
-           
-        </div>
-        <div class="brief">
-            <div class="half">
-                <h1>A digital <span class="colortext">wishing well</span></h1>
-                <p>The process involves transforming your personal wish into a jellyfish-like virtual creature, swimming amongst the hopes and wishes of others, and culminating a community of these personal wishes that can be shared and saved.</p>
+                <p>The process involves transforming your personal wish into a jellyfish-like virtual creature, swimming
+                    amongst the hopes and wishes of others, and culminating a community of these personal wishes that
+                    can be shared and saved.</p>
             </div>
             <div class="half">
                 <img src="./imgs/mobile.png" alt="image place holder">
@@ -102,12 +120,8 @@
         </div>
         <div class="brief">
             <div class="half">
-                <img src="./imgs/mobile.png" alt="image place holder">
-            </div>
-        </div>
-        <div class="brief">
-            <div class="half">
-                <img src="./imgs/Jellyfish Graphic.png" style="padding-top: 224px; transform: rotate(45deg);" alt="image place holder">
+                <img src="./imgs/Jellyfish Graphic.png" style="padding-top: 224px; transform: rotate(45deg);"
+                    alt="image place holder">
             </div>
             <div class="half">
                 <h1>Why<span class="colortext"> Jellyfish?</span></h1>
@@ -115,81 +129,100 @@
                     a moment of vulnerability.</p>
             </div>
         </div>
-        <div class="meetteam">
+
+        <div class="team-grid-container">
             <h1>A <span class="colortext">team</span> made it happen</h1>
-            <div class="autolayout">
+            <div class="a1">
                 <span data-tilt>
                     <div class="teamitems">
-                        <img style="position: relative; z-index: 32;" src="./imgs/alex.png" width="100%" alt="picture of Alex">
-                        <h4>Witty hybrid</h4>
+                        <img style="position: relative; z-index: 32;" src="imgs/alex.png" width="100%"
+                            alt="picture of Alex">
+                        <h4>Witty Hybrid</h4>
                         <h5>Alex Kauffman</h5>
                     </div>
                 </span>
+            </div>
+            <div class="a2">
                 <span data-tilt>
                     <div class="teamitems">
-                        <span data-tilt><img src="./imgs/bailey.png" width="100%" alt="picture of Bailey"></span>
+                        <span data-tilt><img src="imgs/bailey.png" width="100%" alt="picture of Bailey"></span>
                         <h4>Zealous Designer</h4>
                         <h5>Bailey Cunningham</h5>
                     </div>
                 </span>
+            </div>
+            <div class="a3">
                 <span data-tilt>
                     <div class="teamitems">
-                        <img src="./imgs/ben.png" width="100%" alt="picture of Bailey">
+                        <img src="imgs/ben.png" width="100%" alt="picture of Ben">
                         <h4>Keen Designer</h4>
                         <h5>Ben Mendelsohn</h5>
                     </div>
                 </span>
             </div>
-            <div class="autolayout">
+            <div class="b1">
                 <span data-tilt>
                     <div class="teamitems">
-                        <img src="./imgs/gabe.png" width="100%" alt="picture of this person">
+                        <img src="imgs/gabe.png" width="100%" alt="picture of this person">
                         <h4>Crafty Coder</h4>
-                        <h5>Gabe Viet</h5>
+                        <h5>Gabriel Veit</h5>
                     </div>
                 </span>
+            </div>
+            <div class="b2">
                 <span data-tilt>
                     <div class="teamitems">
-                        <img src="./imgs/jason.png" width="100%" alt="picture of this person">
-                        <h4>wonderus Coder</h4>
+                        <img src="imgs/jason.png" width="100%" alt="picture of this person">
+                        <h4>Wonderus Coder</h4>
                         <h5>Jason Streeter</h5>
                     </div>
                 </span>
+            </div>
+            <div class="b3">
                 <span data-tilt>
                     <div class="teamitems">
-                        <img src="./imgs/will.png" width="100%" alt="picture of this person">
-                        <h4>Adventurous hybrid</h4>
+                        <img src="imgs/will.png" width="100%" alt="picture of this person">
+                        <h4>Adventurous Hybrid</h4>
                         <h5>Will McCloskey</h5>
                     </div>
-            </div>
-            </span>
-        </div>
-        <div class="support" style="max-width: 720px; margin: auto;">
-            <h1>Share</h1>
-            <div class="autolayout">
-                <div class="smlink">
-                    <a href="#">
-                        <img src="./icons/facebookicon.svg" alt="Twitter icon">
-                    </a>
-                </div>
-                <div class="smlink">
-                    <a href="#">
-                        <img src="./icons/twittericon.svg" alt="Twitter icon">
-                    </a>
-                </div>
-                <div class="smlink">
-                    <a href="#">
-                        <img src="./icons/copyicon.svg" alt="Copy icon">
-                    </a>
-                </div>
+                </span>
             </div>
         </div>
+
+        <h1>Share</h1>
+        <div class="social-grid-container">
+
+            <div class="facebookWrap">
+                    <div class="smlink">
+                            <a href="#">
+                                <img src="./icons/facebookicon.svg" alt="Twitter icon">
+                            </a>
+                        </div>
+            </div>
+            <div class="twitterWrap">
+                    <div class="smlink">
+                            <a href="#">
+                                <img src="./icons/twittericon.svg" alt="Twitter icon">
+                            </a>
+                        </div>
+            </div>
+            <div class="linkWrap">
+                    <div class="smlink">
+                            <a href="#">
+                                <img src="./icons/copyicon.svg" alt="Copy icon">
+                            </a>
+                        </div>
+            </div>
+          </div>
+
+
+
         <footer>
             <p>2021 &copy; Team Prism</p>
         </footer>
-    </section>
-    <!--
-        <div class="settings" style="width: 164px;">
+
+
+    <div class="settings" style="width: 164px;">
         <div class="sounds">
             <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
             <button onclick="play()">
@@ -197,9 +230,9 @@
                 <img src="./icons/Speaker.svg">
             </button>
         </div>
-    -->
 
-    <script src="./src/tilt.jquery.js"></script>
+
+        <script src="./src/tilt.jquery.js"></script>
 </body>
 <script>
     //Play/Pause button
@@ -217,4 +250,4 @@
     }
 </script>
 
-</html>
+</html> 
