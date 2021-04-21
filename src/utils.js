@@ -83,15 +83,15 @@ export const hideWishText = () => {
 
 export const showGalleryPage = () => {
     $('#Exit').fadeIn();
-    $('#bannerBar').fadeIn();
+    // $('#bannerBar').fadeIn();
     $('#wishtxtbox').fadeIn();
     $('#searchWindow').fadeIn();
-    $('.export').fadeIn();
+    //$('.export').fadeIn();
     $('.controlscontainer').fadeIn();
     $('.addJellyFish').fadeIn();
     $('.amountofwish').fadeIn();
     $('.line').fadeIn();
-    $('.search').fadeIn();
+    // $('.search').fadeIn();
     changeStyleSource('styles/index.css');
 };
 
