@@ -52,6 +52,7 @@ var countFramesPerSecond=0;
 var total_mass = 0;
 var lerpLookAt = new THREE.Vector3();
 var lookAt = new THREE.Vector3();
+let time = new THREE.Clock();
 
 var MASS_FACTOR = .01; // for display of size
 
@@ -209,9 +210,9 @@ function init() {
 	// Generates stars, at 0% opacity
 	generateStars();
 
-	movers.push(new Mover(1, new THREE.Vector3(-1, -1, 0), new THREE.Vector3(500, 500, -500)));
-	movers.push(new Mover(1, new THREE.Vector3(-0.5, -0.5, 0), new THREE.Vector3(800, 500, -500)));
-	movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
+	// movers.push(new Mover(1, new THREE.Vector3(-1, -1, 0), new THREE.Vector3(500, 500, -500)));
+	// movers.push(new Mover(1, new THREE.Vector3(-0.5, -0.5, 0), new THREE.Vector3(800, 500, -500)));
+	// movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
 
 	// TEST CUBE
 	//addCubes(10);
@@ -323,7 +324,7 @@ function Mover(m,vel,loc) {
     //this.line = THREE.Line(this.lineGeometry, lineMaterial);
 
     this.basicMaterial =  new THREE.MeshPhongMaterial({
-        ambient: 0x111111, color: this.color, specular: this.color, shininess: 10
+        color: this.color, specular: this.color, shininess: 10
     });
 
     //this.selectionLight = new THREE.PointLight(this.color,.1);
@@ -457,18 +458,29 @@ function animate() {
 	render();
 }
 
+var intervalID = window.setInterval(createShootingStar, 3500);
+
+function createShootingStar(){
+	let speed = -1*(1+Math.random()*5);
+	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500)));
+
+}
+
 function render() {
-	const time = performance.now() * 0.001;
+	// const time = performance.now() * 0.001;
 
 	water.material.uniforms['time'].value += 1.0 / 60.0;
 
     var movers_alive_count = 0;
     total_mass = 0;
     var maximum_mass = 0.00;
-
+			//loop through all shooting stars
             for (var i = movers.length-1; i >= 0; i--) {
+
                 var m = movers[i];
+				// update so they continue on their path
 				m.update();
+
                 if (m.alive) {
                     for (var j =  movers.length-1; j >= 0; j--) {
                         var a = movers[j];
@@ -490,6 +502,8 @@ function render() {
                     }
                 }
             }
+
+			// Random amount of time in between shooting stars being generated
 	
 
 	renderer.render(scene, camera);

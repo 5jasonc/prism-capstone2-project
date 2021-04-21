@@ -335,6 +335,7 @@ a {
   box-sizing: border-box;
   display: flex;
   z-index: 2;
+  transition: all 0.5s ease;
 }
 
 .settings .sounds button {
@@ -1688,7 +1689,7 @@ canvas #arApp{
     width: 64px;
     height: 64px;
     border-radius: 100rem;
-    transition: all;
+    transition: all 0.5s ease;
   }
 
   .settings img{
