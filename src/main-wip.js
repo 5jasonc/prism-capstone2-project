@@ -97,17 +97,10 @@ const init = () => {
     // Testing page transitions
     document.querySelector('#welcomePageButton').addEventListener('click', () => {
         if(currentScene === 'galleryPage') {
-            hideGalleryPage();
-            unloadGalleryPage();
-            loadWelcomePage();
-            // showWelcomePage();
+            switchScene('welcomePage', 'up');
         } else {
-            hideWelcomePage();
-            unloadWelcomePage();
-            loadGalleryPage();
-            showGalleryPage();
+            switchScene('galleryPage', 'down');
         }
-        
     });
 
     // Add canvas to page and objects to scene
@@ -135,8 +128,8 @@ const animate = (renderer, clock) => {
         jelly.rotateZ((Math.PI / 1000) * Math.random());
         jelly.translateY(jellies[i].aStep * 2 + 0.3);
         if(jelly.position.x < -1300 || jelly.position.x > 1300) {
-                jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
-                jelly.rotateX(Math.PI);
+            jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
+            jelly.rotateX(Math.PI);
         }
         if(jelly.position.y < -1300 || jelly.position.y > 1300) {
             jelly.position.y = THREE.Math.clamp(jelly.position.y, -1300, 1300);
@@ -179,10 +172,103 @@ const animate = (renderer, clock) => {
   
     // Update tween and orbit controls each frame
     TWEEN.update();
-    controls.update();
+    if(!isCameraAnimating && !controls.enabled) controls.update();
     
     // Re-render scene
     renderer.render(delta);
+};
+
+// Loads scene with given string, currently supported scenes are welcome page and gallery page, moves camera with transition w/ given direction
+const switchScene = (newScene, cameraDirection = 'up') => {
+    controls.enabled = false;
+    isCameraAnimating = true;
+
+    let newPos;
+    if(newScene === 'galleryPage') {
+        controls.update();
+        newPos = new THREE.Vector3(500, 500, camZoom); // galleryPage start point
+    } else {
+        newPos = new THREE.Vector3(0, 10, 10); // welcomePage start point
+    }
+
+    let cameraMovement;
+    if(cameraDirection === 'up') {
+        cameraMovement = 3000;
+    } else {
+        cameraMovement = -3000;
+    }
+
+    const unloadScene = () => {
+        switch(currentScene) {
+            case 'galleryPage':
+                hideGalleryPage();
+                unloadGalleryPage();
+                break;
+            case 'welcomePage':
+                hideWelcomePage();
+                unloadWelcomePage();
+                break;
+        }
+    };
+
+    const loadScene = () => {
+        switch(newScene) {
+            case 'galleryPage':
+                loadGalleryPage();
+                showGalleryPage();
+                break;
+            case 'welcomePage':
+                loadWelcomePage();
+                // showWelcomePage();
+                break;
+        }
+    };
+
+    new TWEEN.Tween(camera)
+        .to({'position': new THREE.Vector3(camera.position.x, camera.position.y + cameraMovement, camera.position.z)}, 1000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => camera.updateProjectionMatrix())
+        .onComplete(() => {
+            unloadScene();
+            camera.position.set(newPos.x, newPos.y, newPos.z);
+            if(newScene === 'galleryPage') {
+                controls.target.set(0, 0, 0);
+            } else {
+                controls.target.set(0, 10, 0);
+            }
+            controls.update();
+            camera.position.set(camera.position.x, camera.position.y - cameraMovement, camera.position.z);
+            loadScene();
+            new TWEEN.Tween(camera)
+                .to({'position': newPos}, 1000)
+                .easing(TWEEN.Easing.Circular.InOut)
+                .onUpdate(() => {
+                    camera.updateProjectionMatrix();
+                    // controls.update();
+                })
+                .onComplete(() => isCameraAnimating = false)
+                .start();
+        })
+        .start();
+
+    // new TWEEN.Tween(controls)
+    //     .to({'target': new THREE.Vector3(controls.target.x, controls.target.y + cameraMovement, controls.target.z)}, 1000)
+    //     .easing(TWEEN.Easing.Circular.InOut)
+    //     .onUpdate(() => controls.update())
+    //     .onComplete(() => {
+    //         unloadScene();
+    //         controls.target.set(newPos.x, newPos.y - cameraMovement, newPos.z);
+    //         loadScene();
+    //         new TWEEN.Tween(controls) // camera.position.set(0, 0, 10);
+    //             .to({'target': newPos}, 1000)
+    //             .easing(TWEEN.Easing.Circular.InOut)
+    //             .onUpdate(() => {
+    //                 controls.update();
+    //             })
+    //             // .onComplete(() => isCameraAnimating = false)
+    //             .start();
+    //     })
+    //     .start();
 };
 
 // Generates a jellyfish based on the specified string (wish)
@@ -248,6 +334,7 @@ const jellyClicked = (jelly) => {
     new TWEEN.Tween(controls)
         .to({'target': orbitTarget}, 1000)
         .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => controls.update())
         .onComplete(() => {
             isCameraAnimating = false;
             isCameraFollowingJelly = true
@@ -321,12 +408,12 @@ const startSearch = (searchtxt) => {
 // Loads all elements in three js scene for gallery page
 const loadGalleryPage = () => {
     loadWishes();
-    camera.position.set(500, 500, camZoom);
-    controls.target = new THREE.Vector3(0, 0, 0);
-    controls.maxPolarAngle = Math.PI;
-    controls.minDistance = 0;
-    controls.maxDistance = Infinity;
-    controls.update();
+    // camera.position.set(500, 500, camZoom);
+    // controls.target = new THREE.Vector3(0, 0, 0);
+    // controls.maxPolarAngle = Math.PI;
+    // controls.minDistance = 0;
+    // controls.maxDistance = Infinity;
+    // controls.update();
     currentScene = 'galleryPage';
 };
 
@@ -338,7 +425,7 @@ const unloadGalleryPage = () => {
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
-    camera.position.set(0, 0, 10);
+    // camera.position.set(0, 0, 10);
     bloomPass.threshold = 9;
 
     const light = new THREE.DirectionalLight(0xffffff);
@@ -392,11 +479,11 @@ const loadWelcomePage = () => {
 
         scene.environment = pmremGenerator.fromScene(sky).texture;
 
-        controls.maxPolarAngle = Math.PI * 0.495;
-        controls.target.set(0, 10, 0);
-        controls.minDistance = 40.0;
-        controls.maxDistance = 200.0;
-        controls.update();
+        // controls.maxPolarAngle = Math.PI * 0.495;
+        // controls.target.set(0, 10, 0);
+        // controls.minDistance = 40.0;
+        // controls.maxDistance = 200.0;
+        // controls.update();
 	};
 
     updateSun();
