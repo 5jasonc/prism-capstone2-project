@@ -440,7 +440,7 @@ const loadWelcomePage = () => {
         {
             textureWidth: 512,
             textureHeight: 512,
-            waterNormals: loader.load('../waternormals.jpeg', function (texture) {
+            waterNormals: loader.load('waternormals.jpeg', function (texture) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             }),
             sunDirection: new THREE.Vector3(),
