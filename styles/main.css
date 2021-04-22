@@ -312,7 +312,7 @@ a {
   padding-left: 32px;
   font-size: 22px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   padding-top: 6px;
 }
 
@@ -473,7 +473,7 @@ a {
   font-weight: 100;
   font-size: 20px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   text-align: center;
 }
 
@@ -569,8 +569,9 @@ nav {
   right: 0;
   width: 100vw;
   height: 100%;
-  background: rgba(0, 0, 0, 0.61);
-  backdrop-filter: blur(38px);
+  background-color: #00013a56;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   opacity: 0;
   display: none;
   z-index: 15;
@@ -1332,12 +1333,12 @@ footer {
 
 #wishText {
   display: none;
-  font-size: 48px;
-  line-height: 52px;
-  font-family: sofia-pro, sans-serif;
-  width: 420px;
+  font-size: 56px;
+  line-height: 64px;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
+  width: 464px;
+  padding-top: 12px;
 }
-
 
 
 #wishtxtbox {
