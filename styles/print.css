@@ -1,9 +1,39 @@
 @media print {
-    @page {size: landscape}
-  
-    .wishtxtbox{
-      position: absolute;
-      left: 124px;
-      bottom: 124px;
-    }
+  @page {
+    size: portrait;
   }
+
+  #app {
+    transform: scale(1) !important;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #wishtxtbox {
+    position: absolute;
+    bottom: 86px;
+    left: 86px;
+    margin: auto;
+    padding: 16px;
+    padding: 0;
+  }
+
+  #wishtxtbox h2{
+    font-family: 'GT-Super-Display-Medium', sans-serif !important;
+    font-size: 136px !important;
+    line-height: 156px;
+    width: 900px;
+  }
+
+  #wishtxtbox h3{
+    font-family: sofia-pro, sans-serif;
+    font-size: 64px !important;
+    line-height: 124px;
+  }
+
+  .export{
+    display: none !important;
+  }
+
+
+}
