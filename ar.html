@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
 <link href="styles/main.css" rel="stylesheet" />
 <link href="styles/index.css" rel="stylesheet" />
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- ar.js -->
 <script
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js">
@@ -62,12 +63,13 @@
             addGeometry(jellyGeometry);
         }
 
+        const width = window.innerWidth;
+        const height = window.innerHeight;
         //handle arToolkitSource
         var arToolkitSource = new THREEx.ArToolkitSource({
             // to read from the webcam
             sourceType: 'webcam',
             // url of the source - valid if sourceType = image|video
-            sourceUrl : null
         });
 
         arToolkitSource.init(function onReady() {
@@ -117,7 +119,11 @@
             patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
             // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
             // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-            changeMatrixMode: 'cameraTransformMatrix'
+            changeMatrixMode: 'cameraTransformMatrix',
+            detectionMode: "mono",
+            canvasWidth: width,
+            canvasHeight: height,
+            maxDetectionRate: 60,
         })
         // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
         scene.visible = false
@@ -171,7 +177,16 @@
         init();
     };
 </script>
+<script>
+    function myCloseBtn(){
+        $('.printArCard').fadeOut('slow');
+    }
+</script>
 <body style='margin : 0px; overflow: hidden; font-family: sans-serif;'>
+    <div class="printArCard">
+        <h1>Print Ar Cards to interact your jellyfish</h1>
+        <button onclick="myCloseBtn()">Dismiss</button>
+    </div>
     <canvas id="arApp"></canvas>
     <input type="checkbox" class="check" id="checked">
     <label class="menu-btn" for="checked">

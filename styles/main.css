@@ -1377,6 +1377,54 @@ footer {
   display: none;
 }
 
+.printArCard{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #00013a56;
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  transition: all 1s ease;
+}
+
+.printArCard h1{
+  position: absolute;
+  bottom: 164px;
+  font-size: 18px;
+  max-width: 300px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-weight: 100;
+  font-family: sofia-pro, sans-serif;
+  width: 100%;
+  text-align: center;
+}
+
+.printArCard button{
+  position: absolute;
+  bottom: 64px;
+  background-color: none;
+  color: white;
+  outline: none;
+  border: none;
+  border: 1px solid white;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 18px;
+  padding: 16px;
+  padding-left: 48px;
+  padding-right: 48px;
+  box-sizing: border-box;
+  border-radius: 100rem;
+  cursor: pointer;
+}
+
+.printArCard button:active{
+  background-color: rgb(36, 36, 36);
+}
+
 #shareJellyBtn {
   background: none;
   border: none;
@@ -1705,6 +1753,8 @@ canvas #arApp{
 
   .settings {
     position: absolute;
+    display: flex;
+    justify-content: center;
     top: 120px;
     right: 24px;
     border-radius: 0;
