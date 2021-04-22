@@ -331,11 +331,15 @@ a {
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 18px;
+  padding: 8px;
+  padding-top: 18px;
+  padding-bottom: 18px;
   box-sizing: border-box;
   display: flex;
   z-index: 2;
   transition: all 0.5s ease;
+  display: flex;
+  justify-content: space-between;
 }
 
 .settings .sounds button {
@@ -365,7 +369,7 @@ a {
 .settings .search {
   width: auto;
   padding-left: 64px;
-  padding-right: 66px;
+  padding-right: 64px;
   transition: 0.1s ease-in;
   box-sizing: border-box;
   transform: scale(0.8);
@@ -376,7 +380,6 @@ a {
   width: 2px;
   background-color: white;
   opacity: 0.6;
-  margin-left: 5px;
 }
 
 .settings .sounds:hover,
@@ -444,11 +447,12 @@ a {
 }
 
 .banner {
+  display: flex;
+  justify-content: center;
   display: none;
   position: absolute;
   top: 48px;
   width: auto;
-  max-width: 656px;
   height: 48px;
   left: 0;
   right: 0;
@@ -467,7 +471,7 @@ a {
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
-  width: 100%;
+  width: auto;
   margin-left: 16px;
   border-radius: 100rem;
   font-weight: 100;
@@ -496,7 +500,8 @@ a {
   margin-top: 64px;
   height: 64px;
   width: auto;
-  padding: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 32px;
   padding-right: 32px;
   font-size: 20px;
@@ -1338,6 +1343,7 @@ footer {
   font-family: 'GT-Super-Display-Medium', sans-serif;
   width: 464px;
   padding-top: 12px;
+  letter-spacing: 4px;
 }
 
 
