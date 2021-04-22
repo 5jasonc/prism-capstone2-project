@@ -135,7 +135,7 @@ a {
   display: block;
   height: 100vh;
   width: 100vw;
-  background: black;
+  background: #00013a;
   transition: all 1s ease-in;
 }
 
@@ -184,7 +184,7 @@ a {
 }
 
 #app {
-  background: linear-gradient( #0e1d38, #02070f);
+  background: radial-gradient( #131780, #040740);
   width: 100vw;
   height: calc(100vh - 70px);
   display: block;
@@ -386,6 +386,7 @@ a {
 }
 
 .gaugeMeter{
+  display: none;
   position: absolute;
   left: 0;
   height: auto;
@@ -395,6 +396,7 @@ a {
   padding: 12px;
   text-align: right;
   font-size: 24px;
+  z-index: 12;
 }
 
 .numMeter h4{
@@ -408,7 +410,7 @@ a {
   z-index: 12;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.61);
+  background-color: #00013a56;
   backdrop-filter: blur(38px);
 }
 
@@ -1123,10 +1125,23 @@ footer {
   width: 100vw;
   position: relative;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.534);
+  background-color: #00013a56;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   transition: all 0.5s ease;
+}
+
+#welcomescreen h4{
+  font-size: 18px;
+  color: rgb(172, 172, 172);
+  position: absolute;
+  bottom: 48px;
+  font-weight: 100;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 200px;
+  text-align: center;
 }
 
 #welcomescreen h2 {
