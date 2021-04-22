@@ -40,12 +40,11 @@ site.Height = site.window.height();
 
 let container, stats;
 let camera, scene, renderer;
-let mouseX = 0;
-let mouseY = 0;
 var windowHalfX = site.Width / 2;
 var windowHalfY = site.Height / 2;
 let makewish = false;
-let controls, water, sun, mesh, particles;
+let controls, water, sun, mesh, particles, plane, intersects, a;
+let raycaster = new THREE.Raycaster();
 let movers = [];
 var lastTimeCalled = new Date();
 var countFramesPerSecond=0;
@@ -53,6 +52,9 @@ var total_mass = 0;
 var lerpLookAt = new THREE.Vector3();
 var lookAt = new THREE.Vector3();
 let time = new THREE.Clock();
+let clicking = false;
+let cursor;
+let mouse = new THREE.Vector2();
 
 var MASS_FACTOR = .01; // for display of size
 
@@ -78,7 +80,7 @@ const params = {
 
 };
 
-$('#welcomescreen').on('mousemove', onDocumentMouseMove);
+$('body').on('mousemove', onDocumentMouseMove);
 
 function init() {
 	container = document.getElementById('container');
@@ -125,6 +127,10 @@ function init() {
 	// controls
 	//controls = new OrbitControls(camera, renderer.domElement)
 	//controls.listenToKeyEvents( window ); // optional
+
+	// helper plane for raycasting
+	plane = new THREE.Plane( new THREE.Vector3(0, 0, 1), 500);
+	// plane.position.z = 500;
 
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.maxPolarAngle = Math.PI * 0.495;
@@ -208,7 +214,10 @@ function init() {
 	updateSun();
 
 	// Generates stars, at 0% opacity
-	generateStars();
+	// generateStars();
+
+	drawCircle(10);
+	cursor.position.z = -500;
 
 	// movers.push(new Mover(1, new THREE.Vector3(-1, -1, 0), new THREE.Vector3(500, 500, -500)));
 	// movers.push(new Mover(1, new THREE.Vector3(-0.5, -0.5, 0), new THREE.Vector3(800, 500, -500)));
@@ -255,6 +264,34 @@ const fragmentShader = `
         gl_FragColor = vec4(color, finalph);
       }
 `
+function drawCircle(radius){
+              
+    // var points = [];
+      
+    // // 360 full circle will be drawn clockwise
+    // for(let i = 0; i <= 360; i++){
+    //     points.push(Math.sin(i*(Math.PI/180))*radius, Math.cos(i*(Math.PI/180))*radius, 0);
+    // }
+    // const cursorgeo = new THREE.BufferGeometry().setFromPoints( points );
+	// // var cursorgeo = new THREE.SphereGeometry( 5, 32, 32)
+  
+	// var cursormat = new THREE.LineBasicMaterial({color:0xffffff})
+	var cursormat = new THREE.MeshBasicMaterial( {color: 0xffffff, transparent: true, opacity: 0.25} );
+      
+    // // cursor = new THREE.Line( geometry, material );
+	// cursor = new THREE.Mesh(cursorgeo, cursormat)
+    // //line.computeLineDistances();
+    // scene.add( cursor );
+
+
+	var cursorgeo = new THREE.CircleGeometry(radius, 10);
+
+
+    cursor = new THREE.Mesh(cursorgeo, cursormat);
+
+    scene.add(cursor);
+}
+
 
 function generateStars() {
 	const geometry = new THREE.BufferGeometry();
@@ -443,6 +480,35 @@ function Mover(m,vel,loc) {
     // }
 }
 
+$('.starview')
+	.mousedown(function(){
+		clicking = true;
+		cursor.scale.x = 2;
+		cursor.scale.y = 2;
+	})
+	.mouseup(function() {
+		clicking = false;
+		cursor.scale.x = 1;
+		cursor.scale.y = 1;
+	});
+
+function onDocumentMouseMove(event) {
+		event.preventDefault();
+
+		//mouse.x and .y for raycasting onto starfield
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+		raycaster.setFromCamera( mouse, camera );
+
+		intersects = new THREE.Vector3();
+		raycaster.ray.intersectPlane(plane, intersects);
+}
+
+function lerp (start, end, amt){
+	return (1-amt)*start+amt*end;
+}
+
 function animate() {
 
 	// CAMERA ANIMATION ON MOUSE MOVE
@@ -468,6 +534,10 @@ function createShootingStar(){
 
 function render() {
 	// const time = performance.now() * 0.001;
+	if(intersects){
+		cursor.position.x = intersects.x;
+		cursor.position.y = intersects.y;
+	}
 
 	water.material.uniforms['time'].value += 1.0 / 60.0;
 
@@ -481,14 +551,25 @@ function render() {
 				// update so they continue on their path
 				m.update();
 
+				if(m.location.y <= 0){
+					// console.log(m.location.y);
+					m.kill();
+				} 
+
                 if (m.alive) {
-                    for (var j =  movers.length-1; j >= 0; j--) {
-                        var a = movers[j];
-                        if (movers[i].alive && movers[j].alive && i != j) {
+                    // for (var j =  movers.length-1; j >= 0; j--) {
+                    //     var a = movers[j];
+					if(clicking){
+							// movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
+							// console.log(intersects.x, intersects.y)
+						a = new Mover(100, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500));
+						// a.update();
+						// a.display();
+                        if (movers[i].alive) {
                             var distance = m.location.distanceTo(a.location);
 
                             var radiusM = Math.pow((m.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
-                            var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
+                            var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/6;
 
                             if (distance < radiusM + radiusA) {
                                 // merge objects
@@ -496,7 +577,8 @@ function render() {
                             }
                             else
                             {
-                               a.attract(m);
+								// console.log('attract');
+                               m.attract(a);
                             }
                         }
                     }
@@ -504,7 +586,7 @@ function render() {
             }
 
 			// Random amount of time in between shooting stars being generated
-	
+
 
 	renderer.render(scene, camera);
 }
@@ -540,10 +622,10 @@ function wish() {
 	);
 }
 
-function onDocumentMouseMove(event) {
-	mouseX = (event.clientX - windowHalfX) / 2;
-	mouseY = (event.clientY - windowHalfY) / 2;
-}
+// function onDocumentMouseMove(event) {
+// 	mouseX = (event.clientX - windowHalfX) / 2;
+// 	mouseY = (event.clientY - windowHalfY) / 2;
+// }
 
 // Adds cubes for cursor interactivity demo
 function addCubes(n) {
@@ -578,3 +660,4 @@ window.onload = () => {
 	init();
 	animate();
 };
+
