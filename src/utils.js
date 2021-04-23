@@ -3,12 +3,11 @@
 
 export const vertexShader = ` 
     varying vec3 vPosition;
-
     void main() {
         vPosition = position;
         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
         float ps = 1.-distance(vPosition, vec3(0.));
-        gl_PointSize = 10.*ps;
+        gl_PointSize = ps*2.5;
         gl_Position = projectionMatrix * mvPosition;
     }`;
 
@@ -24,6 +23,7 @@ export const fragmentShader = `
         if (finalph < .2) discard;
         vec3 color = vec3(1,1,1);
         gl_FragColor = vec4(color, finalph);
+
     }`;
 
 export const firebaseConfig = {

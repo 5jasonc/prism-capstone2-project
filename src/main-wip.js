@@ -20,6 +20,7 @@ import {
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
 const jellies = [];
+const movers = [];
 let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
@@ -168,7 +169,11 @@ const animate = (renderer, clock) => {
         controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
     }
 
-    if(currentScene === 'welcomePage') water.material.uniforms['time'].value += 1.0 / 60.0;
+    if(currentScene === 'welcomePage'){
+        water.material.uniforms['time'].value += 1.0 / 60.0;
+        updateShootingStars();
+    }
+    
     
     // Update tween and orbit controls each frame
     TWEEN.update();
@@ -313,9 +318,13 @@ const sceneClicked = (e) => {
     mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
   
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children, true);
-  
-    if(intersects.length > 0) jellyClicked(intersects[0].object.parent);
+
+    if(currentScene === 'welcomePage'){
+
+    } else{
+        const intersects = raycaster.intersectObjects(scene.children, true);
+        if(intersects.length > 0) jellyClicked(intersects[0].object.parent);
+    }
 };
 
 // When jelly is clicked, move camera to new jelly, zoom in, and start following it
@@ -492,9 +501,227 @@ const loadWelcomePage = () => {
 	};
 
     updateSun();
+    generateStars();
+    var intervalID = window.setInterval(createShootingStar, 3500);
+
     currentScene = 'welcomePage';
     $('.gaugeMeter').fadeOut();
 };
+
+// Generates field of random point stars above the water
+const generateStars = () =>{
+
+        const geometry = new THREE.BufferGeometry();
+        const N = 2000; //Number of stars to be generated
+        const vertices = new Float32Array(N);
+        let c = 0;
+
+
+        while (c < N) {
+
+          const theta = Math.random() * 2 * Math.PI,
+            phi = Math.acos(2 * Math.random() - 1),
+            r = Math.pow(Math.random(), 1 / 3),
+            x = r * Math.sin(phi) * Math.cos(theta),
+            y = r * Math.sin(phi) * Math.sin(theta),
+            z = 0;
+        
+          vertices[c] = x;
+          vertices[c + 1] = y;
+          vertices[c + 2] = z;
+          c += 3;
+        }
+        geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+        
+        const shaderMaterial = new THREE.ShaderMaterial({
+          uniforms: {},
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader,
+          transparent: true,
+          depthWrite: true
+        });
+        
+        let particles = new THREE.Points(geometry, shaderMaterial);
+        particles.scale.set(1200,1200,1200)
+        scene.add(particles);
+        particles.rotation.z=-0.5
+        particles.position.z = -500
+}
+
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+/* MOVER CLASS */
+function Mover(m,vel,loc) {
+    this.location = loc,
+    this.velocity = vel,
+    this.acceleration = new THREE.Vector3(0.0,0.0,0.0),
+    this.mass = m,
+    this.c = 0xffffff,
+    this.alive = true;
+    this.sphere_sides = 4
+    this.geometry = new THREE.SphereGeometry(1.0,this.sphere_sides,this.sphere_sides);
+
+    this.vertices = [];     // PATH OF MOVEMENT
+
+    this.line = new THREE.Line();       // line to display movement
+
+    this.color = this.line.material.color;
+
+    this.basicMaterial =  new THREE.MeshPhongMaterial({
+        color: this.color, specular: this.color, shininess: 10
+    });
+
+    this.mesh = new THREE.Mesh(this.geometry,this.basicMaterial);
+    this.mesh.castShadow = false;
+    this.mesh.receiveShadow = true;
+
+    this.position = this.location;
+
+    this.index = movers.length;
+    this.selected = false;
+
+    scene.add(this.mesh);
+
+    this.applyForce = function(force) {
+        if (!this.mass) this.mass = 1.0;
+        var f = force.divideScalar(this.mass);
+        this.acceleration.add(f);
+    };
+    this.update = function() {
+
+        this.velocity.add(this.acceleration);
+        this.location.add(this.velocity);
+        this.acceleration.multiplyScalar(0);
+
+        this.mesh.position.copy(this.location);
+        if (this.vertices.length > 10000) this.vertices.splice(0,1);
+
+        this.vertices.push(this.location.clone());
+        //this.lineGeometry.verticesNeedUpdate = true;
+
+    };
+    this.eat = function(m) { // m => other Mover object
+        var newMass = this.mass + m.mass;
+
+        var newLocation = new THREE.Vector3(
+            (this.location.x * this.mass + m.location.x * m.mass)/newMass,
+            (this.location.y * this.mass + m.location.y * m.mass)/newMass,
+            (this.location.z * this.mass + m.location.z * m.mass)/newMass);
+        var newVelocity = new THREE.Vector3(
+            (this.velocity.x *this.mass + m.velocity.x * m.mass) / newMass,
+            (this.velocity.y *this.mass + m.velocity.y * m.mass) / newMass,
+            (this.velocity.z *this.mass + m.velocity.z * m.mass) / newMass);
+
+        this.location=newLocation;
+        this.velocity=newVelocity;
+        this.mass = newMass;
+
+        if (m.selected) this.selected = true;
+        this.color.lerpHSL(m.color, m.mass /  (m.mass + this.mass));
+      
+        m.kill();
+    };
+    this.kill = function () {
+        this.alive=false;
+        //this.selectionLight.intensity = 0;
+        scene.remove(this.mesh);
+    };
+    this.attract = function(m) { // m => other Mover object
+        var force = new THREE.Vector3().subVectors(this.location,m.location); // Calculate direction of force
+        var d = force.lengthSq();
+        if (d<0) d*=-1;
+        force = force.normalize();
+        var strength = - (10 * this.mass * m.mass) / (d);  // Calculate gravitional force magnitude
+        force = force.multiplyScalar(strength); // Get force vector --> magnitude * direction
+        
+        this.applyForce(force);
+    };
+    this.display = function() {
+        if (this.alive) {
+            var scale = Math.pow((this.mass*MASS_FACTOR/(4*Math.PI)), 1/3);
+            this.mesh.scale.x = scale;
+            this.mesh.scale.y = scale;
+            this.mesh.scale.z = scale;
+
+        } else {
+            this.mesh.dispose();
+        }
+
+    };
+
+    // this.showTrails = function() {
+        if (!this.lineDrawn) {
+            this.lineDrawn = true;
+            scene.add(this.line);
+        } else if (this.lineDrawn === true) {
+            scene.remove(this.line);
+            var newLineGeometry = new THREE.Geometry();
+            newLineGeometry.vertices = this.vertices.slice();
+            newLineGeometry.verticesNeedUpdate = true;
+            if (!pause && !this.alive) {
+                if (this.lineDrawn === true) {
+                  this.vertices.shift();  
+                }
+            }
+            while (newLineGeometry.vertices.length > parseInt(100)) {
+                newLineGeometry.vertices.shift();
+            }
+            this.line = new THREE.Line(newLineGeometry, this.line.material);
+            scene.add(this.line);
+        }
+    // }
+}
+
+// Updates movement and math of current shooting stars
+const updateShootingStars = () => {
+    var movers_alive_count = 0;
+    // total_mass = 0;
+    var maximum_mass = 0.00;
+    //loop through all shooting stars
+    for (var i = movers.length-1; i >= 0; i--) {
+
+        var m = movers[i];
+        // update so they continue on their path
+        m.update();
+
+        if(m.location.y <= 0){ // Kills shooting stars below the horizon
+            m.kill();
+        } 
+
+        if (m.alive) {
+            if(clicking){
+                    // movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
+                    // console.log(intersects.x, intersects.y)
+                a = new Mover(100, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500));
+                // a.update();
+                // a.display();
+                if (movers[i].alive) {
+                    var distance = m.location.distanceTo(a.location);
+
+                    var radiusM = Math.pow((m.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
+                    var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/6;
+
+                    if (distance < radiusM + radiusA) {
+                        // Close enough to mouse to have been caught
+                        a.eat(m);
+                    }
+                    else
+                    {
+                        // Not close enough to be caught, but is attracted
+                        m.attract(a);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Generates a new shooting star in the top right, moving towards the bottom left at a random speed
+const createShootingStar = () => {
+	let speed = -1*(1+Math.random()*5);
+	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500)));
+}
 
 const unloadWelcomePage = () => {
     clearScene();

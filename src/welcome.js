@@ -214,7 +214,7 @@ function init() {
 	updateSun();
 
 	// Generates stars, at 0% opacity
-	// generateStars();
+	generateStars();
 
 	drawCircle(10);
 	cursor.position.z = -500;
