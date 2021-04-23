@@ -1624,7 +1624,7 @@ button {
 
 .errorPage {
   z-index: 4444;
-  background: rgba(141, 141, 141, 0.205);
+  background-color: #00013a56;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   height: 100vh;
@@ -1636,9 +1636,10 @@ button {
   position: relative;
   font-family: 'GT-Super-Display-Medium', sans-serif;
   text-align: center;
-  font-size: 86px;
+  font-size: 64px;
   letter-spacing: 2px;
   top: calc(100vh/2.8);
+  font-weight: 100;
 }
 
 .errorPage h2 {
@@ -1647,9 +1648,9 @@ button {
   font-family: sofia-pro, sans-serif;
   font-weight: 100;
   font-style: normal;
-  max-width: 300px;
-  font-size: 24px;
-  line-height: 32px;
+  max-width: 400px;
+  font-size: 32px;
+  line-height: 38px;
   text-align: center;
   margin: auto;
   top: calc(100vh/2.5);
@@ -1668,6 +1669,7 @@ button {
   padding-left: 32px;
   padding-right: 32px;
   font-size: 20px;
+  line-height: 24px;
   border: none;
   background: none;
   border-radius: 100rem;
@@ -1675,6 +1677,30 @@ button {
   border: solid 1px transparent;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
   transition: 0.2s ease-in;
+  outline: none;
+}
+
+.errorPage .closebtn{
+  position: absolute;
+  top: 48px;
+  right: 48px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid transparent;
+  border-radius: 100rem;
+  padding: 10px;
+  background: rgba(141, 141, 141, 0.205);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: 0.2s ease-in;
+  transform-origin: center;
+  cursor: pointer;
+}
+
+.errorPage .closebtn:hover{
+  transform: scale(0.95);
+  transition: 0.2s ease-in;
+  border: 1px solid white;
 }
 
 canvas #arApp{
