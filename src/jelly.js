@@ -401,7 +401,7 @@ function animate(time) {
 	stats.update();
 
     requestAnimationFrame(animate);
-
+	// console.log(time);
 	if(params.animate){
 		if(matShader) matShader.uniforms.time.value = time/2000;
 		if(linematShader) linematShader.uniforms.time.value = time/2000;
