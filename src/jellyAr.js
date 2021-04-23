@@ -32,7 +32,7 @@ const params = {
 	animate: true,
 	size: 1,
 	magnitude: 7,
-	segments: 32,
+	segments: 45,
 	wireframe: false,
 
 };
@@ -121,22 +121,14 @@ const fragmentShader = `
       }
 `
 
-
 function createParticleSystem() {
 	const geometry = new THREE.BufferGeometry();
 
 	const N = 1000;
-	// const vertices = new Float32Array(
-	//   [...Array(N)].map((_) => Math.random()*2-1)
-	// );
+
 	const vertices = new Float32Array(N);
 	let c = 0;
 	while (c < N) {
-	  // const u = Math.random() * 2 - 1,
-	  //   a = Math.random() * 2 * 3.14,
-	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
-	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
-	  //   z = u
 	  const theta = Math.random() * 2 * Math.PI,
 		phi = Math.acos(2 * Math.random() - 1),
 		r = Math.pow(Math.random(), 1 / 3),
@@ -153,7 +145,6 @@ function createParticleSystem() {
 	
 	const shaderMaterial = new THREE.ShaderMaterial({
 	  uniforms: {},
-	
 	  vertexShader: vertexShader,
 	  fragmentShader: fragmentShader,
 	  transparent: true,
@@ -162,9 +153,9 @@ function createParticleSystem() {
 	});
 	
 	particles = new THREE.Points(geometry, shaderMaterial);
-	particles.scale.set(200,200,200)
+	particles.scale.set(100,100,100)
 	scene.add(particles);
-	particles.rotation.z=-0.5
+	particles.rotation.z =- 0.5
 }
 
 function addJelly(){
@@ -253,11 +244,8 @@ function init(){
 	// camera
 	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
 	camera.position.set( 0, 0, 10 );
-
-	// scene
-	scene = new THREE.Scene();
-
-     // init scene and camera
+    
+	// init scene and camera
     scene = new THREE.Scene();
     scene.add(camera);
 
@@ -275,7 +263,7 @@ function init(){
 	// camera.add( pointLight );
 
 	// renderer
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 	renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setClearColor(0x000000, 0);	
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -352,6 +340,7 @@ function init(){
 
     onRenderFcts.push(function (delta) {
         parent.position.y = 3
+		//parent.rotation = 180
     })
 
     //render the whole thing on the page
@@ -381,11 +370,10 @@ function init(){
 	createParticleSystem();
 
 	// controls
-	// controls = new OrbitControls(camera, renderer.domElement)
-	// controls.listenToKeyEvents( window ); // optional
+	controls = new OrbitControls(camera, renderer.domElement)
+	controls.listenToKeyEvents( window ); // optional
 
 	// jelly
-
 	parent = new THREE.Object3D();
 	scene.add( parent );
 
@@ -485,7 +473,6 @@ function animate(time) {
 		if(matShader) matShader.uniforms.time.value = time/2000;
 		if(linematShader) linematShader.uniforms.time.value = time/2000;
 		particles.rotation.y+=0.001;
-		
 	}
 	// parent.rotateX((Math.PI / 1000) * Math.random());
     // parent.rotateZ((Math.PI / 1000) * Math.random());
