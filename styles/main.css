@@ -1397,6 +1397,26 @@ footer {
   transition: all 1s ease;
 }
 
+.printArCard img{
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  border-radius: 8px;
+}
+
+@keyframes slide {
+  0% {
+    left: -420px;
+    top: 100;
+  }
+  50% {
+    left: 420px;
+    top: 0px;
+  }
+  100% {
+    left: 420px;
+    top: 100;
+  }
+}
+
 .autoCenter h1{
   font-size: 18px;
   max-width: 300px;
@@ -1413,7 +1433,7 @@ footer {
 .autoCenter{
   position: relative;
   height: auto;
-  width: 236px;
+  width: 235.56px;
   top: 148px;
   margin: auto;
 }
