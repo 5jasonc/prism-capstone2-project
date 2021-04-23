@@ -73,17 +73,19 @@
     </nav>
     <script>
         $(window).scroll(function () {
-            $(".bg").css("opacity", 2 - $(window).scrollTop() / 150);
+            $(".bg").css("opacity", 1 - $(window).scrollTop() / 120);
         });
     </script>
     <!-- <canvas id="stars" style="position: absolute; left: 0; bottom: 0; right: 0; top: 0; z-index: -1;"></canvas> -->
     <section class="aboutus" style="overflow: auto;">
-            <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="Zoom_Background.mov"
-                width="100%"></video>
+        <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="Zoom_Background.mov"
+            width="100%"></video>
         <div class="about">
-            <h1 style=" position: relative;
-            top: calc(100vh/3);"><span class="colortext">About Us</span></h1>
+            <h1>About Us</h1>
             <img src="wishfultxt.svg">
+            <div class="scroll">
+
+            </div>
         </div>
         <div class="brief">
             <div class="half">
@@ -119,8 +121,7 @@
         </div>
         <div class="brief">
             <div class="half">
-                <img src="./imgs/Jellyfish Graphic.png" style="padding-top: 224px; transform: rotate(45deg);"
-                    alt="image place holder">
+                <img src="./imgs/Jellyfish Graphic.png" alt="image place holder">
             </div>
             <div class="half">
                 <h1>Why<span class="colortext"> Jellyfish?</span></h1>
@@ -130,7 +131,7 @@
         </div>
         <h1 style="padding-bottom: 132px;">A <span class="colortext">team</span> made it happen</h1>
         <div class="team-grid-container">
-        
+
             <div class="a1">
                 <span data-tilt>
                     <div class="teamitems">
@@ -188,50 +189,46 @@
             </div>
         </div>
 
-        <h1>Share</h1>
+        <h1 style="margin-top: 132px;">Share</h1>
+        <br>
+        <br>
         <div class="social-grid-container">
 
             <div class="facebookWrap">
-                    <div class="smlink">
-                            <a href="#">
-                                <img src="./icons/facebookicon.svg" alt="Twitter icon">
-                            </a>
-                        </div>
+                <div class="smlink">
+                    <a href="#">
+                        <img src="./icons/facebookicon.svg" alt="Twitter icon">
+                    </a>
+                </div>
             </div>
             <div class="twitterWrap">
-                    <div class="smlink">
-                            <a href="#">
-                                <img src="./icons/twittericon.svg" alt="Twitter icon">
-                            </a>
-                        </div>
+                <div class="smlink">
+                    <a href="#">
+                        <img src="./icons/twittericon.svg" alt="Twitter icon">
+                    </a>
+                </div>
             </div>
             <div class="linkWrap">
-                    <div class="smlink">
-                            <a href="#">
-                                <img src="./icons/copyicon.svg" alt="Copy icon">
-                            </a>
-                        </div>
+                <div class="smlink">
+                    <a href="#">
+                        <img src="./icons/copyicon.svg" alt="Copy icon">
+                    </a>
+                </div>
             </div>
-          </div>
-
-
-
+        </div>
         <footer>
             <p>2021 &copy; Team Prism</p>
         </footer>
-
-
-    <div class="settings" style="width: 164px;">
-        <div class="sounds">
-            <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
-            <button onclick="play()">
-                <div id="crossbar"></div>
-                <img src="./icons/Speaker.svg">
-            </button>
+        <div class="settings" style="width: 164px;">
+            <div class="sounds">
+                <audio src="Vitality - Benjamin Martins.mp3" id="audio" autoplay></audio>
+                <button onclick="play()">
+                    <div id="crossbar"></div>
+                    <img src="./icons/Speaker.svg">
+                </button>
+            </div>
         </div>
-
-
-        <script src="./src/tilt.jquery.js"></script>
+    </section>
 </body>
 <script>
     //Play/Pause button
@@ -249,4 +246,4 @@
     }
 </script>
 
-</html> 
+</html>

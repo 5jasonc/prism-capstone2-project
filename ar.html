@@ -7,7 +7,7 @@
 <link href="styles/main.css" rel="stylesheet" />
 <link href="styles/index.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- ar.js -->
 <script
     src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js">
@@ -178,13 +178,17 @@
     };
 </script>
 <script>
-    function myCloseBtn(){
+    function myCloseBtn() {
         $('.printArCard').fadeOut('slow');
     }
 </script>
+
 <body style='margin : 0px; overflow: hidden; font-family: sans-serif;'>
     <div class="printArCard">
-        <h1>Print Ar Cards to interact your jellyfish</h1>
+        <div class="autoCenter">
+            <a href="arPrintCards.svg" download><img src="arPrintCards.svg"></a>
+            <h1>Tap to export the Ar Cards to play the jellyfish.</h1>
+        </div>
         <button onclick="myCloseBtn()">Dismiss</button>
     </div>
     <canvas id="arApp"></canvas>
