@@ -3,6 +3,7 @@
 // ES6 MODULE IMPORTS
 import * as THREE from '../build/three.module.js';
 import * as TWEEN from '../build/tween.js';
+import Stats from './jsm/libs/stats.module.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
@@ -25,6 +26,11 @@ let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
 let bloomPass, filmPass;
+let matShader, linematShader, texture;
+let stats;
+let clicking, intersects, a;
+var MASS_FACTOR = .01; // for display of size
+
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
@@ -44,6 +50,8 @@ const init = () => {
     // Load three.js scene and resources
     const canvas = document.querySelector('#app');
     loader = new THREE.TextureLoader();
+    texture = loader.load('../starmap_4k_print.jpeg');
+    texture.mapping = THREE.EquirectangularReflectionMapping;
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
     const light = new THREE.PointLight(0xffffff, 1);
@@ -51,7 +59,7 @@ const init = () => {
     camera.add(light);
     renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth/2, window.innerHeight/2, false);
     // renderer.setClearColor(0x000000, 0); // not sure if we will need this
     // renderer.toneMapping = THREE.ReinhardToneMapping; // look better with this?
     renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
@@ -65,13 +73,13 @@ const init = () => {
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
 	composer.addPass(bloomPass);
-    composer.addPass(filmPass);
+    // composer.addPass(filmPass);
 
     // Set up orbit camera controls
     controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-	controls.listenToKeyEvents(window);
+    // controls.enableDamping = true;
+    // controls.dampingFactor = 0.05;
+	// controls.listenToKeyEvents(window);
       
     // Listen for events
     window.addEventListener('resize', () => {
@@ -111,6 +119,10 @@ const init = () => {
     // Start by loading galleryPage, as those are elements not hidden at top of init
     loadGalleryPage();
 
+    // TEMPORARY Stats for tracking performance
+    stats = new Stats();
+	document.body.appendChild( stats.dom );
+
     // Begin animation
     const clock = new THREE.Clock();
     animate(composer, clock);
@@ -142,7 +154,7 @@ const animate = (renderer, clock) => {
         }
     }
   
-    // Make jellies pulsate
+    // Make jellies pulsate through geometry transforms
     for(let j = 0; j < jellies.length; j++) {
         const position = jellies[j].jellyMesh.geometry.attributes.position;
         const vector = new THREE.Vector3();
@@ -163,10 +175,18 @@ const animate = (renderer, clock) => {
         jellies[j].jellyMesh.geometry.computeFaceNormals();
         jellies[j].a += jellies[j].aStep;
     }
+
+    // Make jellies pulsate through shader transforms
+    // for(let j = 0; j < jellies.length; j++) {
+    // if(matShader) matShader.uniforms.time.value = clock.elapsedTime*10;
+    // if(linematShader) linematShader.uniforms.time.value = clock.elapsedTime*10;
+    // }
+    // if(linematShader) linematShader.uniforms.time.value = time/2000;
   
     // If camera is focused on jelly, move camera
     if(isCameraFollowingJelly && currentScene === 'galleryPage') {
         controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
+        controls.update();
     }
 
     if(currentScene === 'welcomePage'){
@@ -174,7 +194,9 @@ const animate = (renderer, clock) => {
         updateShootingStars();
     }
     
-    
+    // TEMPORARY Update Stats for performance readout
+    stats.update();
+
     // Update tween and orbit controls each frame
     TWEEN.update();
     if(!isCameraAnimating && !controls.enabled) controls.update();
@@ -284,17 +306,71 @@ const generateJelly = (string) => {
     const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
+    
+    const outerMaterial = new THREE.MeshPhysicalMaterial({
+        color: `#${jellyColor}`,
+        transparent: true,
+        opacity: 0.45,
+        depthWrite: false
+    })
+    
+    outerMaterial.onBeforeCompile = (shader) => {
+        shader.uniforms.time = { value: 0}
+        shader.vertexShader = `
+            uniform float time;
+        ` + shader.vertexShader
+    
+        const token = '#include <begin_vertex>'
+        const customTransform = `
+        vec3 transformed = vec3(position);
+        transformed.y = position.y + sin(position.y*0.40 + time*2.0);
+    `
+        shader.vertexShader = shader.vertexShader.replace(token,customTransform)
+        matShader = shader
+    }
+    outerMaterial.side = THREE.DoubleSide;
 
-    const texture = loader.load('uv-lines.png');
-    texture.center.set = (0.5, 0.5);
-    const outerMaterial = new THREE.MeshMatcapMaterial({color: `#${jellyColor}`, transparent: true, opacity: 0.25, depthWrite: false, side: THREE.DoubleSide});
-    const innerMaterial = new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 0.65, depthWrite: false, map: texture, side: THREE.DoubleSide});
+    const lineMat = new THREE.LineBasicMaterial({color:0xffffff, transparent: true, opacity: 0.25})
+    lineMat.onBeforeCompile = (shader) => {
+    shader.uniforms.time = { value: 0}
+    shader.vertexShader = `
+        uniform float time;
+    ` + shader.vertexShader
+
+    const token = '#include <begin_vertex>'
+    const customTransform = `
+        vec3 transformed = vec3(position);
+        transformed.x = position.x*0.95;
+        transformed.z = position.z*0.95;
+        transformed.y = position.y*0.65 
+        + sin(position.y*0.40 + time*2.0);
+`
+    shader.vertexShader = shader.vertexShader.replace(token,customTransform)
+    linematShader = shader
+}
   
     const jellyMesh = new THREE.Mesh(jellyGeometery, outerMaterial);
-    const jellyInnerMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
-    jellyMesh.depthWrite = false;
-    jellyInnerMesh.depthWrite = false;
-    jellyInnerMesh.scale.set(0.98, 0.65, 0.98);
+    // const jellyInnerMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
+    // jellyInnerMesh.depthWrite = false;
+    // jellyInnerMesh.scale.set(0.98, 0.65, 0.98);
+
+    // Create submesh lines
+    const vertex = jellyMesh.geometry.attributes.position;
+    const lines = [];
+    // < vertex.count
+    
+    for ( let i = 0; i < jellyWidthSegments+1; i ++ ){
+        let temppoints = [];
+        for(let j=jellyWidthSegments; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
+            // temppoints.push(j+i);
+            var vec = new THREE.Vector3();
+            vec.fromBufferAttribute(vertex, i+j)
+            temppoints.push(vec);
+        }
+        // console.log(temppoints);
+        const linegeo = new THREE.BufferGeometry().setFromPoints( temppoints );
+        lines.push( new THREE.Line( linegeo, lineMat));
+    }
   
     const parent = new THREE.Object3D();
     parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
@@ -302,16 +378,18 @@ const generateJelly = (string) => {
     parent.userData.wish = string;
   
     parent.add(jellyMesh);
-    parent.add(jellyInnerMesh);
+    // for(let i=0; i<lines.length; i++){
+	// 	jellyMesh.add(lines[i]);
+	// }
     scene.add(parent);
 
-    jellies.push({jellyMesh, jellyInnerMesh, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string});
+    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string});
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
 const sceneClicked = (e) => {
     e.preventDefault();
-    if(currentScene !== 'galleryPage') return;
+    // if(currentScene !== 'galleryPage') return;
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
@@ -319,10 +397,13 @@ const sceneClicked = (e) => {
   
     raycaster.setFromCamera(mouse, camera);
 
-    if(currentScene === 'welcomePage'){
+    if(currentScene == 'welcomePage'){
+        let plane = new THREE.Plane( new THREE.Vector3(0, 0, 1), 500);
+        intersects = new THREE.Vector3();
+		raycaster.ray.intersectPlane(plane, intersects);
 
     } else{
-        const intersects = raycaster.intersectObjects(scene.children, true);
+        intersects = raycaster.intersectObjects(scene.children, true);
         if(intersects.length > 0) jellyClicked(intersects[0].object.parent);
     }
 };
@@ -341,18 +422,18 @@ const jellyClicked = (jelly) => {
     const orbitTarget = new THREE.Vector3(jelly.position.x, jelly.position.y, jelly.position.z);
   
     new TWEEN.Tween(controls)
-        .to({'target': orbitTarget}, 1000)
+        .to({'target': orbitTarget}, 500)
         .easing(TWEEN.Easing.Circular.InOut)
         .onUpdate(() => controls.update())
         .onComplete(() => {
             isCameraAnimating = false;
             isCameraFollowingJelly = true
             // Experimenting with zoom transition next
-            // new TWEEN.Tween(camera)
-            //     .to({'fov': 10}, 1000)
-            //     .easing(TWEEN.Easing.Circular.InOut)
-            //     .onUpdate(() => camera.updateProjectionMatrix())
-            //     .start();
+            new TWEEN.Tween(camera)
+                .to({'fov': 10}, 1000)
+                .easing(TWEEN.Easing.Circular.InOut)
+                .onUpdate(() => camera.updateProjectionMatrix())
+                .start();
         })
         .start();
 
@@ -625,7 +706,10 @@ function Mover(m,vel,loc) {
     this.kill = function () {
         this.alive=false;
         //this.selectionLight.intensity = 0;
+        this.mesh.geometry.dispose();
+        this.mesh.material.dispose();
         scene.remove(this.mesh);
+
     };
     this.attract = function(m) { // m => other Mover object
         var force = new THREE.Vector3().subVectors(this.location,m.location); // Calculate direction of force
@@ -690,9 +774,9 @@ const updateShootingStars = () => {
         } 
 
         if (m.alive) {
-            if(clicking){
                     // movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
-                    // console.log(intersects.x, intersects.y)
+                    // If clicking, set and calculate, otherwise don't
+            if(intersects){
                 a = new Mover(100, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500));
                 // a.update();
                 // a.display();
@@ -705,6 +789,7 @@ const updateShootingStars = () => {
                     if (distance < radiusM + radiusA) {
                         // Close enough to mouse to have been caught
                         a.eat(m);
+                        console.log('Star caught!')
                     }
                     else
                     {
@@ -723,6 +808,7 @@ const createShootingStar = () => {
 	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500)));
 }
 
+// Individually remove all objects related to WelcomePage
 const unloadWelcomePage = () => {
     clearScene();
 };
