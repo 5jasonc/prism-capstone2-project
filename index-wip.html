@@ -29,9 +29,10 @@
     <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
 
     <!-- Twitter Open Graphs-->
-    <meta name="twitter:card" content="I Wish for a better tomorrow."></meta>
+    <meta name="twitter:card" content="I Wish for a better tomorrow.">
+    </meta>
     <meta name="twitter:card" content="I Wish for a better tomorrow." />
-    <meta name="twitter:site" content="https://wishful.space"/>
+    <meta name="twitter:site" content="https://wishful.space" />
     <meta name="twitter:creator" content="@wishful.rit" />
 </head>
 
@@ -111,7 +112,7 @@
 
     <div id="wishtxtbox">
         <div class="sharelinks">
-            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/save.svg" height="100%"
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/share.svg" height="100%"
                     alt="share icon"></button>
         </div>
         <h3>I wish</h3>
@@ -123,8 +124,8 @@
             <h4>View in 3D</h4>
         </a>
         <div class="line"></div>
-        <button style="display: flex; justify-content: left;"><img src="./icons/save.svg" height="100%" width="18px"
-                alt="share icon">
+        <button style="display: flex; justify-content: left;" class="share-button" id="share"><img src="./icons/share.svg" height="100%"
+                width="18px" alt="share icon">
             <h4>Share</h4>
         </button>
     </div>
@@ -280,6 +281,19 @@
         $('.addJellyFish').fadeOut();
         $('.logo').fadeOut();
     }
+
+    const shareButton = document.querySelector('.share-button');
+    shareButton.addEventListener('click', event => {
+        if (navigator.share) {
+            navigator.share({
+                    title: 'Wishful Share',
+                    url: 'wishful.space'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                .catch(console.error);
+        }
+    });
 
     function closeBtn() {
         $('#app').css({

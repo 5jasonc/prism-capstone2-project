@@ -154,7 +154,7 @@ a {
 
 .loader h2 {
   position: absolute;
-  width: 500px;
+  width: 100%;
   text-align: center;
   bottom: 24%;
   left: 0;
@@ -169,7 +169,7 @@ a {
 
 .loader h1 {
   position: absolute;
-  width: 500px;
+  width: 100%;
   text-align: center;
   bottom: 30%;
   left: 0;
@@ -1402,21 +1402,6 @@ footer {
   border-radius: 8px;
 }
 
-@keyframes slide {
-  0% {
-    left: -420px;
-    top: 100;
-  }
-  50% {
-    left: 420px;
-    top: 0px;
-  }
-  100% {
-    left: 420px;
-    top: 100;
-  }
-}
-
 .autoCenter h1{
   font-size: 18px;
   max-width: 300px;
@@ -1945,10 +1930,8 @@ canvas #arApp{
 }
 
 @media screen and (max-width: 380px){
-  
   .welcometxt p{
     font-size: 18px !important;
     padding: 16px;
   }
-
 }
