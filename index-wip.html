@@ -285,11 +285,17 @@
     //share only mobile view 
     const shareButton = document.querySelector('.share-button');
     shareButton.addEventListener('click', event => {
-        navigator.share({
-            title: 'Wishful: Share wish',
-            text: 'Share your wish with your friends',
-            url: 'wishful.space'
-        })
+        if (navigator.share) {
+            navigator.share({
+                    title: 'Wishful: Share wish',
+                    url: 'http://wishful.space'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                .catch(console.error);
+        } else {
+            // fallback
+        }
     });
 
     function closeBtn() {
