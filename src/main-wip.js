@@ -419,14 +419,18 @@ const loadGalleryPage = () => {
 
 // Unload all elements in gallery page
 const unloadGalleryPage = () => {
+    $('.gaugeMeter').fadeIn();
     clearScene();
     jellies.splice(0, jellies.length);
+    
 };
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
+    $('.gaugeMeter').fadeIn();
     //fix the width size of settings bar to 164
     $('.settings').css("width", "164px");
+
     bloomPass.threshold = 9;
 
     const light = new THREE.DirectionalLight(0xffffff);
@@ -445,7 +449,7 @@ const loadWelcomePage = () => {
             }),
             sunDirection: new THREE.Vector3(),
             sunColor: 0xffffff,
-            waterColor: 0xaccde8,
+            waterColor: 0x5499d1,
             distortionScale: 6,
             fog: scene.fog !== undefined
         }
@@ -489,6 +493,7 @@ const loadWelcomePage = () => {
 
     updateSun();
     currentScene = 'welcomePage';
+    $('.gaugeMeter').fadeOut();
 };
 
 const unloadWelcomePage = () => {

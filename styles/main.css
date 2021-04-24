@@ -135,7 +135,7 @@ a {
   display: block;
   height: 100vh;
   width: 100vw;
-  background: black;
+  background: #00013a;
   transition: all 1s ease-in;
 }
 
@@ -154,7 +154,7 @@ a {
 
 .loader h2 {
   position: absolute;
-  width: 500px;
+  width: 100%;
   text-align: center;
   bottom: 24%;
   left: 0;
@@ -169,7 +169,7 @@ a {
 
 .loader h1 {
   position: absolute;
-  width: 500px;
+  width: 100%;
   text-align: center;
   bottom: 30%;
   left: 0;
@@ -184,7 +184,7 @@ a {
 }
 
 #app {
-  background: linear-gradient( #0e1d38, #02070f);
+  background: radial-gradient( #131780, #040740);
   width: 100vw;
   height: calc(100vh - 70px);
   display: block;
@@ -312,7 +312,7 @@ a {
   padding-left: 32px;
   font-size: 22px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   padding-top: 6px;
 }
 
@@ -331,11 +331,15 @@ a {
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 18px;
+  padding: 8px;
+  padding-top: 18px;
+  padding-bottom: 18px;
   box-sizing: border-box;
   display: flex;
   z-index: 2;
   transition: all 0.5s ease;
+  display: flex;
+  justify-content: space-between;
 }
 
 .settings .sounds button {
@@ -365,7 +369,7 @@ a {
 .settings .search {
   width: auto;
   padding-left: 64px;
-  padding-right: 66px;
+  padding-right: 64px;
   transition: 0.1s ease-in;
   box-sizing: border-box;
   transform: scale(0.8);
@@ -376,7 +380,6 @@ a {
   width: 2px;
   background-color: white;
   opacity: 0.6;
-  margin-left: 5px;
 }
 
 .settings .sounds:hover,
@@ -386,6 +389,7 @@ a {
 }
 
 .gaugeMeter{
+  display: none;
   position: absolute;
   left: 0;
   height: auto;
@@ -395,6 +399,7 @@ a {
   padding: 12px;
   text-align: right;
   font-size: 24px;
+  z-index: 12;
 }
 
 .numMeter h4{
@@ -408,7 +413,7 @@ a {
   z-index: 12;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.61);
+  background-color: #00013a56;
   backdrop-filter: blur(38px);
 }
 
@@ -442,11 +447,12 @@ a {
 }
 
 .banner {
+  display: flex;
+  justify-content: center;
   display: none;
   position: absolute;
   top: 48px;
   width: auto;
-  max-width: 656px;
   height: 48px;
   left: 0;
   right: 0;
@@ -465,13 +471,13 @@ a {
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
-  width: 100%;
+  width: auto;
   margin-left: 16px;
   border-radius: 100rem;
   font-weight: 100;
   font-size: 20px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   text-align: center;
 }
 
@@ -494,7 +500,8 @@ a {
   margin-top: 64px;
   height: 64px;
   width: auto;
-  padding: 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 32px;
   padding-right: 32px;
   font-size: 20px;
@@ -567,8 +574,9 @@ nav {
   right: 0;
   width: 100vw;
   height: 100%;
-  background: rgba(0, 0, 0, 0.61);
-  backdrop-filter: blur(38px);
+  background-color: #00013a56;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   opacity: 0;
   display: none;
   z-index: 15;
@@ -783,7 +791,6 @@ ul {
   background: black;
   overflow: auto;
   text-align: center;
-  transition:  all 0.5s ease-in;
 }
 
 .aboutus h1 {
@@ -826,6 +833,7 @@ ul {
   font-weight: 100;
   text-transform: none;
   max-width: 420px;
+  width: 100%;
 }
 
 .half p {
@@ -861,7 +869,18 @@ ul {
   font-weight: 100;
 }
 
+.team-grid-container{
+  max-width: 1600px;
+  margin: auto;
+}
+
+.social-grid-container{
+  max-width: 400px;
+  margin: auto;
+}
+
 .about{
+  scroll-behavior: smooth;
   position: relative;
   top: 0;
   height: 100vh;
@@ -870,15 +889,14 @@ ul {
 
 .about h1{
   position: relative;
-  top: calc(100%/0);
+  top: 120px;
   font-size: 32px;
   margin-top: 0;
 }
 
 .about img {
   position: relative;
-  top: calc(100%/3);
-  position: relative;
+  top: 140px;
   width: 48vw;
   cursor: pointer;
   padding-bottom: 32px;
@@ -1123,10 +1141,23 @@ footer {
   width: 100vw;
   position: relative;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.534);
+  background-color: #00013a56;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   transition: all 0.5s ease;
+}
+
+#welcomescreen h4{
+  font-size: 18px;
+  color: rgb(172, 172, 172);
+  position: absolute;
+  bottom: 48px;
+  font-weight: 100;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 200px;
+  text-align: center;
 }
 
 #welcomescreen h2 {
@@ -1317,12 +1348,13 @@ footer {
 
 #wishText {
   display: none;
-  font-size: 48px;
-  line-height: 52px;
-  font-family: sofia-pro, sans-serif;
-  width: 420px;
+  font-size: 56px;
+  line-height: 64px;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
+  width: 464px;
+  padding-top: 12px;
+  letter-spacing: 4px;
 }
-
 
 
 #wishtxtbox {
@@ -1353,6 +1385,66 @@ footer {
 
 .arMode{
   display: none;
+}
+
+.printArCard{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #00013a56;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 1s ease;
+}
+
+.printArCard img{
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  border-radius: 8px;
+}
+
+.autoCenter h1{
+  font-size: 18px;
+  max-width: 300px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-weight: 100;
+  font-family: sofia-pro, sans-serif;
+  width: 100%;
+  text-align: center;
+  padding-top: 32px;
+}
+
+.autoCenter{
+  position: relative;
+  height: auto;
+  width: 235.56px;
+  top: 148px;
+  margin: auto;
+}
+
+.printArCard button{
+  position: absolute;
+  bottom: 64px;
+  background-color: none;
+  color: white;
+  outline: none;
+  border: none;
+  border: 1px solid white;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 18px;
+  padding: 16px;
+  padding-left: 48px;
+  padding-right: 48px;
+  box-sizing: border-box;
+  border-radius: 100rem;
+  cursor: pointer;
+}
+
+.printArCard button:active{
+  background-color: rgb(36, 36, 36);
 }
 
 #shareJellyBtn {
@@ -1532,7 +1624,7 @@ button {
 
 .errorPage {
   z-index: 4444;
-  background: rgba(141, 141, 141, 0.205);
+  background-color: #00013a56;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   height: 100vh;
@@ -1544,9 +1636,10 @@ button {
   position: relative;
   font-family: 'GT-Super-Display-Medium', sans-serif;
   text-align: center;
-  font-size: 86px;
+  font-size: 64px;
   letter-spacing: 2px;
   top: calc(100vh/2.8);
+  font-weight: 100;
 }
 
 .errorPage h2 {
@@ -1555,9 +1648,9 @@ button {
   font-family: sofia-pro, sans-serif;
   font-weight: 100;
   font-style: normal;
-  max-width: 300px;
-  font-size: 24px;
-  line-height: 32px;
+  max-width: 400px;
+  font-size: 32px;
+  line-height: 38px;
   text-align: center;
   margin: auto;
   top: calc(100vh/2.5);
@@ -1576,6 +1669,7 @@ button {
   padding-left: 32px;
   padding-right: 32px;
   font-size: 20px;
+  line-height: 24px;
   border: none;
   background: none;
   border-radius: 100rem;
@@ -1583,6 +1677,30 @@ button {
   border: solid 1px transparent;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #F2387C, #DE41F2);
   transition: 0.2s ease-in;
+  outline: none;
+}
+
+.errorPage .closebtn{
+  position: absolute;
+  top: 48px;
+  right: 48px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid transparent;
+  border-radius: 100rem;
+  padding: 10px;
+  background: rgba(141, 141, 141, 0.205);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: 0.2s ease-in;
+  transform-origin: center;
+  cursor: pointer;
+}
+
+.errorPage .closebtn:hover{
+  transform: scale(0.95);
+  transition: 0.2s ease-in;
+  border: 1px solid white;
 }
 
 canvas #arApp{
@@ -1683,6 +1801,8 @@ canvas #arApp{
 
   .settings {
     position: absolute;
+    display: flex;
+    justify-content: center;
     top: 120px;
     right: 24px;
     border-radius: 0;
@@ -1814,16 +1934,16 @@ canvas #arApp{
     padding-bottom: 48px;
   }
 
-  .brief h1{
-    margin: auto;
-    margin-top: 132px;
-  }
-
   .half{
     width: 100%;
     height: auto;
     padding: 0;
   }
+
+  .half h1{
+    padding-right: 0;
+  }
+  
 
   .half img{
     width: 100%;
@@ -1836,10 +1956,8 @@ canvas #arApp{
 }
 
 @media screen and (max-width: 380px){
-  
   .welcometxt p{
     font-size: 18px !important;
     padding: 16px;
   }
-
 }

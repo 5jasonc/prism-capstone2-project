@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name=apple-mobile-web-app-capable content=yes>
@@ -9,9 +8,9 @@
     <title>Wishful</title>
     <link rel="icon" href="StarLogoIcon.png">
     <link rel="stylesheet" href="https://use.typekit.net/wba4cnv.css">
-    <link href="styles/main.css" rel="stylesheet" />
-    <link href="styles/print.css" rel="stylesheet" />
-    <link id="styleChangeLink" href="styles/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/print.css">
+    <link rel="stylesheet"  id="styleChangeLink" href="styles/index.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
@@ -29,13 +28,14 @@
     <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
 
     <!-- Twitter Open Graphs-->
-    <meta name="twitter:card" content="I Wish for a better tomorrow."></meta>
+    <meta name="twitter:card" content="I Wish for a better tomorrow.">
+    </meta>
     <meta name="twitter:card" content="I Wish for a better tomorrow." />
     <meta name="twitter:site" content="https://wishful.space" />
     <meta name="twitter:creator" content="@wishful.rit" />
 </head>
 
-<body>
+<body style="background:#05073d;">
     <!-- Loader when computer needs to load -->
     <div class="loader">
         <img class="logoSpinner" src="./icons/whitestar.svg" alt="star logo">
@@ -74,9 +74,8 @@
         <ul>
             <h1>Menu</h1>
             <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
-            <li><a href="stars.html" style="--animation-order: 2;">Share a Wish</a></li>
-            <li><a href="index.html" style="--animation-order: 3;">View Gallery</a></li>
-            <li><a href="aboutus.html" style="--animation-order: 4;">About us</a></li>
+            <li><a href="index.html" style="--animation-order: 2;">Gallery</a></li>
+            <li><a href="aboutus.html" style="--animation-order: 3;">About us</a></li>
         </ul>
         <div class="socialmedias">
             <div class="smlink">
@@ -112,7 +111,7 @@
 
     <div id="wishtxtbox">
         <div class="sharelinks">
-            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/save.svg" height="100%"
+            <button id="shareJellyBtn" onclick="shareBtn()"><img src="./icons/share.svg" height="100%"
                     alt="share icon"></button>
         </div>
         <h3>I wish</h3>
@@ -124,18 +123,22 @@
             <h4>View in 3D</h4>
         </a>
         <div class="line"></div>
-        <button style="display: flex; justify-content: left;"><img src="./icons/save.svg" height="100%" width="18px"
-                alt="share icon">
+        <button style="display: flex; justify-content: left;" class="share-button" id="share"><img
+                src="./icons/share.svg" height="100%" width="18px" alt="share icon">
             <h4>Share</h4>
         </button>
     </div>
 
+    <div class="gaugeMeter">
+        <h4><span id="numbMeter">0</span> m</h4>
+    </div>
+
     <div class="searchWindow" id="searchJelly">
         <h1>Search</h1>
-        <input type="text" id="searchtxt" autocomplete="off" placeholder="Fluffy puppy">
+        <input type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
             <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
-            <button class="viewall" id="startSearchButton">View All</button>
+            <button class="viewall" id="startSearchButton">View Results</button>
             <button class="cancel" id="cancelbtn">Cancel</button>
         </div>
     </div>
@@ -168,6 +171,16 @@
             </div>
         </div>
     </div>
+    
+    <!-- 404 ERROR -->
+    <!-- <div class="errorPage">
+        <div class="closebtn">
+            <img src="./icons/exit.svg">
+        </div>
+        <h1>404 Error</h1>
+        <h2>Oops!, I don't think we were ready for this jelly.</h2>
+        <button>Return to exploring</button>
+    </div> -->
 
     <!-- TEMPORARY MAKE WISH PAGE -->
     <div class="controlscontainer" id="myDIV">
@@ -277,6 +290,22 @@
         $('.addJellyFish').fadeOut();
         $('.logo').fadeOut();
     }
+
+    //share only mobile view 
+    const shareButton = document.querySelector('.share-button');
+    shareButton.addEventListener('click', event => {
+        if (navigator.share) {
+            navigator.share({
+                    title: 'Wishful: Share wish',
+                    url: 'http://wishful.space'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                .catch(console.error);
+        } else {
+            // fallback
+        }
+    });
 
     function closeBtn() {
         $('#app').css({
