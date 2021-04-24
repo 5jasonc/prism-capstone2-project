@@ -332,7 +332,7 @@ function init(){
         detectionMode: "mono",
         canvasWidth: width,
         canvasHeight: height,
-        maxDetectionRate: 60,
+        maxDetectionRate: 30,
     })
     // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
     scene.visible = false
