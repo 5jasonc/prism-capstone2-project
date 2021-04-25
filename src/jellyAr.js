@@ -211,7 +211,7 @@ function addGeometry( geometry ) {
 		mesh.add(lines[i]);
 	}
 	parent.add( mesh );
-	mesh.position.y = -10
+	// mesh.position.y = 10
 	// parent.add( subMesh );
 
 }
@@ -243,14 +243,16 @@ function init(){
 
 	// camera
 	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
-	camera.position.set( 0, 0, 10 );
+	camera.position.set( 10, 10, 10 );
     
 	// init scene and camera
     scene = new THREE.Scene();
     scene.add(camera);
 
-    parent = new THREE.Object3D();
-    scene.add(parent);
+    // parent = new THREE.Object3D();
+    // scene.add(parent);
+
+
 
 	// light
 	// const light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -332,7 +334,7 @@ function init(){
         detectionMode: "mono",
         canvasWidth: width,
         canvasHeight: height,
-        maxDetectionRate: 30,
+        maxDetectionRate: 60,
     })
     // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
     scene.visible = false
@@ -367,15 +369,17 @@ function init(){
     /*======================================================*/
 
 	// particle system
-	createParticleSystem();
+	// createParticleSystem();
 
 	// controls
-	controls = new OrbitControls(camera, renderer.domElement)
-	controls.listenToKeyEvents( window ); // optional
+	// controls = new OrbitControls(camera, renderer.domElement)
+	// controls.listenToKeyEvents( window ); // optional
 
 	// jelly
 	parent = new THREE.Object3D();
 	scene.add( parent );
+
+	parent.position.y = -2;
 
 	// Establish Wireframe Clipping 
 	// localPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
@@ -383,7 +387,8 @@ function init(){
 
 	addJelly();
 	// subMesh.scale.set(0.98,0.65,0.98)
-	addTentacles();
+	// addTentacles();
+	mesh.scale.set(0.15, 0.15, 0.15);
 
 	// GUI
 	const gui = new dat.GUI();
@@ -430,7 +435,7 @@ function init(){
 
 	composer = new EffectComposer( renderer );
 	composer.addPass( renderScene );
-	composer.addPass( bloomPass );
+	// composer.addPass( bloomPass );
 	// composer.addPass(filmPass);
 	// composer.addPass(bokehPass);
 
@@ -472,7 +477,7 @@ function animate(time) {
 	if(params.animate){
 		if(matShader) matShader.uniforms.time.value = time/2000;
 		if(linematShader) linematShader.uniforms.time.value = time/2000;
-		particles.rotation.y+=0.001;
+		// particles.rotation.y+=0.001;
 	}
 	// parent.rotateX((Math.PI / 1000) * Math.random());
     // parent.rotateZ((Math.PI / 1000) * Math.random());
@@ -491,8 +496,8 @@ function animate(time) {
     //   parent.rotateZ(Math.PI);
     // }
 
-
-	updateTentacles();
+	//Updates trailing line behind jelly
+	// updateTentacles();
 
 	// controls.target = parent.position;
 	// controls.update();
