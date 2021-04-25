@@ -15,7 +15,7 @@ import {
     vertexShader, fragmentShader, firebaseConfig,
     changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
-    getUserID, hashFunc, mapNumToRange, randomNum
+    getUserID, hashFunc, mapNumToRange, randomNum, shiftRight
 } from './utils.js';
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
@@ -137,26 +137,54 @@ const animate = (renderer, clock) => {
         }
     }
   
-    // Make jellies pulsate
+    // Make jellies pulsate through geometry transforms
     for(let j = 0; j < jellies.length; j++) {
-        const position = jellies[j].jellyMesh.geometry.attributes.position;
+        const currentJelly = jellies[j];
+        const position = currentJelly.jellyMesh.geometry.attributes.position;
         const vector = new THREE.Vector3();
-        for(let i = 0; i < position.count; i++){
-            vector.fromBufferAttribute(position, i);
-            vector.applyMatrix4(jellies[j].jellyMesh.matrix);
+        //loops through points within jelly
+        for(let pointIndex = 0; pointIndex < position.count; pointIndex++){
+            vector.fromBufferAttribute(position, pointIndex);
+            vector.applyMatrix4(currentJelly.jellyMesh.matrix);
             let size = 12;
             let magnitude = 7;
             let dist = new THREE.Vector3(vector.x, vector.y, vector.z).sub(new THREE.Vector3(0, 1000, 0));
             vector.normalize();
-            vector.multiplyScalar(40 + Math.sin(dist.length() / -size + jellies[j].a) * magnitude);
-            position.setXYZ(i, vector.x, vector.y, vector.z);
+            vector.multiplyScalar(40 + Math.sin(dist.length() / -size + currentJelly.a) * magnitude);
+            position.setXYZ(pointIndex, vector.x, vector.y, vector.z);
         }
+        //update jellyfish mesh
         position.needsUpdate = true;
-        jellies[j].jellyMesh.geometry.verticesNeedUpdate = true;
-        jellies[j].jellyMesh.geometry.normalsNeedUpdate = true;
-        jellies[j].jellyMesh.geometry.computeVertexNormals();
-        jellies[j].jellyMesh.geometry.computeFaceNormals();
-        jellies[j].a += jellies[j].aStep;
+
+        for ( let lineIndex = 0; lineIndex < currentJelly.jellyWidthSegments+1; lineIndex ++ ){
+            const temppoints = [];
+            const positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+    
+            for(let jIndex=currentJelly.jellyWidthSegments; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){    
+                var vec = new THREE.Vector3();
+                vec.fromBufferAttribute(position, lineIndex+jIndex)
+                temppoints.push(vec);
+            }
+    
+            for(let k=0; k<temppoints.length; k++){
+    
+                let point = temppoints[k];
+    
+                shiftRight(positions, point.z);
+                shiftRight(positions, point.y);
+                shiftRight(positions, point.x);
+            }
+            currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
+
+        }
+
+        currentJelly.jellyMesh.geometry.verticesNeedUpdate = true;
+        currentJelly.jellyMesh.geometry.normalsNeedUpdate = true;
+        currentJelly.jellyMesh.geometry.computeVertexNormals();
+        currentJelly.jellyMesh.geometry.computeFaceNormals();
+        currentJelly.a += currentJelly.aStep;
+
+        currentJelly.jellyMesh.geometry.scale(1.15, 1.15, 1.15);
     }
   
     // If camera is focused on jelly, move camera
@@ -281,28 +309,59 @@ const generateJelly = (string) => {
     const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
+    
+    const outerMaterial = new THREE.MeshMatcapMaterial({
+        color: `#${jellyColor}`,
+        transparent: true,
+        opacity: 0.45,
+        depthWrite: false
+    })
+    outerMaterial.side = THREE.DoubleSide;
 
-    const texture = loader.load('uv-lines.png');
-    texture.center.set = (0.5, 0.5);
-    const outerMaterial = new THREE.MeshMatcapMaterial({color: `#${jellyColor}`, transparent: true, opacity: 0.25, depthWrite: false, side: THREE.DoubleSide});
-    const innerMaterial = new THREE.MeshPhongMaterial({color: 0xffffff, transparent: true, opacity: 0.65, depthWrite: false, map: texture, side: THREE.DoubleSide});
-  
+    const lineMat = new THREE.LineBasicMaterial({color:0xffffff, transparent: true, opacity: 0.25})
+
     const jellyMesh = new THREE.Mesh(jellyGeometery, outerMaterial);
-    const jellyInnerMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
-    jellyMesh.depthWrite = false;
-    jellyInnerMesh.depthWrite = false;
-    jellyInnerMesh.scale.set(0.98, 0.65, 0.98);
-  
+    const vertex = jellyMesh.geometry.attributes.position;
+    const lines = [];
+
+    for ( let i = 0; i < jellyWidthSegments+1; i ++ ){
+
+        const temppoints = [];
+
+        let MAX_POINTS = jellyHeightSegments+1;
+        const linegeo = new THREE.BufferGeometry();
+        const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
+        linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+
+        for(let j=jellyWidthSegments; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
+            var vec = new THREE.Vector3();
+            vec.fromBufferAttribute(vertex, i+j)
+            temppoints.push(vec);
+        }
+
+        for(let k=0; k<temppoints.length; k++){
+            let point = temppoints[k];
+            shiftRight(positions, point.z);
+            shiftRight(positions, point.y);
+            shiftRight(positions, point.x);
+        }
+        const lineMat = new THREE.LineBasicMaterial({color:0xffffff, transparent: true, opacity: 0.25})
+        lines.push( new THREE.Line( linegeo, lineMat));
+    }
+
     const parent = new THREE.Object3D();
     parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
     parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
     parent.userData.wish = string;
   
     parent.add(jellyMesh);
-    parent.add(jellyInnerMesh);
+    for(let i=0; i<lines.length; i++){
+		jellyMesh.add(lines[i]);
+        lines[i].geometry.attributes.position.needsUpdate = true;
+	}
     scene.add(parent);
 
-    jellies.push({jellyMesh, jellyInnerMesh, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string});
+    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string, jellyWidthSegments: jellyWidthSegments, jellyHeightSegments: jellyHeightSegments});
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true

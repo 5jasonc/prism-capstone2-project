@@ -148,3 +148,13 @@ export const mapNumToRange = (input, minInput, maxInput, minOutput, maxOutput) =
 export const randomNum = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+// Adds to the top of a BufferArray, emulating a push
+
+export const shiftRight = (collection, value) => {
+    for (let i = collection.length - 1; i > 0; i--) {
+      collection[i] = collection[i - 1]; // Shift right
+    }
+    collection[0] = value; // Place new value at head
+    return collection;
+}
