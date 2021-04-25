@@ -1809,8 +1809,8 @@ canvas #arApp{
     top: 120px;
     right: 24px;
     border-radius: 0;
-    width: 64px;
-    height: 64px;
+    width: 64px !important;
+    height: 64px !important;
     border-radius: 100rem;
     transition: all 0.5s ease;
   }

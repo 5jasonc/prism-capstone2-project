@@ -409,6 +409,8 @@ const loadGalleryPage = () => {
     currentJellyTarget = null;
     loadWishes();
     currentScene = 'galleryPage';
+    $('.settings').css('width', '364px');
+    $('.search').fadeIn();
 };
 
 // Unload all elements in gallery page
