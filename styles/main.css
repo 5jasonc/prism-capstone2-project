@@ -776,7 +776,7 @@ ul {
 .smlink:hover {
   transition: 0.2s ease-in;
   transform: scale(0.95);
-  border: 1px solid rgb(226, 226, 226);
+  border: 1px solid rgba(226, 226, 226, 0.5);
 }
 
 .aboutus {
@@ -1473,7 +1473,7 @@ footer {
 
 #shareJellyBtn:hover, #farView:hover{
   transition: 0.2s ease-in;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 } 
 
 .shareModal {
@@ -1518,8 +1518,11 @@ footer {
 .shareLink {
   float: left;
   bottom: 96px;
-  width: 318px;
-  height: 64px;
+  width: 348px;
+  height: 56px;
+  padding: 16px;
+  border: 1px solid transparent;
+  border-radius: 100rem;
 }
 
 .shareLink h4 {
@@ -1540,6 +1543,13 @@ footer {
   outline: none;
   float: right;
   cursor: pointer;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+#copy:hover{
+  opacity: 0.5;
+  transition: 0.2s ease-in;
 }
 
 .buttnLabel {
@@ -1560,12 +1570,12 @@ footer {
   height: 48px;
 }
 
-#copy:hover,
 #Exit:hover,
+.shareLink:hover,
 .shareButtons button:hover {
-  opacity: 0.5;
+  opacity: 0.9;
   transition: 0.2s ease-in;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 #Exit {
