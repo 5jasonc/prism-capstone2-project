@@ -637,10 +637,9 @@ ul {
   transition: color 0.15s ease-in-out;
 }
 
-
-
 .drawer-menu li a:hover {
   color: rgba(217, 99, 215, 1);
+  cursor: pointer;
 }
 
 /* checkbox */
@@ -1388,7 +1387,11 @@ footer {
 }
 
 .printArCard{
-  position: fixed;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   background-color: #00013a56;
@@ -1806,8 +1809,8 @@ canvas #arApp{
     top: 120px;
     right: 24px;
     border-radius: 0;
-    width: 64px;
-    height: 64px;
+    width: 64px !important;
+    height: 64px !important;
     border-radius: 100rem;
     transition: all 0.5s ease;
   }

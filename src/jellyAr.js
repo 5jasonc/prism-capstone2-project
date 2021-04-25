@@ -341,8 +341,7 @@ function init(){
 
 
     onRenderFcts.push(function (delta) {
-        parent.position.y = 3
-		//parent.rotation = 180
+		parent.position.y = 1
     })
 
     //render the whole thing on the page
@@ -389,21 +388,6 @@ function init(){
 	// subMesh.scale.set(0.98,0.65,0.98)
 	// addTentacles();
 	mesh.scale.set(0.15, 0.15, 0.15);
-
-	// GUI
-	const gui = new dat.GUI();
-	gui.add( params, 'animate' );
-	gui.add( params, 'size' ).min( 1 ).max( 15 );
-	gui.add( params, 'magnitude' ).min( 1 ).max( 15 );
-	gui.add( params, 'segments' ).min( 5 ).max( 40 ).onChange( function () {
-		addJelly();
-	} );
-	gui.add( params, 'wireframe' ).onChange( function () {
-		addJelly();
-	} );
-
-	stats = new Stats();
-	document.body.appendChild( stats.dom );
 
 	// Render Pass Effects
 	const renderScene = new RenderPass( scene, camera );
@@ -469,8 +453,6 @@ function updateTentacles(){
 
 function animate(time) {
 	var delta = clock.getDelta();
-
-	stats.update();
 
     requestAnimationFrame(animate);
 
