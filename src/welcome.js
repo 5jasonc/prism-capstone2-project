@@ -370,7 +370,6 @@ function Mover(m,vel,loc) {
     this.mesh.castShadow = false;
     this.mesh.receiveShadow = true;
 
-
     this.position = this.location;
 
     this.index = movers.length;
