@@ -32,7 +32,6 @@ let stats;
 let clicking, intersects, a;
 var MASS_FACTOR = .01; // for display of size
 
-
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
 let isCameraFollowingJelly = false;
@@ -220,8 +219,6 @@ const animate = (renderer, clock) => {
             }
             currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
 
-    
-            
         }
 
         currentJelly.jellyMesh.geometry.verticesNeedUpdate = true;
@@ -232,8 +229,6 @@ const animate = (renderer, clock) => {
 
         currentJelly.jellyMesh.geometry.scale(1.15, 1.15, 1.15);
     }
-        
-
 
     // Make jellies pulsate through shader transforms
         // for(let j = 0; j < jellies.length; j++) {
@@ -363,40 +358,9 @@ const generateJelly = (string) => {
         depthWrite: false
     })
     
-    outerMaterial.onBeforeCompile = (shader) => {
-        shader.uniforms.time = { value: 0}
-        shader.vertexShader = `
-            uniform float time;
-        ` + shader.vertexShader
-    
-        const token = '#include <begin_vertex>'
-        const customTransform = `
-        vec3 transformed = vec3(position);
-        transformed.y = position.y + sin(position.y*0.40 + time*2.0);
-    `
-        shader.vertexShader = shader.vertexShader.replace(token,customTransform)
-        matShader = shader
-    }
     outerMaterial.side = THREE.DoubleSide;
 
     const lineMat = new THREE.LineBasicMaterial({color:0xffffff, transparent: true, opacity: 0.25})
-    lineMat.onBeforeCompile = (shader) => {
-    shader.uniforms.time = { value: 0}
-    shader.vertexShader = `
-        uniform float time;
-    ` + shader.vertexShader
-
-    const token = '#include <begin_vertex>'
-    const customTransform = `
-        vec3 transformed = vec3(position);
-        transformed.x = position.x*0.95;
-        transformed.z = position.z*0.95;
-        transformed.y = position.y*0.65 
-        + sin(position.y*0.40 + time*2.0);
-`
-    shader.vertexShader = shader.vertexShader.replace(token,customTransform)
-    linematShader = shader
-}
   
     const jellyMesh = new THREE.Mesh(jellyGeometery, outerMaterial);
     // const jellyInnerMesh = new THREE.Mesh(jellyGeometery, innerMaterial);
