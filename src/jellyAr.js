@@ -242,7 +242,7 @@ function init(){
 	container = document.getElementById( 'container' );
 
 	// camera
-	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 1000 );
 	camera.position.set( 10, 10, 10 );
     
 	// init scene and camera
@@ -251,8 +251,6 @@ function init(){
 
     // parent = new THREE.Object3D();
     // scene.add(parent);
-
-
 
 	// light
 	// const light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -341,7 +339,10 @@ function init(){
 
 
     onRenderFcts.push(function (delta) {
-		parent.position.y = 1
+		parent.position.y = 3
+		mesh.scale.x = 1
+		mesh.scale.y = 1
+		mesh.scale.z = 1
     })
 
     //render the whole thing on the page
@@ -539,6 +540,4 @@ function animate(time) {
 	
     composer.render(scene, camera); 
 	// capturer.capture( renderer.domElement );
-
-	
 };
