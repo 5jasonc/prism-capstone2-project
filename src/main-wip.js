@@ -23,6 +23,7 @@ const jellies = [];
 let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
+let particles;
 let bloomPass, filmPass;
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
@@ -105,6 +106,9 @@ const init = () => {
     
     // Start by loading galleryPage, as those are elements not hidden at top of init
     loadGalleryPage();
+
+    // Create particle system
+    createParticleSystem(scene);
 
     // Begin animation
     const clock = new THREE.Clock();
@@ -299,6 +303,50 @@ const switchScene = (newScene, cameraDirection = 'up') => {
                 .start();
         })
         .start();
+};
+
+const createParticleSystem = (scene) => {
+	const geometry = new THREE.BufferGeometry();
+
+	const N = 1000;
+	// const vertices = new Float32Array(
+	//   [...Array(N)].map((_) => Math.random()*2-1)
+	// );
+	const vertices = new Float32Array(N);
+	let c = 0;
+	while (c < N) {
+	  // const u = Math.random() * 2 - 1,
+	  //   a = Math.random() * 2 * 3.14,
+	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
+	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
+	  //   z = u
+	  const theta = Math.random() * 2 * Math.PI,
+		phi = Math.acos(2 * Math.random() - 1),
+		r = Math.pow(Math.random(), 1 / 3),
+		x = r * Math.sin(phi) * Math.cos(theta),
+		y = r * Math.sin(phi) * Math.sin(theta),
+		z = r * Math.cos(phi);
+	
+	  vertices[c] = x;
+	  vertices[c + 1] = y;
+	  vertices[c + 2] = z;
+	  c += 3;
+	}
+	geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+	
+	const shaderMaterial = new THREE.ShaderMaterial({
+	  uniforms: {},
+	  vertexShader: vertexShader,
+	  fragmentShader: fragmentShader,
+	  transparent: true,
+	  depthWrite: false
+	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
+	});
+	
+	particles = new THREE.Points(geometry, shaderMaterial);
+	particles.scale.set(500, 500, 500);
+	scene.add(particles);
+	particles.rotation.z = -0.5;
 };
 
 // Generates a jellyfish based on the specified string (wish)
