@@ -14,7 +14,7 @@ import { Sky } from './jsm/objects/Sky.js';
 import {
     vertexShader, fragmentShader, firebaseConfig,
     changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
-    showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage,
+    showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
     getUserID, hashFunc, mapNumToRange, randomNum
 } from './utils.js';
 
@@ -94,14 +94,10 @@ const init = () => {
     });
     canvas.addEventListener('pointerdown', (e) => sceneClicked(e), false);
 
-    // Testing page transitions
-    document.querySelector('#welcomePageButton').addEventListener('click', () => {
-        if(currentScene === 'galleryPage') {
-            switchScene('welcomePage', 'up');
-        } else {
-            switchScene('galleryPage', 'down');
-        }
-    });
+    // Listen for page transitions on each link to page with three scene
+    document.querySelector('#welcomePageLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
+    document.querySelector('#welcomePageLogoLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
+    document.querySelector('#galleryPageLink').addEventListener('click', () => switchScene('galleryPage', 'down'));
 
     // Add canvas to page and objects to scene
     document.body.appendChild(renderer.domElement);
@@ -168,11 +164,12 @@ const animate = (renderer, clock) => {
         controls.target = new THREE.Vector3(currentJellyTarget.position.x, currentJellyTarget.position.y, currentJellyTarget.position.z);
     }
 
+    // Animate ocean in welcome scene
     if(currentScene === 'welcomePage') water.material.uniforms['time'].value += 1.0 / 60.0;
     
     // Update tween and orbit controls each frame
     TWEEN.update();
-    if(!isCameraAnimating && !controls.enabled) controls.update();
+    if(!isCameraAnimating && controls.enabled) controls.update();
     
     // Re-render scene
     renderer.render(delta);
@@ -180,15 +177,24 @@ const animate = (renderer, clock) => {
 
 // Loads scene with given string, currently supported scenes are welcome page and gallery page, moves camera with transition w/ given direction
 const switchScene = (newScene, cameraDirection = 'up') => {
+    hideWishText();
+    document.querySelector('#checked').checked = false;
+    if(newScene === currentScene) return;   // cancel if trying to switch to already current scene
+
     controls.enabled = false;
     isCameraAnimating = true;
 
     let newPos;
-    if(newScene === 'galleryPage') {
-        controls.update();
-        newPos = new THREE.Vector3(500, 500, camZoom); // galleryPage start point
-    } else {
-        newPos = new THREE.Vector3(0, 10, 10); // welcomePage start point
+    switch(newScene) {
+        case 'galleryPage':
+            newPos = new THREE.Vector3(500, 500, camZoom);  // galleryPage start point
+            break;
+        case 'welcomePage':
+            newPos = new THREE.Vector3(0, 10, 10); // welcomePage start point
+            break;
+        case 'makeWishPage':
+            newPos = new THREE.Vector3(0, 0.5, 5); // makeWishPage start point
+            break;
     }
 
     let cameraMovement;
@@ -208,6 +214,10 @@ const switchScene = (newScene, cameraDirection = 'up') => {
                 hideWelcomePage();
                 unloadWelcomePage();
                 break;
+            case 'makeWishPage':
+                hidewMakeWishPage();
+                unloadMakeWishPage();
+                break;
         }
     };
 
@@ -219,11 +229,30 @@ const switchScene = (newScene, cameraDirection = 'up') => {
                 break;
             case 'welcomePage':
                 loadWelcomePage();
-                // showWelcomePage();
+                // showWelcomePage(); <-- IF THIS IS NOT COMMENTED OUT WELCOME PAGE CSS ELEMENTS BLOCK THREEJS CANVAS
+                break;
+            case 'makeWishPage':
+                loadMakeWishPage();
+                showMakeWishPage();
                 break;
         }
     };
 
+    const setControlsTarget = () => {
+        switch(newScene) {
+            case 'galleryPage':
+            case 'makeWishPage':
+                controls.target.set(0, 0, 0);
+                break;
+            case 'welcomePage':
+                controls.target.set(0, 10, 0);
+                break;
+        }
+        controls.update();
+    };
+
+    // Plays camera animation to go direction required offscreen
+    // Then moves camera below or above default camera pos in new scene and moves to default pos based on direction
     new TWEEN.Tween(camera)
         .to({'position': new THREE.Vector3(camera.position.x, camera.position.y + cameraMovement, camera.position.z)}, 1000)
         .easing(TWEEN.Easing.Circular.InOut)
@@ -231,44 +260,17 @@ const switchScene = (newScene, cameraDirection = 'up') => {
         .onComplete(() => {
             unloadScene();
             camera.position.set(newPos.x, newPos.y, newPos.z);
-            if(newScene === 'galleryPage') {
-                controls.target.set(0, 0, 0);
-            } else {
-                controls.target.set(0, 10, 0);
-            }
-            controls.update();
+            setControlsTarget();
             camera.position.set(camera.position.x, camera.position.y - cameraMovement, camera.position.z);
             loadScene();
             new TWEEN.Tween(camera)
                 .to({'position': newPos}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)
-                .onUpdate(() => {
-                    camera.updateProjectionMatrix();
-                    // controls.update();
-                })
+                .onUpdate(() => camera.updateProjectionMatrix())
                 .onComplete(() => isCameraAnimating = false)
                 .start();
         })
         .start();
-
-    // new TWEEN.Tween(controls)
-    //     .to({'target': new THREE.Vector3(controls.target.x, controls.target.y + cameraMovement, controls.target.z)}, 1000)
-    //     .easing(TWEEN.Easing.Circular.InOut)
-    //     .onUpdate(() => controls.update())
-    //     .onComplete(() => {
-    //         unloadScene();
-    //         controls.target.set(newPos.x, newPos.y - cameraMovement, newPos.z);
-    //         loadScene();
-    //         new TWEEN.Tween(controls) // camera.position.set(0, 0, 10);
-    //             .to({'target': newPos}, 1000)
-    //             .easing(TWEEN.Easing.Circular.InOut)
-    //             .onUpdate(() => {
-    //                 controls.update();
-    //             })
-    //             // .onComplete(() => isCameraAnimating = false)
-    //             .start();
-    //     })
-    //     .start();
 };
 
 // Generates a jellyfish based on the specified string (wish)
@@ -346,12 +348,6 @@ const jellyClicked = (jelly) => {
             //     .start();
         })
         .start();
-
-    // If it is a new jelly target, zoom in <-- maybe there is still a way we can use this with a transition?
-    // if(currentJellyTarget !== jelly) {       because this makes zooming in way easier as it automatically zooms on target
-    //   controls.dIn(0.3);
-    //   controls.update();
-    // }
 };
 
 // Loads all wishes in database and generates jellies for them if they are approved or owned by user
@@ -407,13 +403,11 @@ const startSearch = (searchtxt) => {
 
 // Loads all elements in three js scene for gallery page
 const loadGalleryPage = () => {
+    bloomPass.threshold = 0;
+    controls.enabled = true;
+    isCameraFollowingJelly = false;
+    currentJellyTarget = null;
     loadWishes();
-    // camera.position.set(500, 500, camZoom);
-    // controls.target = new THREE.Vector3(0, 0, 0);
-    // controls.maxPolarAngle = Math.PI;
-    // controls.minDistance = 0;
-    // controls.maxDistance = Infinity;
-    // controls.update();
     currentScene = 'galleryPage';
 };
 
@@ -422,14 +416,12 @@ const unloadGalleryPage = () => {
     $('.gaugeMeter').fadeIn();
     clearScene();
     jellies.splice(0, jellies.length);
-    
 };
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
     $('.gaugeMeter').fadeIn();
-    //fix the width size of settings bar to 164
-    $('.settings').css("width", "164px");
+    $('.settings').css('width', '164px');
 
     bloomPass.threshold = 9;
 
@@ -483,12 +475,6 @@ const loadWelcomePage = () => {
         water.material.uniforms['sunDirection'].value.copy(sun).normalize();
 
         scene.environment = pmremGenerator.fromScene(sky).texture;
-
-        // controls.maxPolarAngle = Math.PI * 0.495;
-        // controls.target.set(0, 10, 0);
-        // controls.minDistance = 40.0;
-        // controls.maxDistance = 200.0;
-        // controls.update();
 	};
 
     updateSun();
@@ -500,6 +486,27 @@ const unloadWelcomePage = () => {
     clearScene();
 };
 
+// Load all objects in three js scene for make wish page
+const loadMakeWishPage = () => {
+    $('.settings').css('width', '164px');
+    for(let i = 1; i < 1200; i++) {
+        const geometry = new THREE.SphereGeometry(0.02 * randomNum(0.5, 1), 6, 6);
+        const material = new THREE.MeshBasicMaterial({
+          opacity: true,
+          color: new THREE.Color(1, randomNum(190, 220) / 255, Math.round(Math.random()))
+        });
+    
+        const sphere = new THREE.Mesh(geometry, material);
+        sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()));
+        scene.add(sphere);      
+    }
+    currentScene = 'makeWishPage';
+};
+
+const unloadMakeWishPage = () => {
+    clearScene();
+};
+
 // Remove all objects in three js scene
 const clearScene = () => {
     for(let i = scene.children.length - 1; i >= 0; i--) {
@@ -507,6 +514,6 @@ const clearScene = () => {
         if(obj.type === 'PerspectiveCamera') continue;
         scene.remove(obj);
     }
-}
+};
 
 window.onload = init;
