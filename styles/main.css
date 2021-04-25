@@ -637,10 +637,9 @@ ul {
   transition: color 0.15s ease-in-out;
 }
 
-
-
 .drawer-menu li a:hover {
   color: rgba(217, 99, 215, 1);
+  cursor: pointer;
 }
 
 /* checkbox */

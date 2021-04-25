@@ -252,7 +252,16 @@ video {
   }
 
   .half h1{
-    scale:0.7;
+    line-height: 50px;
+    font-size: 40px;
+  }
+
+  .about{
+    margin-top: -150px;
+
+  }
+  .about h1 {
+    font-size: 50px;
   }
 }
 
