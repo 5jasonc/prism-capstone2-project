@@ -523,7 +523,6 @@ const loadGalleryPage = () => {
 // Unload all elements in gallery page
 const unloadGalleryPage = () => {
     $('.gaugeMeter').fadeIn();
-    $('#welcomescreen').fadeOut();
     clearScene();
     jellies.splice(0, jellies.length);
 };
@@ -594,6 +593,7 @@ const loadWelcomePage = () => {
 };
 
 const unloadWelcomePage = () => {
+    $('#welcomescreen').fadeOut();
     clearScene();
 };
 
