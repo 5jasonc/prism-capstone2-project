@@ -144,12 +144,10 @@ a {
   top: calc(100%/2.3);
   left: 0;
   right: 0;
+  height: 82px;
+  width: 82px;
   margin: auto;
   animation: spinner 3s linear infinite;
-}
-
-.logoSpinner logo {
-  width: 36px;
 }
 
 .loader h2 {
@@ -278,10 +276,10 @@ a {
 
 .logo {
   position: absolute;
-  left: 16px;
-  top: 16px;
-  width: 124px;
-  height: 124px;
+  left: 36px;
+  top: 48px;
+  width: 48px;
+  height: 48px;
   position: absolute;
   z-index: 41;
   transition: 0.2s ease-in;
@@ -765,6 +763,7 @@ ul {
   width: 64px;
   border-radius: 32px;
   margin-top: 16px;
+  padding: 18px;
   border: solid 1px transparent;
   transition: 0.2s ease-in;
 }
@@ -1452,13 +1451,30 @@ footer {
   background-color: rgb(36, 36, 36);
 }
 
-#shareJellyBtn {
+#shareJellyBtn, #farView {
   background: none;
+  width: 48px;
+  height: 48px;
   border: none;
   background-color: transparent;
   cursor: pointer;
   outline: none;
+  transition: 0.2s ease-in;
+  border: 1px solid transparent;
+  padding: 12px;
+  border-radius: 100rem;
+  margin-bottom: 12px;
 }
+
+#farView{
+  margin-left: -12px;
+}
+
+
+#shareJellyBtn:hover, #farView:hover{
+  transition: 0.2s ease-in;
+  border: 1px solid white;
+} 
 
 .shareModal {
   display: none;
@@ -1492,7 +1508,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 86px;
+  bottom: 82px;
   z-index: 0;
   width: 75%;
   margin: auto;
@@ -1533,11 +1549,15 @@ footer {
 
 .shareButtons button {
   float: right;
-  padding-left: 24px;
-  padding-right: 24px;
+  margin-left: 8px;
   transition: 0.2s ease-in;
   cursor: pointer;
   outline: none;
+  padding: 8px;
+  border-radius: 100rem;
+  border: 1px solid transparent;
+  width: 48px;
+  height: 48px;
 }
 
 #copy:hover,
@@ -1545,18 +1565,25 @@ footer {
 .shareButtons button:hover {
   opacity: 0.5;
   transition: 0.2s ease-in;
+  border: 1px solid white;
 }
 
 #Exit {
   position: absolute;
-  right:48px;
+  right: 36px;
   top: 48px;
+  height: 64px;
+  width: 64px;
   cursor: pointer;
   opacity: 1;
   z-index: 0;
   transition: 0.2s ease-in;
   outline: none;
+  border-radius: 100rem;
+  border: 1px solid transparent;
 }
+
+
 
 button {
   background: none;
@@ -1737,19 +1764,10 @@ canvas #arApp{
   height: 32px;
   left: 0;
   right: 0;
-  max-width: 360px;
   bottom: 8%;
   margin: auto;
   justify-content: space-evenly;
   padding: 6px;
-}
-
-#shareJellyBtn{
-  padding-bottom: 12px;
-}
-
-.mobileShare a{
-  width: 140px;
 }
 
 .mobileShare h4{
@@ -1795,8 +1813,8 @@ canvas #arApp{
   }
 
   .logo {
-    top: -6px;
-    left: -12px;
+    top: 24px;
+    left: 24px;
   }
 
   .addJellyFish {
@@ -1900,8 +1918,8 @@ canvas #arApp{
  
   #Exit{
     position: absolute;
-    right: 36px;
-    top: 36px;
+    right: 24px;
+    top: 24px;
   }
 
   .export{
