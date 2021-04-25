@@ -243,7 +243,6 @@ function init(){
 
 	// camera
 	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
-	camera.position.set( 0, 0, 10 );
     
 	// init scene and camera
     scene = new THREE.Scene();
@@ -339,8 +338,7 @@ function init(){
 
 
     onRenderFcts.push(function (delta) {
-        parent.position.y = 3
-		//parent.rotation = 180
+		parent.position.y = 1
     })
 
     //render the whole thing on the page
@@ -369,36 +367,14 @@ function init(){
 	// particle system
 	createParticleSystem();
 
-	// controls
-	controls = new OrbitControls(camera, renderer.domElement)
-	controls.listenToKeyEvents( window ); // optional
-
 	// jelly
 	parent = new THREE.Object3D();
 	scene.add( parent );
 
-	// Establish Wireframe Clipping 
-	// localPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
-	// wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true, clippingPlanes: [localPlane] } );
 
 	addJelly();
 	// subMesh.scale.set(0.98,0.65,0.98)
 	addTentacles();
-
-	// GUI
-	const gui = new dat.GUI();
-	gui.add( params, 'animate' );
-	gui.add( params, 'size' ).min( 1 ).max( 15 );
-	gui.add( params, 'magnitude' ).min( 1 ).max( 15 );
-	gui.add( params, 'segments' ).min( 5 ).max( 40 ).onChange( function () {
-		addJelly();
-	} );
-	gui.add( params, 'wireframe' ).onChange( function () {
-		addJelly();
-	} );
-
-	stats = new Stats();
-	document.body.appendChild( stats.dom );
 
 	// Render Pass Effects
 	const renderScene = new RenderPass( scene, camera );
@@ -431,15 +407,6 @@ function init(){
 	composer = new EffectComposer( renderer );
 	composer.addPass( renderScene );
 	composer.addPass( bloomPass );
-	// composer.addPass(filmPass);
-	// composer.addPass(bokehPass);
-
-	// renderer.clippingPlanes = [ localPlane ]; // GUI sets it to globalPlanes
-	// renderer.localClippingEnabled = true;
-
-	//CCapture
-	// capturer = new CCapture( { format: 'png', quality: 100, timeLimit: 24, autoSaveTime: 0 } );
-	// capturer.start();
 
 }
 
@@ -464,8 +431,6 @@ function updateTentacles(){
 
 function animate(time) {
 	var delta = clock.getDelta();
-
-	stats.update();
 
     requestAnimationFrame(animate);
 
