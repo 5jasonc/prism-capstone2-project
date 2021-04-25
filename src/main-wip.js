@@ -7,6 +7,7 @@ import Stats from './jsm/libs/stats.module.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+import { BokehPass } from './jsm/postprocessing/BokehPass.js';
 import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
 import { Water } from './jsm/objects/Water.js';
@@ -25,7 +26,7 @@ const movers = [];
 let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
-let bloomPass, filmPass;
+let bloomPass, filmPass, bokehPass;
 let matShader, linematShader, texture;
 let stats;
 let clicking, intersects, a;
@@ -59,11 +60,18 @@ const init = () => {
     camera.add(light);
     renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth/2, window.innerHeight/2, false);
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
     // renderer.setClearColor(0x000000, 0); // not sure if we will need this
     // renderer.toneMapping = THREE.ReinhardToneMapping; // look better with this?
-    renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
     const renderScene = new RenderPass(scene, camera);
+    bokehPass = new BokehPass( scene, camera, {
+		focus: 20,
+		aperture: 2 * 0.00001,
+		maxblur: 0.25,
+	} );
+    bokehPass.renderToScreen = true;
+	bokehPass.needsSwap = true;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
     filmPass = new FilmPass(0.15, 0.025, 0, false);
     bloomPass.threshold = 0;
@@ -73,7 +81,8 @@ const init = () => {
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
 	composer.addPass(bloomPass);
-    // composer.addPass(filmPass);
+    composer.addPass(filmPass);
+    // composer.addPass(bokehPass)
 
     // Set up orbit camera controls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -156,32 +165,82 @@ const animate = (renderer, clock) => {
   
     // Make jellies pulsate through geometry transforms
     for(let j = 0; j < jellies.length; j++) {
-        const position = jellies[j].jellyMesh.geometry.attributes.position;
+        const currentJelly = jellies[j];
+        //console.log(currentJelly);
+        const position = currentJelly.jellyMesh.geometry.attributes.position;
+        
         const vector = new THREE.Vector3();
-        for(let i = 0; i < position.count; i++){
-            vector.fromBufferAttribute(position, i);
-            vector.applyMatrix4(jellies[j].jellyMesh.matrix);
+        //loops through points within jelly
+        for(let pointIndex = 0; pointIndex < position.count; pointIndex++){
+            vector.fromBufferAttribute(position, pointIndex);
+            vector.applyMatrix4(currentJelly.jellyMesh.matrix);
             let size = 12;
             let magnitude = 7;
             let dist = new THREE.Vector3(vector.x, vector.y, vector.z).sub(new THREE.Vector3(0, 1000, 0));
             vector.normalize();
-            vector.multiplyScalar(40 + Math.sin(dist.length() / -size + jellies[j].a) * magnitude);
-            position.setXYZ(i, vector.x, vector.y, vector.z);
+            vector.multiplyScalar(40 + Math.sin(dist.length() / -size + currentJelly.a) * magnitude);
+            position.setXYZ(pointIndex, vector.x, vector.y, vector.z);
         }
+
+        //update jellyfish mesh
         position.needsUpdate = true;
-        jellies[j].jellyMesh.geometry.verticesNeedUpdate = true;
-        jellies[j].jellyMesh.geometry.normalsNeedUpdate = true;
-        jellies[j].jellyMesh.geometry.computeVertexNormals();
-        jellies[j].jellyMesh.geometry.computeFaceNormals();
-        jellies[j].a += jellies[j].aStep;
+
+
+        // Re-do line calculations every frame, to match new mesh
+        //console.log('jelly Width' + currentJelly.jellyWidthSegments+1);
+        for ( let lineIndex = 0; lineIndex < currentJelly.jellyWidthSegments+1; lineIndex ++ ){
+            //console.log('working!');
+            const temppoints = [];
+    
+            //let MAX_POINTS = currentJelly.jellyHeightSegments;
+            //const linegeo = new THREE.BufferGeometry();
+            const positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+            //console.log(positions);
+            //linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+    
+            // loop through jellyfish mesh, pulling out vertical lines from the radial mesh
+            for(let jIndex=currentJelly.jellyWidthSegments; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){
+                // temppoints.push(j+i);
+    
+                var vec = new THREE.Vector3();
+                vec.fromBufferAttribute(position, lineIndex+jIndex)
+                temppoints.push(vec);
+                //push each of the vertices to temppoints, constructing the line
+            }
+    
+            // loop through length of line, adding each point's x, y, z in order
+            // console.log(temppoints);
+            for(let k=0; k<temppoints.length; k++){
+    
+                let point = temppoints[k];
+    
+                shiftRight(positions, point.z);
+                shiftRight(positions, point.y);
+                shiftRight(positions, point.x);
+            }
+            currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
+
+    
+            
+        }
+
+        currentJelly.jellyMesh.geometry.verticesNeedUpdate = true;
+        currentJelly.jellyMesh.geometry.normalsNeedUpdate = true;
+        currentJelly.jellyMesh.geometry.computeVertexNormals();
+        currentJelly.jellyMesh.geometry.computeFaceNormals();
+        currentJelly.a += currentJelly.aStep;
+
+        currentJelly.jellyMesh.geometry.scale(1.15, 1.15, 1.15);
     }
+        
+
 
     // Make jellies pulsate through shader transforms
-    // for(let j = 0; j < jellies.length; j++) {
-    // if(matShader) matShader.uniforms.time.value = clock.elapsedTime*10;
-    // if(linematShader) linematShader.uniforms.time.value = clock.elapsedTime*10;
-    // }
-    // if(linematShader) linematShader.uniforms.time.value = time/2000;
+        // for(let j = 0; j < jellies.length; j++) {
+        // if(matShader) matShader.uniforms.time.value = clock.elapsedTime*10;
+        // if(linematShader) linematShader.uniforms.time.value = clock.elapsedTime*10;
+        // }
+        // if(linematShader) linematShader.uniforms.time.value = time/2000;
   
     // If camera is focused on jelly, move camera
     if(isCameraFollowingJelly && currentScene === 'galleryPage') {
@@ -277,26 +336,16 @@ const switchScene = (newScene, cameraDirection = 'up') => {
                 .start();
         })
         .start();
-
-    // new TWEEN.Tween(controls)
-    //     .to({'target': new THREE.Vector3(controls.target.x, controls.target.y + cameraMovement, controls.target.z)}, 1000)
-    //     .easing(TWEEN.Easing.Circular.InOut)
-    //     .onUpdate(() => controls.update())
-    //     .onComplete(() => {
-    //         unloadScene();
-    //         controls.target.set(newPos.x, newPos.y - cameraMovement, newPos.z);
-    //         loadScene();
-    //         new TWEEN.Tween(controls) // camera.position.set(0, 0, 10);
-    //             .to({'target': newPos}, 1000)
-    //             .easing(TWEEN.Easing.Circular.InOut)
-    //             .onUpdate(() => {
-    //                 controls.update();
-    //             })
-    //             // .onComplete(() => isCameraAnimating = false)
-    //             .start();
-    //     })
-    //     .start();
 };
+
+// Utility function for adding to the top of a BufferArray
+const shiftRight = (collection, value) => {
+    for (let i = collection.length - 1; i > 0; i--) {
+      collection[i] = collection[i - 1]; // Shift right
+    }
+    collection[0] = value; // Place new value at head
+    return collection;
+  }
 
 // Generates a jellyfish based on the specified string (wish)
 const generateJelly = (string) => {
@@ -307,7 +356,7 @@ const generateJelly = (string) => {
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
-    const outerMaterial = new THREE.MeshPhysicalMaterial({
+    const outerMaterial = new THREE.MeshMatcapMaterial({
         color: `#${jellyColor}`,
         transparent: true,
         opacity: 0.45,
@@ -358,17 +407,43 @@ const generateJelly = (string) => {
     const vertex = jellyMesh.geometry.attributes.position;
     const lines = [];
     // < vertex.count
+
+    // Create BufferAttribute array of points, in order of x, y, z
+    // Each line gets it's own positions array
+
     
     for ( let i = 0; i < jellyWidthSegments+1; i ++ ){
-        let temppoints = [];
+
+        const temppoints = [];
+
+        let MAX_POINTS = jellyHeightSegments+1;
+        const linegeo = new THREE.BufferGeometry();
+        const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
+        linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+
+        // loop through jellyfish mesh, pulling out vertical lines from the radial mesh
         for(let j=jellyWidthSegments; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
             // temppoints.push(j+i);
+
             var vec = new THREE.Vector3();
             vec.fromBufferAttribute(vertex, i+j)
             temppoints.push(vec);
+            //push each of the vertices to temppoints, constructing the line
         }
+
+        // loop through length of line, adding each point's x, y, z in order
         // console.log(temppoints);
-        const linegeo = new THREE.BufferGeometry().setFromPoints( temppoints );
+        for(let k=0; k<temppoints.length; k++){
+
+            let point = temppoints[k];
+
+            shiftRight(positions, point.z);
+            shiftRight(positions, point.y);
+            shiftRight(positions, point.x);
+        }
+
+        //const linegeo = new THREE.BufferGeometry().setFromPoints( temppoints );
+        const lineMat = new THREE.LineBasicMaterial({color:0xffffff, transparent: true, opacity: 0.25})
         lines.push( new THREE.Line( linegeo, lineMat));
     }
   
@@ -378,12 +453,13 @@ const generateJelly = (string) => {
     parent.userData.wish = string;
   
     parent.add(jellyMesh);
-    // for(let i=0; i<lines.length; i++){
-	// 	jellyMesh.add(lines[i]);
-	// }
+    for(let i=0; i<lines.length; i++){
+		jellyMesh.add(lines[i]);
+        lines[i].geometry.attributes.position.needsUpdate = true;
+	}
     scene.add(parent);
 
-    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string});
+    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string, jellyWidthSegments: jellyWidthSegments, jellyHeightSegments: jellyHeightSegments});
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
