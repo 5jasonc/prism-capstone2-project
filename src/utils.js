@@ -83,15 +83,11 @@ export const hideWishText = () => {
 
 export const showGalleryPage = () => {
     $('#Exit').fadeIn();
-    // $('#bannerBar').fadeIn();
-    $('#wishtxtbox').fadeIn();
     $('#searchWindow').fadeIn();
-    //$('.export').fadeIn();
     $('.controlscontainer').fadeIn();
     $('.addJellyFish').fadeIn();
     $('.amountofwish').fadeIn();
     $('.line').fadeIn();
-    // $('.search').fadeIn();
     changeStyleSource('styles/index.css');
 };
 
@@ -115,6 +111,14 @@ export const showWelcomePage = () => {
 
 export const hideWelcomePage = () => {
     $('#welcomescreen').fadeOut();
+};
+
+export const showMakeWishPage = () => {
+    $('#starview').fadeIn();
+};
+
+export const hidewMakeWishPage = () => {
+    $('#starview').fadeOut();
 };
 
 // JS UTILITY FUNCTIONS //////////////////////////

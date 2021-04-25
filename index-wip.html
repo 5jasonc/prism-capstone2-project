@@ -28,8 +28,7 @@
     <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
 
     <!-- Twitter Open Graphs-->
-    <meta name="twitter:card" content="I Wish for a better tomorrow.">
-    </meta>
+    <meta name="twitter:card" content="I Wish for a better tomorrow." />
     <meta name="twitter:card" content="I Wish for a better tomorrow." />
     <meta name="twitter:site" content="https://wishful.space" />
     <meta name="twitter:creator" content="@wishful.rit" />
@@ -67,14 +66,14 @@
     <label class="close-menu" for="checked"></label>
 
     <div class="logo">
-        <a id="welcomePageButton"><img src="./icons/whitestar.svg" width="100%" alt="logo of star"></a>
+        <a id="welcomePageLogoLink"><img src="./icons/whitestar.svg" width="100%" alt="logo of star"></a>
     </div>
 
     <nav class="drawer-menu">
         <ul>
             <h1>Menu</h1>
-            <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
-            <li><a href="index.html" style="--animation-order: 2;">Gallery</a></li>
+            <li><a id="welcomePageLink" style="--animation-order: 1;">Home</a></li>
+            <li><a id="galleryPageLink" style="--animation-order: 2;">Gallery</a></li>
             <li><a href="aboutus.html" style="--animation-order: 3;">About us</a></li>
         </ul>
         <div class="socialmedias">
@@ -183,12 +182,12 @@
     </div> -->
 
     <!-- TEMPORARY MAKE WISH PAGE -->
-    <div class="controlscontainer" id="myDIV">
+    <!--<div class="controlscontainer" id="myDIV">
         <h1>I wish</h1>
         <input type="text" id="wishInput" maxlength="25" placeholder="for a puppy">
         <span id="errorText"></span>
         <button type="button" id="makeWishButton">Make your wish</button>
-    </div>
+    </div>-->
 
     <div class="addJellyFish" id="addJellyButton">
         <img src="./icons/addicon.svg" width="100%">
@@ -196,6 +195,26 @@
 
     <div class="amountofwish">
         <h1><span id="numWishes">0</span>Wishes made</h1>
+    </div>
+
+    <!-- MAKE WISH PAGE -->
+    <div class="starview">
+        <canvas id="stars"></canvas>
+        <h1 id="starTxt">Catch a falling star to begin</h1>
+        <div class="starcaught" id="starCaughtTxt">
+            <h2>You caught one!<h2>
+            <h2>Get ready to share a wish!</h2>
+            <h3 id="tapTap">Tap to continue</h3>
+        </div>
+        <div class="controlscontainer" id="addWishInput" autocomplete="off">
+            <h1>I wish</h1>
+            <input type="text" id="wishInput" autocomplete="off" placeholder="for a puppy">
+            <button type="button" id="makeWishButton">Make your wish</button>
+        </div>
+        <!-- Animating the Jellyfish gets dipped into the water -->
+        <div class="jellyAnimation"></div>
+        <!-- See your Jelly Fish before it gets add into the world -->
+        <canvas id="jelly"></canvas>
     </div>
 
     <!-- WELCOME PAGE -->

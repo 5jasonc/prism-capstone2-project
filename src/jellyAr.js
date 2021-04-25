@@ -211,7 +211,7 @@ function addGeometry( geometry ) {
 		mesh.add(lines[i]);
 	}
 	parent.add( mesh );
-	mesh.position.y = -10
+	// mesh.position.y = 10
 	// parent.add( subMesh );
 
 }
@@ -242,15 +242,15 @@ function init(){
 	container = document.getElementById( 'container' );
 
 	// camera
-	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
-	camera.position.set( 0, 0, 10 );
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 1000 );
+	camera.position.set( 10, 10, 10 );
     
 	// init scene and camera
     scene = new THREE.Scene();
     scene.add(camera);
 
-    parent = new THREE.Object3D();
-    scene.add(parent);
+    // parent = new THREE.Object3D();
+    // scene.add(parent);
 
 	// light
 	// const light = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -332,15 +332,17 @@ function init(){
         detectionMode: "mono",
         canvasWidth: width,
         canvasHeight: height,
-        maxDetectionRate: 30,
+        maxDetectionRate: 60,
     })
     // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
     scene.visible = false
 
 
     onRenderFcts.push(function (delta) {
-        parent.position.y = 3
-		//parent.rotation = 180
+		parent.position.y = 3
+		mesh.scale.x = 1
+		mesh.scale.y = 1
+		mesh.scale.z = 1
     })
 
     //render the whole thing on the page
@@ -367,15 +369,17 @@ function init(){
     /*======================================================*/
 
 	// particle system
-	createParticleSystem();
+	// createParticleSystem();
 
 	// controls
-	controls = new OrbitControls(camera, renderer.domElement)
-	controls.listenToKeyEvents( window ); // optional
+	// controls = new OrbitControls(camera, renderer.domElement)
+	// controls.listenToKeyEvents( window ); // optional
 
 	// jelly
 	parent = new THREE.Object3D();
 	scene.add( parent );
+
+	parent.position.y = -2;
 
 	// Establish Wireframe Clipping 
 	// localPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0 );
@@ -383,22 +387,8 @@ function init(){
 
 	addJelly();
 	// subMesh.scale.set(0.98,0.65,0.98)
-	addTentacles();
-
-	// GUI
-	const gui = new dat.GUI();
-	gui.add( params, 'animate' );
-	gui.add( params, 'size' ).min( 1 ).max( 15 );
-	gui.add( params, 'magnitude' ).min( 1 ).max( 15 );
-	gui.add( params, 'segments' ).min( 5 ).max( 40 ).onChange( function () {
-		addJelly();
-	} );
-	gui.add( params, 'wireframe' ).onChange( function () {
-		addJelly();
-	} );
-
-	stats = new Stats();
-	document.body.appendChild( stats.dom );
+	// addTentacles();
+	mesh.scale.set(0.15, 0.15, 0.15);
 
 	// Render Pass Effects
 	const renderScene = new RenderPass( scene, camera );
@@ -430,7 +420,7 @@ function init(){
 
 	composer = new EffectComposer( renderer );
 	composer.addPass( renderScene );
-	composer.addPass( bloomPass );
+	// composer.addPass( bloomPass );
 	// composer.addPass(filmPass);
 	// composer.addPass(bokehPass);
 
@@ -465,14 +455,12 @@ function updateTentacles(){
 function animate(time) {
 	var delta = clock.getDelta();
 
-	stats.update();
-
     requestAnimationFrame(animate);
 
 	if(params.animate){
 		if(matShader) matShader.uniforms.time.value = time/2000;
 		if(linematShader) linematShader.uniforms.time.value = time/2000;
-		particles.rotation.y+=0.001;
+		// particles.rotation.y+=0.001;
 	}
 	// parent.rotateX((Math.PI / 1000) * Math.random());
     // parent.rotateZ((Math.PI / 1000) * Math.random());
@@ -491,8 +479,8 @@ function animate(time) {
     //   parent.rotateZ(Math.PI);
     // }
 
-
-	updateTentacles();
+	//Updates trailing line behind jelly
+	// updateTentacles();
 
 	// controls.target = parent.position;
 	// controls.update();
@@ -552,6 +540,4 @@ function animate(time) {
 	
     composer.render(scene, camera); 
 	// capturer.capture( renderer.domElement );
-
-	
 };
