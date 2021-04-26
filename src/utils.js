@@ -172,7 +172,12 @@ export const getUserID = () => {
     let userID = localStorage.getItem('prism-wishful-user');
     if(!userID) {
         userID = `user-${Date.now()}-${Math.floor(Math.random() * 999)}`;
-        localStorage.setItem('prism-wishful-user', userID);
+        try {
+            localStorage.setItem('prism-wishful-user', userID);
+        } catch(e) {
+            userID = null;
+        }
+        
     }
     return userID;
 };
