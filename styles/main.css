@@ -1282,10 +1282,29 @@ footer {
   cursor: pointer;
   padding-bottom: 32px;
   border-bottom: 2px solid transparent;
+  transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-#welcomescreen img:hover {
+/* #welcomescreen img:hover {
   border-bottom: 2px solid white;
+  border-bottom-width: 10px;
+} */
+
+#welcomescreen img:after {
+  position: relative;
+  display: inline-block;
+  content: '';
+  border-bottom: solid 2px white;  
+  background: white;
+  width: 0px;
+  transform: scaleX(0);  
+  transition: transform 250ms ease-in-out;
+  height: 5px;
+}
+
+#welcomescreen img:hover::after {
+  transform: scaleX(1);
+  width: 50%;
 }
 
 #welcomescreen p {
