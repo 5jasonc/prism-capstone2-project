@@ -84,7 +84,6 @@ export const hideWishText = () => {
 export const showGalleryPage = () => {
     $('#Exit').fadeIn();
     $('#searchWindow').fadeIn();
-    $('.controlscontainer').fadeIn();
     $('.addJellyFish').fadeIn();
     $('.amountofwish').fadeIn();
     $('.line').fadeIn();
@@ -97,7 +96,6 @@ export const hideGalleryPage = () => {
     $('#wishtxtbox').fadeOut();
     $('#searchWindow').fadeOut();
     $('.export').fadeOut();
-    $('.controlscontainer').fadeOut();
     $('.addJellyFish').fadeOut();
     $('.amountofwish').fadeOut();
     $('.line').fadeOut();
