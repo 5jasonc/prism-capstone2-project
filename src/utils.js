@@ -140,23 +140,25 @@ export const hideWelcomePage = () => {
 
 export const showMakeWishPage = () => {
     $('#starview').fadeIn();
+    $('#starTxt').fadeIn();
     $('#app').css('background', 'radial-gradient(#000259, #01032C)')
 };
 
 export const showWishEntry = () => {
-$('.starcaught').css('display', 'flex');
-hideWishCursor();
-$('.starcaught').click(function(e){
-    $('.starcaught').fadeOut();
-    $('.controlscontainer').fadeIn();
-});
-}
+    $('.starcaught').css('display', 'flex');
+    hideWishCursor();
+    $('.starcaught').click(function(e){
+        $('.starcaught').fadeOut();
+        $('.controlscontainer').fadeIn();
+    });
+};
 
 export const hidewMakeWishPage = () => {
     $('#starview').fadeOut();
+    $('#starTxt').fadeOut();
+    $('.controlscontainer').fadeOut();
     hideWishCursor();
 };
-
 
 export const hideWishCursor = () => {
     $('#cursor').fadeOut();
@@ -173,6 +175,10 @@ export const getUserID = () => {
         localStorage.setItem('prism-wishful-user', userID);
     }
     return userID;
+};
+
+export const genWishID = () => {
+    return `wish-${Date.now()}-${Math.floor(Math.random() * 999)}`;
 };
 
 // Simple hash function

@@ -201,7 +201,7 @@ a {
   /* background:linear-gradient(#000005,#00022E); */
 }
 
-#starview h1 {
+#starTxt {
   position: absolute;
   font-family: sofia-pro, sans-serif;
   font-weight: 500;
@@ -216,7 +216,8 @@ a {
   bottom: 32px;
   width: 100%;
   letter-spacing: 2px;
-  z-index: 1;
+  z-index: 2;
+  display: none;
 }
 
 #starview {
@@ -1166,7 +1167,15 @@ footer {
   width: 100%;
   text-align: center;
   position: relative;
-  top: calc(100%/2);
+  top: calc(100vh/2 - 50px);
+  font-size: 26px;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.controlscontainer #errorText {
+  position: relative;
+  top: calc(100vh - 100px);
   font-size: 26px;
   letter-spacing: 2px;
   font-weight: 800;

@@ -16,7 +16,7 @@ import {
     vertexShader, fragmentShader, bgVertexShader, bgFragmentShader, firebaseConfig,
     changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
-    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry
+    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry, genWishID
 } from './utils.js';
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
@@ -36,6 +36,8 @@ let clicking = false;
 let isCameraFollowingJelly = false;
 let currentJellyTarget = null;
 let isCameraAnimating = false;
+let isStarSelected = false;
+let transitionTargetWishID = null;
 let camZoom = 1000;
 
 // LOADS THREE.JS SCENE AND SHARED RESOURCES BETWEEN PAGES
@@ -327,7 +329,16 @@ const switchScene = (newScene, cameraDirection) => {
                 .to({'position': newPos}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)
                 .onUpdate(() => camera.updateProjectionMatrix())
-                .onComplete(() => isCameraAnimating = false)
+                .onComplete(() => {
+                    isCameraAnimating = false;
+                    if(currentScene === 'galleryPage' && transitionTargetWishID !== null) {
+                        jellyClicked(jellies.find(j => j.wishID === transitionTargetWishID).jellyParent);
+                        // const transitionTargetJelly = jellies.find(j => j.wishID === transitionTargetWishID).jellyParent;
+                        // currentJellyTarget = transitionTargetJelly;
+                        // jellyClicked(transitionTargetJelly);
+                        transitionTargetWishID = null;
+                    }
+                })
                 .start();
     })
     .start();
@@ -425,8 +436,8 @@ function generateBGStars() {
 }
 
 // Generates a jellyfish based on the specified string (wish)
-const generateJelly = (string) => {
-    const jellyCode = hashFunc(string);
+const generateJelly = (wishObj) => {
+    const jellyCode = hashFunc(wishObj.wish);
     const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
     const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
@@ -475,7 +486,7 @@ const generateJelly = (string) => {
     const parent = new THREE.Object3D();
     parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
     parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
-    parent.userData.wish = string;
+    parent.userData.wish = wishObj.wish;
   
     parent.add(jellyMesh);
     for(let i=0; i<lines.length; i++){
@@ -484,7 +495,7 @@ const generateJelly = (string) => {
 	}
     scene.add(parent);
 
-    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: string, jellyWidthSegments: jellyWidthSegments, jellyHeightSegments: jellyHeightSegments});
+    jellies.push({jellyMesh, lines, jellyParent: parent, aStep: jellyAnimSpeed, a: 0, wish: wishObj.wish, wishID: wishObj.wishID, jellyWidthSegments: jellyWidthSegments, jellyHeightSegments: jellyHeightSegments});
 };
 
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
@@ -536,10 +547,11 @@ const jellyClicked = (jelly) => {
 const loadWishes = () => {
     const userID = getUserID();
     dbRef.on('child_added', (data) => {
+        if(currentScene !== 'galleryPage') return;
         const wishObj = data.val();
         if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
         //for(let i=0; i<10; i++){
-            generateJelly(wishObj.wish);
+            generateJelly(wishObj);
         //}
         document.querySelector('#numWishes').innerHTML = jellies.length;
     });
@@ -561,8 +573,11 @@ const makeWish = () => {
             return;
         }
         document.querySelector('#errorText').innerHTML = '';
-        dbRef.push({wish: document.querySelector('#wishInput').value, approved: null, userID: getUserID()});
-        jellyClicked(jellies[jellies.length - 1].jellyParent, controls, camera);
+        const wishID = genWishID();
+        transitionTargetWishID = wishID;
+        dbRef.push({wishID, wish: wish.trim(), approved: null, userID: getUserID()});
+        switchScene('galleryPage', 'down');
+        // jellyClicked(jellies[jellies.length - 1].jellyParent);
     });
 };
 
@@ -586,12 +601,12 @@ const startSearch = (searchtxt) => {
 
 // Loads all elements in three js scene for gallery page
 const loadGalleryPage = () => {
+    currentScene = 'galleryPage';
     bloomPass.threshold = 0;
     controls.enabled = true;
     isCameraFollowingJelly = false;
     currentJellyTarget = null;
     loadWishes();
-    currentScene = 'galleryPage';
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     $('.gaugeMeter').fadeOut();
@@ -838,11 +853,9 @@ const attractStar = () => {
                             var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/6;
 
                             if (distance < radiusM + radiusA) {
-                                console.log('star caught! @ 841 in attractStar()');
-                                console.log(m.position);
+                                if(isStarSelected) return;
                                 updateCaughtStar(m.position);
                                 a.eat(m);
-                                showWishEntry();
                             }
                             else
                             {
@@ -856,7 +869,9 @@ const attractStar = () => {
 }
 
 const updateCaughtStar = (starPos) => {
-    bloomPass.threshold = 9;
+    isStarSelected = true;
+    $('#starTxt').fadeOut();
+    bloomPass.threshold = 2;
     const parent = new THREE.Object3D();
     parent.position.set(starPos.x, starPos.y, starPos.z);
     let mesh, subMesh;
@@ -892,8 +907,8 @@ const updateCaughtStar = (starPos) => {
     const jellyOpacityTransition = new TWEEN.Tween(jellyProps)
         .to({'outerMeshOpacity': 0.5}, 3000)
         .easing(TWEEN.Easing.Circular.InOut)
-        .onUpdate(() => addJelly());
-        // .onComplete(() =>  );
+        .onUpdate(() => addJelly())
+        .onComplete(() => showWishEntry());
 
     const jellyThetaTransition = new TWEEN.Tween(jellyProps)
         .to({'jellyThetaLength': Math.PI / 2}, 3000)
@@ -901,11 +916,16 @@ const updateCaughtStar = (starPos) => {
         .onUpdate(() => addJelly())
         .onComplete(() => jellyOpacityTransition.start());
 
+    const jellyPosTransition = new TWEEN.Tween(parent.position)
+        .to({'y': parent.position.y + 150}, 1000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onComplete(() => jellyThetaTransition.start());
+
     const jellySizeTransition = new TWEEN.Tween(jellyProps)
-        .to({'jellySize': 150}, 5000)
+        .to({'jellySize': 100}, 5000)
         .easing(TWEEN.Easing.Circular.InOut)
         .onUpdate(() => addJelly())
-        .onComplete(() => jellyThetaTransition.start());
+        .onComplete(() => jellyPosTransition.start());
 
     new TWEEN.Tween(controls)
         .to({'target': new THREE.Vector3(starPos.x, starPos.y, starPos.z)}, 1500)
@@ -931,6 +951,7 @@ const updateCaughtStar = (starPos) => {
 
 // Load all objects in three js scene for make wish page
 const loadMakeWishPage = () => {
+    isStarSelected = false;
     $('.settings').css('width', '164px');
     $('.gaugeMeter').show();
 
@@ -972,6 +993,7 @@ const clearScene = () => {
 
 // Cursor tracking
 const makeWishCursor = () => {
+    $('#cursor').show();
     var cursor = document.getElementById('cursor');
     if(detectMob() === true){
         $('#cursor').addClass("zoom");
@@ -1024,7 +1046,6 @@ const makeWishCursor = () => {
     $('body')
     .mousedown(function(e){
         //console.log('down')
-        e.preventDefault();
         $('#cursor').addClass('zoom');
         clicking = true;
     })
