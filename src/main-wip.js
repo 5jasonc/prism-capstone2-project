@@ -16,7 +16,7 @@ import {
     vertexShader, fragmentShader, bgVertexShader, bgFragmentShader, firebaseConfig,
     changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
-    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob
+    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry
 } from './utils.js';
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
@@ -292,7 +292,7 @@ const switchScene = (newScene, cameraDirection) => {
                 break;
             case 'makeWishPage':
                 loadMakeWishPage();
-                // showMakeWishPage();
+                showMakeWishPage();
                 break;
         }
     };
@@ -842,6 +842,7 @@ const attractStar = () => {
                                 console.log(m.position);
                                 updateCaughtStar(m.position);
                                 a.eat(m);
+                                showWishEntry();
                             }
                             else
                             {
