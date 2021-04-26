@@ -545,6 +545,11 @@ const jellyClicked = (jelly) => {
         .start();
 };
 
+//Formats the num values to k after 999 jelly fish are made
+function kFormatter(num) {
+    return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+}
+
 // Loads all wishes in database and generates jellies for them if they are approved or owned by user
 const loadWishes = () => {
     const userID = getUserID();
@@ -555,7 +560,8 @@ const loadWishes = () => {
         //for(let i=0; i<10; i++){
             generateJelly(wishObj);
         //}
-        document.querySelector('#numWishes').innerHTML = jellies.length;
+
+        document.querySelector('#numWishes').innerHTML = kFormatter(jellies.length); 
     });
 };
 
