@@ -831,6 +831,7 @@ ul {
   text-align: center;
   max-width: 1600px;
   margin: auto;
+  margin-top: 164px;
 }
 
 .widebrief iframe{
@@ -865,12 +866,14 @@ ul {
   height: 64px;
   cursor: pointer;
   transition: 0.2s ease;
+  margin-top: 56px;
 }
 
 .half {
   width: 50%;
   margin: auto;
   height: auto;
+  padding-top: 164px;
 }
 
 .half h1 {
