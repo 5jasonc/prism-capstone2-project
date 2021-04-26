@@ -1299,6 +1299,25 @@ footer {
   margin: auto;
 }
 
+#cursor {
+  position: fixed;
+  display: none;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 20%;
+  backface-visibility: hidden;
+  transition: width 0.2s, height 0.2s, transform 0.2s;
+  z-index: 99999;
+  width: 20px;
+  height: 20px;
+}
+
+.zoom {
+  width: 50px !important;
+  height: 50px !important;
+}
+
 .makewish {
   display: flex;
   text-transform: uppercase;

@@ -13,22 +13,26 @@ import { Water } from './jsm/objects/Water.js';
 import { Sky } from './jsm/objects/Sky.js';
 
 import {
-    vertexShader, fragmentShader, firebaseConfig,
+    vertexShader, fragmentShader, bgVertexShader, bgFragmentShader, firebaseConfig,
     changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
-    getUserID, hashFunc, mapNumToRange, randomNum, shiftRight
+    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob
 } from './utils.js';
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
 const jellies = [];
+const movers = []; // will hold shooting stars
 let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
+let plane, intersects, a;
+var MASS_FACTOR = .01; // for display of size
 let particles;
 let bloomPass, filmPass, bokehPass;
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
+let clicking = false;
 let isCameraFollowingJelly = false;
 let currentJellyTarget = null;
 let isCameraAnimating = false;
@@ -113,6 +117,7 @@ const init = () => {
     document.querySelector('#welcomePageLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
     document.querySelector('#welcomePageLogoLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
     document.querySelector('#galleryPageLink').addEventListener('click', () => switchScene('galleryPage', 'down'));
+    document.querySelector('.welcometxt').addEventListener('click', () => switchScene('makeWishPage', 'up'));
 
     // Add canvas to page and objects to scene
     document.body.appendChild(renderer.domElement);
@@ -213,6 +218,9 @@ const animate = (renderer, clock) => {
     // Animate ocean in welcome scene
     if(currentScene === 'welcomePage') water.material.uniforms['time'].value += 1.0 / 60.0;
     
+    // Calculate and animate shooting stars in wish scene
+    if(currentScene === 'makeWishPage') attractStar();
+
     // Update tween and orbit controls each frame
     TWEEN.update();
     if(!isCameraAnimating && controls.enabled) controls.update();
@@ -363,6 +371,53 @@ const createParticleSystem = (scene) => {
 	scene.add(particles);
 	particles.rotation.z = -0.5;
 };
+
+function generateBGStars() {
+	const geometry = new THREE.BufferGeometry();
+
+	const N = 2000;
+	// const vertices = new Float32Array(
+	//   [...Array(N)].map((_) => Math.random()*2-1)
+	// );
+	const vertices = new Float32Array(N);
+	let c = 0;
+	while (c < N) {
+	  // const u = Math.random() * 2 - 1,
+	  //   a = Math.random() * 2 * 3.14,
+	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
+	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
+	  //   z = u
+	  const theta = Math.random() * 2 * Math.PI,
+		phi = Math.acos(2 * Math.random() - 1),
+		r = Math.pow(Math.random(), 1 / 3),
+		x = r * Math.sin(phi) * Math.cos(theta),
+		y = r * Math.sin(phi) * Math.sin(theta),
+		// z = r * Math.cos(phi);
+		z = 0;
+	
+	  vertices[c] = x;
+	  vertices[c + 1] = y;
+	  vertices[c + 2] = z;
+	  c += 3;
+	}
+	geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+	
+	const shaderMaterial = new THREE.ShaderMaterial({
+	  uniforms: {},
+	
+	  vertexShader: bgVertexShader,
+	  fragmentShader: bgFragmentShader,
+	  transparent: true,
+	  depthWrite: true
+	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
+	});
+	
+	let particles = new THREE.Points(geometry, shaderMaterial);
+	particles.scale.set(1200,1200,1200)
+	scene.add(particles);
+	particles.rotation.z=-0.5
+	particles.position.z = -500
+}
 
 // Generates a jellyfish based on the specified string (wish)
 const generateJelly = (string) => {
@@ -535,6 +590,7 @@ const loadGalleryPage = () => {
     currentScene = 'galleryPage';
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
+    $('.gaugeMeter').fadeOut();
 };
 
 // Unload all elements in gallery page
@@ -605,6 +661,8 @@ const loadWelcomePage = () => {
 	};
 
     updateSun();
+
+    generateBGStars();
     currentScene = 'welcomePage';
     //$('.gaugeMeter').fadeOut();
 };
@@ -614,21 +672,214 @@ const unloadWelcomePage = () => {
     clearScene();
 };
 
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+/* MOVER CLASS */
+function Mover(m,vel,loc,isa) {
+    this.location = loc,
+    this.velocity = vel,
+    this.acceleration = new THREE.Vector3(0.0,0.0,0.0),
+    this.mass = m,
+    this.c = 0xffffff,
+    this.alive = true;
+    this.geometry = new THREE.SphereGeometry(1.0,5,5);
+
+    this.vertices = [];     // PATH OF MOVEMENT
+
+    this.line = new THREE.Line();       // line to display movement
+
+    this.color = this.line.material.color;
+    //this.line = THREE.Line(this.lineGeometry, lineMaterial);
+
+    this.basicMaterial =  new THREE.MeshPhongMaterial({
+        color: this.color, specular: this.color, shininess: 10
+    });
+
+    //this.selectionLight = new THREE.PointLight(this.color,.1);
+    //this.selectionLight.position.copy(this.location);
+    this.mesh = new THREE.Mesh(this.geometry,this.basicMaterial);
+    this.mesh.castShadow = false;
+    this.mesh.receiveShadow = true;
+
+
+    this.position = this.location;
+
+    this.index = movers.length;
+    this.selected = false;
+
+    if(isa === false) scene.add(this.mesh);
+    //scene.add(this.selectionLight);
+    this.applyForce = function(force) {
+        if (!this.mass) this.mass = 1.0;
+        var f = force.divideScalar(this.mass);
+        this.acceleration.add(f);
+    };
+    this.update = function() {
+
+        this.velocity.add(this.acceleration);
+        this.location.add(this.velocity);
+        this.acceleration.multiplyScalar(0);
+
+        //this.selectionLight.position.copy(this.location);
+        this.mesh.position.copy(this.location);
+        if (this.vertices.length > 10000) this.vertices.splice(0,1);
+
+        this.vertices.push(this.location.clone());
+        //this.lineGeometry.verticesNeedUpdate = true;
+
+    };
+    this.eat = function(m) { // m => other Mover object
+        var newMass = this.mass + m.mass;
+
+        var newLocation = new THREE.Vector3(
+            (this.location.x * this.mass + m.location.x * m.mass)/newMass,
+            (this.location.y * this.mass + m.location.y * m.mass)/newMass,
+            (this.location.z * this.mass + m.location.z * m.mass)/newMass);
+        var newVelocity = new THREE.Vector3(
+            (this.velocity.x *this.mass + m.velocity.x * m.mass) / newMass,
+            (this.velocity.y *this.mass + m.velocity.y * m.mass) / newMass,
+            (this.velocity.z *this.mass + m.velocity.z * m.mass) / newMass);
+
+        this.location=newLocation;
+        this.velocity=newVelocity;
+        this.mass = newMass;
+
+        if (m.selected) this.selected = true;
+        this.color.lerpHSL(m.color, m.mass /  (m.mass + this.mass));
+      
+        m.kill();
+    };
+    this.kill = function () {
+        this.alive=false;
+        //this.selectionLight.intensity = 0;
+        scene.remove(this.mesh);
+    };
+    this.attract = function(m) {   // m => other Mover object
+        var force = new THREE.Vector3().subVectors(this.location,m.location);         // Calculate direction of force
+        var d = force.lengthSq();
+        if (d<0) d*=-1;
+        force = force.normalize();
+        var strength = - (10 * this.mass * m.mass) / (d);      // Calculate gravitional force magnitude
+        force = force.multiplyScalar(strength);                             // Get force vector --> magnitude * direction
+        
+        this.applyForce(force);
+    };
+    this.display = function() {
+        if (this.alive) {
+            var scale = Math.pow((this.mass*MASS_FACTOR/(4*Math.PI)), 1/3);
+            this.mesh.scale.x = scale;
+            this.mesh.scale.y = scale;
+            this.mesh.scale.z = scale;
+
+        } else {
+            //this.selectionLight.intensity = 0;
+        }
+
+    };
+
+    // this.showTrails = function() {
+        if (!this.lineDrawn) {
+            this.lineDrawn = true;
+            scene.add(this.line);
+        } else if (this.lineDrawn === true) {
+            scene.remove(this.line);
+            var newLineGeometry = new THREE.Geometry();
+            newLineGeometry.vertices = this.vertices.slice();
+
+            newLineGeometry.verticesNeedUpdate = true;
+            if (!pause && !this.alive) {
+                if (this.lineDrawn === true) {
+                  this.vertices.shift();  
+                }
+            }
+            while (newLineGeometry.vertices.length > parseInt(100)) {
+                newLineGeometry.vertices.shift();
+            }
+            this.line = new THREE.Line(newLineGeometry, this.line.material);
+            scene.add(this.line);
+        }
+    // }
+}
+
+const createShootingStar = () => {
+	let speed = -1*(1+Math.random()*5);
+	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500), false));
+}
+
+const attractStar = () => {
+    var movers_alive_count = 0;
+    //total_mass = 0;
+    var maximum_mass = 0.00;
+			//loop through all shooting stars
+            for (var i = movers.length-1; i >= 0; i--) {
+                var m = movers[i];
+				// update so they continue on their path
+				m.update();
+                if(a) a.kill();
+
+				// if(m.location.y <= 0){
+				// 	// console.log(m.location.y);
+				// 	m.kill();
+				// } 
+
+                if (m.alive) {
+                    // for (var j =  movers.length-1; j >= 0; j--) {
+                    //     var a = movers[j];
+					if(clicking){
+							// movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
+							// console.log(intersects.x, intersects.y)
+						a = new Mover(20, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500), true);
+
+                        if (movers[i].alive) {
+                            var distance = m.location.distanceTo(a.location);
+
+                            var radiusM = Math.pow((m.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/3;
+                            var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/6;
+
+                            if (distance < radiusM + radiusA) {
+                                console.log('star caught! @ 841 in attractStar()')
+                                a.eat(m);
+                            }
+                            else
+                            {
+								// console.log('attract');
+                               m.attract(a);
+                            }
+                        }
+                    }
+                }
+            }
+
+}
+
 // Load all objects in three js scene for make wish page
 const loadMakeWishPage = () => {
     $('.settings').css('width', '164px');
-    for(let i = 1; i < 1200; i++) {
-        const geometry = new THREE.SphereGeometry(0.02 * randomNum(0.5, 1), 6, 6);
-        const material = new THREE.MeshBasicMaterial({
-          opacity: true,
-          color: new THREE.Color(1, randomNum(190, 220) / 255, Math.round(Math.random()))
-        });
+    $('.gaugeMeter').show();
+
+    // for(let i = 1; i < 1200; i++) {
+    //     const geometry = new THREE.SphereGeometry(0.02 * randomNum(0.5, 1), 6, 6);
+    //     const material = new THREE.MeshBasicMaterial({
+    //       opacity: true,
+    //       color: new THREE.Color(1, randomNum(190, 220) / 255, Math.round(Math.random()))
+    //     });
     
-        const sphere = new THREE.Mesh(geometry, material);
-        sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()));
-        scene.add(sphere);      
-    }
+    //     const sphere = new THREE.Mesh(geometry, material);
+    //     sphere.position.setFromSpherical(new THREE.Spherical(5 + 5 * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()));
+    //     scene.add(sphere);      
+    // }
+
+    generateBGStars();
+    var intervalID = window.setInterval(createShootingStar, 3500);
+    makeWishCursor();
+	
+    // helper plane for raycasting
+	plane = new THREE.Plane( new THREE.Vector3(0, 0, 1), 500);
+    //$('.starview').show();
+    animateValue('.gaugeMeter', 0, 100, 1)
     currentScene = 'makeWishPage';
+    
 };
 
 const unloadMakeWishPage = () => {
@@ -643,5 +894,62 @@ const clearScene = () => {
         scene.remove(obj);
     }
 };
+
+// Cursor tracking
+const makeWishCursor = () => {
+    var cursor = document.getElementById('cursor');
+    if(detectMob() === true){
+        $('#cursor').addClass("zoom");
+        window.addEventListener('touchStart', function(e){
+            $('#cursor').show();
+            var x = e.targetTouches[0].pageX;
+            var y = e.targetTouches[0].pageY;
+            cursor.style.left = x + 'px';
+            cursor.style.top = y + 'px';
+        });
+        window.addEventListener('touchend', function(e){
+            $('#cursor').hide();
+        });
+        window.addEventListener('touchmove', function(e){
+            $('#cursor').show();
+            var x = e.targetTouches[0].pageX;
+            var y = e.targetTouches[0].pageY;
+            cursor.style.left = x + 'px';
+            cursor.style.top = y + 'px';
+        })
+
+    }
+    else{
+    $('#cursor').show();
+    window.addEventListener('mousemove' , function(e){
+        e.preventDefault();
+        var x = e.clientX;
+        var y = e.clientY;
+        cursor.style.left = x + 'px';
+        cursor.style.top = y + 'px';
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    
+        raycaster.setFromCamera(mouse, camera);
+        intersects = new THREE.Vector3();
+		raycaster.ray.intersectPlane(plane, intersects);
+    });
+    $('body')
+    .mousedown(function(e){
+        //console.log('down')
+        e.preventDefault();
+        $('#cursor').addClass('zoom');
+        clicking = true;
+    })
+    .mouseup(function(){
+        //console.log('up');
+        $('#cursor').removeClass('zoom');
+        clicking = false;
+    });
+    }
+}
 
 window.onload = init;
