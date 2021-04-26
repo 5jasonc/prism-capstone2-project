@@ -140,7 +140,17 @@ export const hideWelcomePage = () => {
 
 export const showMakeWishPage = () => {
     $('#starview').fadeIn();
+    $('#app').css('background', 'radial-gradient(#000259, #01032C)')
 };
+
+export const showWishEntry = () => {
+$('.starcaught').css('display', 'flex');
+hideWishCursor();
+$('.starcaught').click(function(e){
+    $('.starcaught').fadeOut();
+    $('.controlscontainer').fadeIn();
+});
+}
 
 export const hidewMakeWishPage = () => {
     $('#starview').fadeOut();
@@ -150,6 +160,7 @@ export const hidewMakeWishPage = () => {
 
 export const hideWishCursor = () => {
     $('#cursor').fadeOut();
+    $('#cursor').remove();
 }
 
 // JS UTILITY FUNCTIONS //////////////////////////
