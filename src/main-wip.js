@@ -292,7 +292,7 @@ const switchScene = (newScene, cameraDirection) => {
                 break;
             case 'makeWishPage':
                 loadMakeWishPage();
-                showMakeWishPage();
+                // showMakeWishPage();
                 break;
         }
     };
@@ -879,7 +879,6 @@ const loadMakeWishPage = () => {
     //$('.starview').show();
     // if(detectMob === false) animateValue('.gaugeMeter', 0, 100, 1)
     currentScene = 'makeWishPage';
-    
 };
 
 const unloadMakeWishPage = () => {
