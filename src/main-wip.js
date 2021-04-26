@@ -309,14 +309,15 @@ const switchScene = (newScene, cameraDirection = 'up') => {
             setControlsTarget();
             camera.position.set(camera.position.x, camera.position.y - cameraMovement, camera.position.z);
             loadScene();
+            document.getElementById("numbMeter").innerHTML = Math.abs(camera.position.y);
             new TWEEN.Tween(camera)
                 .to({'position': newPos}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)
                 .onUpdate(() => camera.updateProjectionMatrix())
                 .onComplete(() => isCameraAnimating = false)
                 .start();
-        })
-        .start();
+    })
+    .start();
 };
 
 const createParticleSystem = (scene) => {
@@ -538,14 +539,14 @@ const loadGalleryPage = () => {
 
 // Unload all elements in gallery page
 const unloadGalleryPage = () => {
-    $('.gaugeMeter').fadeIn();
+    //$('.gaugeMeter').fadeIn();
     clearScene();
     jellies.splice(0, jellies.length);
 };
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
-    $('.gaugeMeter').fadeIn();
+    //$('.gaugeMeter').fadeIn();
     $('#welcomescreen').fadeIn();
     $('.settings').css('width', '164px');
 
@@ -605,7 +606,7 @@ const loadWelcomePage = () => {
 
     updateSun();
     currentScene = 'welcomePage';
-    $('.gaugeMeter').fadeOut();
+    //$('.gaugeMeter').fadeOut();
 };
 
 const unloadWelcomePage = () => {
