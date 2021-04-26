@@ -169,17 +169,17 @@ export const hideWishCursor = () => {
 
 // Gets stored userID, or if none exists, generates new one, stores in local storage, and returns new ID
 export const getUserID = () => {
-    let userID = localStorage.getItem('prism-wishful-user');
-    if(!userID) {
-        userID = `user-${Date.now()}-${Math.floor(Math.random() * 999)}`;
-        try {
+    try {
+        let userID = localStorage.getItem('prism-wishful-user');
+        if(!userID) {
+            userID = `user-${Date.now()}-${Math.floor(Math.random() * 999)}`;
             localStorage.setItem('prism-wishful-user', userID);
-        } catch(e) {
-            userID = null;
         }
-        
+        return userID;
+    } catch(e) {
+        return null;
     }
-    return userID;
+    
 };
 
 export const genWishID = () => {
