@@ -447,7 +447,8 @@ const generateJelly = (wishObj) => {
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
     const outerMaterial = new THREE.MeshMatcapMaterial({
-        color: `#${jellyColor}`,// colorArray[randomNum(0, 6)],
+        color: `#${jellyColor}`,
+        //color: colorArray[randomNum(0, 6)],
         transparent: true,
         opacity: 0.45,
         depthWrite: false
