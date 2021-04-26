@@ -612,6 +612,8 @@ const loadGalleryPage = () => {
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     $('.gaugeMeter').fadeOut();
+    //changes bg color when load gallery page
+    $("#app").css("background", "radial-gradient( #131780, #040740)");
 };
 
 // Unload all elements in gallery page
@@ -623,6 +625,8 @@ const unloadGalleryPage = () => {
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
     $('.settings').css('width', '164px');
+    //changes bg color when load welcome page
+    $("#app").css("background", "#010512");
     bloomPass.threshold = 9;
 
     const light = new THREE.DirectionalLight(0xffffff);
