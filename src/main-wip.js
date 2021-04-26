@@ -877,7 +877,7 @@ const loadMakeWishPage = () => {
     // helper plane for raycasting
 	plane = new THREE.Plane( new THREE.Vector3(0, 0, 1), 500);
     //$('.starview').show();
-    animateValue('.gaugeMeter', 0, 100, 1)
+    // if(detectMob === false) animateValue('.gaugeMeter', 0, 100, 1)
     currentScene = 'makeWishPage';
     
 };
@@ -916,6 +916,15 @@ const makeWishCursor = () => {
             var y = e.targetTouches[0].pageY;
             cursor.style.left = x + 'px';
             cursor.style.top = y + 'px';
+
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            mouse.x = (e.targetTouches[0].pageX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(e.targetTouches[0].pageY / renderer.domElement.clientHeight) * 2 + 1;
+        
+            raycaster.setFromCamera(mouse, camera);
+            intersects = new THREE.Vector3();
+            raycaster.ray.intersectPlane(plane, intersects);
         })
 
     }
