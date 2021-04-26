@@ -213,7 +213,8 @@
         </div>
         <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
-            <input type="text" id="wishInput" autocomplete="off" placeholder="for a puppy">
+            <input type="text" id="wishInput" maxlength="20" autocomplete="off" placeholder="for a puppy" onkeyup="charcountupdate(this.value)">
+            <span id=charcount></span>
             <button type="button" id="makeWishButton">Make your wish</button>
             <h1 id="errorText"></h1>
         </div>
@@ -351,6 +352,11 @@
         }
 
         $('.logo').fadeIn();
+    }
+
+    function charcountupdate(str) {
+        var lng = str.length;
+        document.getElementById("charcount").innerHTML = lng + ' out of 20 characters';
     }
 </script>
 

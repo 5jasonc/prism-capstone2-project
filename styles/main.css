@@ -2150,3 +2150,29 @@ canvas #arApp{
     padding: 16px;
   }
 }
+
+
+#charcount {
+  border: none;
+      border-bottom-color: currentcolor;
+      border-bottom-style: none;
+      border-bottom-width: medium;
+  border-bottom-color: currentcolor;
+  border-bottom-style: none;
+  border-bottom-width: medium;
+  background-color: #0000;
+  max-width: 745px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100vh/4);
+  margin: auto;
+  font-size: 20px;
+  text-align: center;
+  padding-bottom: -12px;
+  color: white;
+  outline: none;
+  cursor: text;
+  z-index: 10;
+}
