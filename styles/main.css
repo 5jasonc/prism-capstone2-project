@@ -791,6 +791,15 @@ ul {
   text-align: center;
 }
 
+.aboutus .bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .aboutus h1 {
   text-transform: uppercase;
   line-height: 78px;
@@ -799,7 +808,7 @@ ul {
   color: white;
   font-weight: bold;
   text-align: center;
-  margin-top: 232px;
+  font-weight: 100 !important;
   font-family: 'GT-Super-Display-Medium', sans-serif;
 }
 
@@ -811,16 +820,60 @@ ul {
 
 .brief {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   display: flex;
   justify-content: start;
   margin: auto;
 }
 
+.widebrief{
+  width: 100%;
+  text-align: center;
+  max-width: 1600px;
+  margin: auto;
+  margin-top: 164px;
+}
+
+.widebrief iframe{
+  padding: 32px;
+}
+
+.widebrief h1{
+  text-align: center;
+  text-transform: capitalize;
+  padding-bottom: 16px;
+}
+.widebrief p{
+  max-width: 48rem;
+  color: rgb(153, 153, 153);
+  font-size: 18px;
+  line-height: 32px;
+  margin: auto;
+}
+
+.widebrief button{
+  border: none;
+  outline: none;
+  background: none;
+  width: auto;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #DE41F2;
+  border-radius: 100rem;
+  color: white;
+  height: 64px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-top: 56px;
+}
+
 .half {
   width: 50%;
   margin: auto;
-  height: 900px;
+  height: auto;
+  padding-top: 164px;
 }
 
 .half h1 {
@@ -830,17 +883,23 @@ ul {
   padding-bottom: 32px;
   font-weight: 100;
   text-transform: none;
-  max-width: 420px;
+  max-width: 560px;
   width: 100%;
+  font-weight: 100 !important;
 }
 
 .half p {
   text-align: left;
-  font-size: 24px;
+  font-size: 18px;
   color: rgb(172, 172, 172);
   line-height: 36px;
   font-weight: 100;
-  max-width: 36rem;
+  max-width: 32rem;
+}
+
+.about{
+  position: relative;
+  top: 0;
 }
 
 .aboutus h2 {
@@ -850,6 +909,10 @@ ul {
   margin: auto;
   text-align: center;
   font-family: 'GT-Super-Display-Medium', sans-serif;
+}
+
+.half video{
+  width: 100%;
 }
 
 .aboutus .about p {
@@ -868,7 +931,7 @@ ul {
 }
 
 .team-grid-container{
-  max-width: 1600px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -877,25 +940,62 @@ ul {
   margin: auto;
 }
 
+.mouse {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 34px;
+  height: 55px;
+  margin-bottom: 48px;
+}
+
+.mousebody {
+  width: 3px;
+  padding: 10px 15px;
+  height: 35px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  opacity: 0.75;
+  box-sizing: content-box;
+}
+
+.ball {
+  width: 3px;
+  height: 10px;
+  border-radius: 25%;
+  background-color: #fff;
+  animation-name: scroll;
+  animation-duration: 2.2s;
+  animation-timing-function: cubic-bezier(.15,.41,.69,.94);
+  animation-iteration-count: infinite;
+}
+@keyframes scroll {
+  0% { opacity: 0; }
+  10% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(15px); opacity: 0;}
+}
+
 .about{
   scroll-behavior: smooth;
   position: relative;
   top: 0;
   height: 100vh;
   width: 100%;
+  margin-bottom: 64px;
 }
 
 .about h1{
   position: relative;
-  top: 120px;
-  font-size: 32px;
-  margin-top: 0;
+  font-size: 32px !important;
+  padding-top: 160px;
 }
 
 .about img {
   position: relative;
   top: 140px;
-  width: 48vw;
+  width: 56vw;
   cursor: pointer;
   padding-bottom: 32px;
   border-bottom: 1px solid transparent;
@@ -970,6 +1070,10 @@ ul {
 .teamitems h4 {
   margin-top: 32px;
   padding-bottom: 16px;
+  color: rgb(172, 172, 172);
+  font-size: 18px;
+  font-weight: 100;
+  letter-spacing: 1px;
 }
 
 .teamitems h5 {
@@ -1193,6 +1297,25 @@ footer {
   font-weight: 100;
   max-width: 420px;
   margin: auto;
+}
+
+#cursor {
+  position: fixed;
+  display: none;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 20%;
+  backface-visibility: hidden;
+  transition: width 0.2s, height 0.2s, transform 0.2s;
+  z-index: 99999;
+  width: 20px;
+  height: 20px;
+}
+
+.zoom {
+  width: 50px !important;
+  height: 50px !important;
 }
 
 .makewish {
