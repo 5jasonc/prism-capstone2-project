@@ -43,10 +43,11 @@ let camZoom = 1000;
 // LOADS THREE.JS SCENE AND SHARED RESOURCES BETWEEN PAGES
 const init = () => {
     document.querySelector('#welcomescreen').style.display = 'none'; // start by hiding welcome page
-
+    
     // Connect to FireBase
     firebase.initializeApp(firebaseConfig);
     dbRef = firebase.database().ref('/wishes/');
+    // seedDB(); <-- LEAVE THIS COMMENTED OUT UNLESS DB NEEDS RESEEDING
 
     // Load three.js scene and resources
     const canvas = document.querySelector('#app');
@@ -66,8 +67,8 @@ const init = () => {
     renderScene.renderToScreen = false;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
     filmPass = new FilmPass(0.15, 0.025, 0, false);
-    bloomPass.threshold = 0;
-	bloomPass.strength = 1.5;
+    bloomPass.threshold = 0.5;
+	bloomPass.strength = 1;
 	bloomPass.radius = 0.5;
     bloomPass.renderToScreen = true;
     filmPass.renderToScreen = true;
@@ -134,7 +135,7 @@ const init = () => {
     loadGalleryPage();
 
     // Create particle system
-    createParticleSystem(scene);
+    // createParticleSystem(scene);
 
     // Begin animation
     const clock = new THREE.Clock();
@@ -440,12 +441,13 @@ const generateJelly = (wishObj) => {
     const jellyCode = hashFunc(wishObj.wish);
     const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
+    const colorArray = ['#ffffff', '#F0A6C1', '#F2387C', '#E83CB3', '#DE41F2', '#6C2EF2', '#031473'];
     const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
     const outerMaterial = new THREE.MeshMatcapMaterial({
-        color: `#${jellyColor}`,
+        color: `#${jellyColor}`,// colorArray[randomNum(0, 6)],
         transparent: true,
         opacity: 0.45,
         depthWrite: false
@@ -484,7 +486,7 @@ const generateJelly = (wishObj) => {
     }
 
     const parent = new THREE.Object3D();
-    parent.position.set(randomNum(-200, 200), randomNum(-200, 200), randomNum(-200, 200));
+    parent.position.set(randomNum(-500, 500), randomNum(-500, 500), randomNum(-500, 500));
     parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
     parent.userData.wish = wishObj.wish;
   
@@ -1056,5 +1058,15 @@ const makeWishCursor = () => {
     });
     }
 }
+
+// Seeds DB with a new wish for every line in the wishes.txt file. DONT CALL UNLESS NEEDED
+const seedDB = () => {
+    $.get('wishes.txt', (txt) => {
+        const lines = txt.split("\n");
+        for(const line of lines) {
+            dbRef.push({wishID: genWishID(), wish: line, approved: true, userID: getUserID()});
+        }
+    }); 
+};
 
 window.onload = init;
