@@ -99,13 +99,16 @@ const init = () => {
     });
     document.querySelector('#searchButton').addEventListener('click', toggleSearchUI);
     document.querySelector('#cancelbtn').addEventListener('click', hideSearchUI);
-    document.querySelector('#addJellyButton').addEventListener('click', toggleTempWishUI);
     document.querySelector('#makeWishButton').addEventListener('click', () => makeWish());
     document.querySelector('#searchtxt').addEventListener('input', (e) => updateWishSearchText(e, jellies));
     document.querySelector('#startSearchButton').addEventListener('click', () => startSearch(document.querySelector('#searchtxt').value));
     document.querySelector('#backbutton').addEventListener('click', () => {
         document.getElementById('bannerBar').style.display = 'none';
         startSearch('');
+    });
+    document.querySelector('#farView').addEventListener('click', () => {
+        isCameraFollowingJelly = false;
+        hideWishText();
     });
     canvas.addEventListener('contextmenu', () => {
         isCameraFollowingJelly = false;
@@ -115,9 +118,11 @@ const init = () => {
 
     // Listen for page transitions on each link to page with three scene
     document.querySelector('#welcomePageLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
-    document.querySelector('#welcomePageLogoLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
     document.querySelector('#galleryPageLink').addEventListener('click', () => switchScene('galleryPage', 'down'));
-    document.querySelector('.welcometxt').addEventListener('click', () => switchScene('makeWishPage', 'up'));
+    document.querySelector('#welcomePageLogoLink').addEventListener('click', () => switchScene('welcomePage', currentScene === 'galleryPage' ? 'up' : 'down'));
+    document.querySelector('#wishfultxtsvg').addEventListener('click', () => switchScene('makeWishPage', 'up'));
+    document.querySelector('#addJellyButton').addEventListener('click', () => switchScene('makeWishPage', 'up'));
+    
 
     // Add canvas to page and objects to scene
     document.body.appendChild(renderer.domElement);
@@ -230,7 +235,7 @@ const animate = (renderer, clock) => {
 };
 
 // Loads scene with given string, currently supported scenes are welcome page and gallery page, moves camera with transition w/ given direction
-const switchScene = (newScene, cameraDirection = 'up') => {
+const switchScene = (newScene, cameraDirection) => {
     hideWishText();
     document.querySelector('#checked').checked = false;
     if(newScene === currentScene) return;   // cancel if trying to switch to already current scene
@@ -283,11 +288,11 @@ const switchScene = (newScene, cameraDirection = 'up') => {
                 break;
             case 'welcomePage':
                 loadWelcomePage();
-                // showWelcomePage(); <-- IF THIS IS NOT COMMENTED OUT WELCOME PAGE CSS ELEMENTS BLOCK THREEJS CANVAS
+                showWelcomePage();
                 break;
             case 'makeWishPage':
                 loadMakeWishPage();
-                showMakeWishPage();
+                // showMakeWishPage();
                 break;
         }
     };
@@ -558,7 +563,6 @@ const makeWish = () => {
         document.querySelector('#errorText').innerHTML = '';
         dbRef.push({wish: document.querySelector('#wishInput').value, approved: null, userID: getUserID()});
         jellyClicked(jellies[jellies.length - 1].jellyParent, controls, camera);
-        document.querySelector('#addJellyButton').click();
     });
 };
 
@@ -595,17 +599,13 @@ const loadGalleryPage = () => {
 
 // Unload all elements in gallery page
 const unloadGalleryPage = () => {
-    //$('.gaugeMeter').fadeIn();
     clearScene();
     jellies.splice(0, jellies.length);
 };
 
 // Loads all elements in three js scene for welcome page
 const loadWelcomePage = () => {
-    //$('.gaugeMeter').fadeIn();
-    $('#welcomescreen').fadeIn();
     $('.settings').css('width', '164px');
-
     bloomPass.threshold = 9;
 
     const light = new THREE.DirectionalLight(0xffffff);
@@ -879,7 +879,6 @@ const loadMakeWishPage = () => {
     //$('.starview').show();
     // if(detectMob === false) animateValue('.gaugeMeter', 0, 100, 1)
     currentScene = 'makeWishPage';
-    
 };
 
 const unloadMakeWishPage = () => {
