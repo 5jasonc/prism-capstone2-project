@@ -838,7 +838,9 @@ const attractStar = () => {
                             var radiusA = Math.pow((a.mass / MASS_FACTOR/MASS_FACTOR / 4* Math.PI), 1/3)/6;
 
                             if (distance < radiusM + radiusA) {
-                                console.log('star caught! @ 841 in attractStar()')
+                                console.log('star caught! @ 841 in attractStar()');
+                                console.log(m.position);
+                                updateCaughtStar(m.position);
                                 a.eat(m);
                             }
                             else
@@ -850,8 +852,81 @@ const attractStar = () => {
                     }
                 }
             }
-
 }
+
+const updateCaughtStar = (starPos) => {
+    bloomPass.threshold = 9;
+    const parent = new THREE.Object3D();
+    parent.position.set(starPos.x, starPos.y, starPos.z);
+    let mesh, subMesh;
+    const jellyProps = {
+        jellySize: 1,
+        jellyThetaLength: Math.PI,
+        outerMeshOpacity: 1
+    };
+    
+
+    const addJelly = () => {
+        const starGeometry = new THREE.SphereGeometry(jellyProps.jellySize, 15, 15, 0, 6.283, 0, jellyProps.jellyThetaLength);
+        addGeometry(starGeometry);
+    };
+    
+    const addGeometry = (geometry) => {
+        const outerMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: jellyProps.outerMeshOpacity, depthWrite: false, side: THREE.DoubleSide});
+        const innerMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, transparent: false, opacity: 1, depthWrite: false, side: THREE.DoubleSide});
+        parent.remove(mesh);
+        parent.remove(subMesh);
+        mesh = new THREE.Mesh(geometry, outerMaterial);
+        subMesh = new THREE.Mesh(geometry, innerMaterial);
+        // mesh.depthWrite = false;
+        // subMesh.depthWrite = false;
+        subMesh.scale.set(0.9, 0.5, 0.9);
+        parent.add(mesh);
+        parent.add(subMesh);
+    };
+    
+    addJelly();
+    scene.add(parent);
+
+    const jellyOpacityTransition = new TWEEN.Tween(jellyProps)
+        .to({'outerMeshOpacity': 0.5}, 3000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => addJelly());
+        // .onComplete(() =>  );
+
+    const jellyThetaTransition = new TWEEN.Tween(jellyProps)
+        .to({'jellyThetaLength': Math.PI / 2}, 3000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => addJelly())
+        .onComplete(() => jellyOpacityTransition.start());
+
+    const jellySizeTransition = new TWEEN.Tween(jellyProps)
+        .to({'jellySize': 150}, 5000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => addJelly())
+        .onComplete(() => jellyThetaTransition.start());
+
+    new TWEEN.Tween(controls)
+        .to({'target': new THREE.Vector3(starPos.x, starPos.y, starPos.z)}, 1500)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => controls.update())
+        .onComplete(() => jellySizeTransition.start())
+    //     .onComplete(() => {
+    //         unloadScene();
+    //         camera.position.set(newPos.x, newPos.y, newPos.z);
+    //         setControlsTarget();
+    //         camera.position.set(camera.position.x, camera.position.y - cameraMovement, camera.position.z);
+    //         loadScene();
+    //         //document.getElementById("numbMeter").innerHTML = Math.abs(camera.position.y);
+    //         new TWEEN.Tween(camera)
+    //             .to({'position': newPos}, 1000)
+    //             .easing(TWEEN.Easing.Circular.InOut)
+    //             .onUpdate(() => camera.updateProjectionMatrix())
+    //             .onComplete(() => isCameraAnimating = false)
+    //             .start();
+    // })
+        .start();
+};
 
 // Load all objects in three js scene for make wish page
 const loadMakeWishPage = () => {
