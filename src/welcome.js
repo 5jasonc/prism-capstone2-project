@@ -604,7 +604,7 @@ function wish() {
 		}, 5000)
 		.easing(Easing.Quadratic.InOut)
 		.start();
-	document.getElementById("numbMeter").innerHTML = Math.floor(camera.rotation.x);
+
 	$('#welcomescreen').fadeOut(1000, 0);
 	// $('#container').attr('style', 'background-color: black');
 	$('.starview').fadeIn(1000);
