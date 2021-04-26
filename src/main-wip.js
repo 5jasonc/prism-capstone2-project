@@ -309,7 +309,7 @@ const switchScene = (newScene, cameraDirection = 'up') => {
             setControlsTarget();
             camera.position.set(camera.position.x, camera.position.y - cameraMovement, camera.position.z);
             loadScene();
-            document.getElementById("numbMeter").innerHTML = Math.abs(camera.position.y);
+            //document.getElementById("numbMeter").innerHTML = Math.abs(camera.position.y);
             new TWEEN.Tween(camera)
                 .to({'position': newPos}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)

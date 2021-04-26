@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name=apple-mobile-web-app-capable content=yes>
@@ -11,8 +12,9 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/nav.css">
     <link rel="stylesheet" href="styles/about.css">
-    <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel=“stylesheet” href=“https://use.typekit.net/wba4cnv.css”> <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
     <!-- Open Graphs -->
     <meta property=”og:title” content=”Wishing Well” />
     <meta property=”og:url” content=”http://www.wishingwell.com” />
@@ -22,18 +24,6 @@
     <meta property="og:image" content="https://wishingwell.com/ogp.jpg" />
     <meta property="og:image:alt" content="Wishing well with a flying keys swarming around freely" />
 </head>
-<style>
-    .bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        transition: all 0.7s ease;
-    }
-</style>
 
 <body style="overflow-y: auto;">
     <input type="checkbox" class="check" id="checked">
@@ -43,94 +33,101 @@
     </label>
     <label class="close-menu" for="checked"></label>
     <div class="logo" style="position: fixed; z-index: 100;">
-        <a href="welcome.html"><img src="./icons/whitestar.svg" width="100%" alt="logo of star"></a>
+        <a href="welcome.html"><img src="./icons/flatwhitestar.svg" width="100%" alt="logo of star"></a>
     </div>
     <nav class="drawer-menu">
         <ul>
             <h1>Menu</h1>
-            <li><a href="welcome.html" style="--animation-order: 1;">Home</a></li>
-            <li><a href="index.html" style="--animation-order: 2;">Gallery</a></li>
+            <li><a id="welcomePageLink" style="--animation-order: 1;">Home</a></li>
+            <li><a id="galleryPageLink" style="--animation-order: 2;">Gallery</a></li>
             <li><a href="aboutus.html" style="--animation-order: 3;">About us</a></li>
         </ul>
         <div class="socialmedias">
             <div class="smlink">
                 <a href="#">
-                    <img src="./icons/facebookicon.svg" alt="Twitter icon">
+                    <img src="./icons/fbfill.svg" alt="Facebook icon" width="100%">
                 </a>
             </div>
             <div class="smlink">
                 <a href="#">
-                    <img src="./icons/twittericon.svg" alt="Twitter icon">
-                </a>
-            </div>
-            <div class="smlink">
-                <a href="#">
-                    <img src="./icons/copyicon.svg" alt="Copy icon">
+                    <img src="./icons/twitterfill.svg" alt="Twitter icon" width="100%">
                 </a>
             </div>
         </div>
     </nav>
-    <script>
-        $(window).scroll(function () {
-            $(".bg").css("opacity", 1 - $(window).scrollTop() / 120);
-        });
-    </script>
     <!-- <canvas id="stars" style="position: absolute; left: 0; bottom: 0; right: 0; top: 0; z-index: -1;"></canvas> -->
     <section class="aboutus" style="overflow: auto;">
-        <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="Zoom_Background.mov"
+        <video class="bg" autoplay loop muted autoplay nocontrols playsinline src="./videos/Wishful_Hero_720p.mov"
             width="100%"></video>
         <div class="about">
-            <h1>About Us</h1>
+            <h1 style="margin-top: 0;">About Us</h1>
             <img src="wishfultxt.svg">
-            <div class="scroll">
-
+            <div class="mouse">
+                <div class="mousebody">
+                    <div class="ball"></div>
+                </div>
             </div>
         </div>
         <div class="brief">
             <div class="half">
-                <h1>A year of <span class="colortext">hopelessness</span></h1>
+                <h1>How can we <span style="color: rgb(255, 0, 255);">spark hope?</span></h1>
                 <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and
                     discouraged.</p>
             </div>
             <div class="half">
-                <img src="./imgs/Globe.png" width="100%" style="margin-top: 232px;" alt="image place holder">
+                <video src="./videos/Wishful_SparkHope_480.mov" autoplay loop muted width="100%">
             </div>
+        </div>
+        <div class="widebrief">
+            <h1>Introducing <span style="color:#4498ff; ">wishful.space</span></h1>
+            <p>Our project allows users to explore a virtual world, populated by the hopes and wishes of others,
+                cultivating a community to bring each other up by sharing our dreams for the future.</p>
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe
+                    src="https://player.vimeo.com/video/536438247?autoplay=1&loop=1&title=0&byline=0&portrait=0"
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+            <button>wishful.space</button>
         </div>
         <div class="brief">
             <div class="half">
-                <img src="./imgs/heart.png" height="70%" style="margin-top: 84px;" alt="image place holder">
+                <video src="./videos/Wishful_Jellyfish_480.mov" autoplay loop muted width="100%">
             </div>
             <div class="half">
-                <h1>How do we <span class="colortext">spark hope?</span></h1>
-                <p>We are creating an enchanting, exploratory experience to allow people to express their hope for the
-                    future and find comradery with others.</p>
-            </div>
-
-        </div>
-        <div class="brief">
-            <div class="half">
-                <h1>A digital <span class="colortext">wishing well</span></h1>
-                <p>The process involves transforming your personal wish into a jellyfish-like virtual creature, swimming
-                    amongst the hopes and wishes of others, and culminating a community of these personal wishes that
-                    can be shared and saved.</p>
-            </div>
-            <div class="half">
-                <img src="./imgs/mobile.png" alt="image place holder">
-            </div>
-        </div>
-        <div class="brief">
-            <div class="half">
-                <img src="./imgs/Jellyfish Graphic.png" alt="image place holder">
-            </div>
-            <div class="half">
-                <h1>Why<span class="colortext"> Jellyfish?</span></h1>
+                <h1>Why<span style="color: rgb(190, 0, 254);"> Jellyfish?</span></h1>
                 <p>Jellyfish have a symbolic connection to personal reflection, by making a wish you are giving life to
                     a moment of vulnerability.</p>
             </div>
         </div>
-        <h1 style="padding-bottom: 132px;">A <span class="colortext">team</span> made it happen</h1>
+        <div class="widebrief">
+            <h1>Introducing <span style="color: #4498ff;">wishful.space</span></h1>
+            <p>Our project allows users to explore a virtual world, populated by the hopes and wishes of others,
+                cultivating a community to bring each other up by sharing our dreams for the future.</p>
+            <video></video>
+            <button>wishful.space</button>
+        </div>
+        <div class="brief">
+            <div class="half">
+                <h1>Marketing</span></h1>
+                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and
+                    discouraged.</p>
+            </div>
+            <div class="half">
+                <video src="./videos/postersign.mov" autoplay loop muted width="100%">
+            </div>
+        </div>
+        <div class="brief">
+            <div class="half">
+                <video src="./videos/Wishful_SparkHope_480.mov" autoplay loop muted width="100%">
+            </div>
+            <div class="half">
+                <h1>Immersive <span style=" color: rgb(190, 0, 254); ">experience</span></h1>
+                <p>The past year has been a period of distress and isolation, leaving many of us feeling alone and
+                    discouraged.</p>
+            </div>
+        </div>
+        <h1 style="padding-bottom: 132px;">The <span style="color: #4498ff;">team</span></h1>
         <div class="team-grid-container">
-
             <div class="a1">
                 <span data-tilt>
                     <div class="teamitems">
@@ -196,14 +193,14 @@
             <div class="facebookWrap">
                 <div class="smlink">
                     <a href="#">
-                        <img src="./icons/facebookicon.svg" alt="Twitter icon">
+                        <img src="./icons/fbfill.svg" alt="Twitter icon">
                     </a>
                 </div>
             </div>
             <div class="twitterWrap">
                 <div class="smlink">
                     <a href="#">
-                        <img src="./icons/twittericon.svg" alt="Twitter icon">
+                        <img src="./icons/twitterfill.svg" alt="Twitter icon">
                     </a>
                 </div>
             </div>
