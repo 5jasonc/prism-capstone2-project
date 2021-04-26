@@ -6,6 +6,7 @@ import * as TWEEN from '../build/tween.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
+import { BokehPass } from './jsm/postprocessing/BokehPass.js';
 import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
 import { Water } from './jsm/objects/Water.js';
@@ -24,7 +25,7 @@ let dbRef;
 let camera, scene, loader, renderer, controls;
 let water;
 let particles;
-let bloomPass, filmPass;
+let bloomPass, filmPass, bokehPass;
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
@@ -52,20 +53,33 @@ const init = () => {
     renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    // renderer.setClearColor(0x000000, 0); // not sure if we will need this
+    // renderer.setClearColor(0x040742, 1); // not sure if we will need this
     // renderer.toneMapping = THREE.ReinhardToneMapping; // look better with this?
-    renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
     const renderScene = new RenderPass(scene, camera);
+    renderScene.renderToScreen = false;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
     filmPass = new FilmPass(0.15, 0.025, 0, false);
     bloomPass.threshold = 0;
 	bloomPass.strength = 1.5;
 	bloomPass.radius = 0.5;
+    bloomPass.renderToScreen = true;
     filmPass.renderToScreen = true;
+    bokehPass = new BokehPass( scene, camera, {
+		focus: 20,
+		aperture: 0.00001,
+		maxblur: 1.525,
+		width: window.innerWidth,
+		height: window.innerHeight
+	} );
+
+	bokehPass.renderToScreen = true;
+	bokehPass.needsSwap = true;
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
 	composer.addPass(bloomPass);
-    composer.addPass(filmPass);
+    // composer.addPass(bokehPass);
+    // composer.addPass(filmPass);
 
     // Set up orbit camera controls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -463,7 +477,9 @@ const loadWishes = () => {
     dbRef.on('child_added', (data) => {
         const wishObj = data.val();
         if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
-        generateJelly(wishObj.wish);
+        //for(let i=0; i<10; i++){
+            generateJelly(wishObj.wish);
+        //}
         document.querySelector('#numWishes').innerHTML = jellies.length;
     });
 };
