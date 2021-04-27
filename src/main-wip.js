@@ -53,6 +53,7 @@ const init = () => {
     const canvas = document.querySelector('#app');
     loader = new THREE.TextureLoader();
     scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x040742, 0, 1500);
     camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
     const light = new THREE.PointLight(0xffffff, 1);
     camera.position.set(500, 500, camZoom);
@@ -170,10 +171,28 @@ const animate = (renderer, clock) => {
   
     // Make jellies pulsate through geometry transforms
     for(let j = 0; j < jellies.length; j++) {
+        
         const currentJelly = jellies[j];
         const position = currentJelly.jellyMesh.geometry.attributes.position;
         const vector = new THREE.Vector3();
         //loops through points within jelly
+
+        if(currentJellyTarget !== null){
+            currentJelly.jellyMesh.material.opacity = 0.15;
+            currentJellyTarget.children[0].material.opacity = 0.65;
+        } else {
+            currentJelly.jellyMesh.material.opacity = 0.45;
+        }
+
+        //test to see if jellies are the selected jelly, if not set their opacity to 0.25
+        // if(isCameraFollowingJelly){
+        //     if(jellies[j].parent === currentJellyTarget){
+        //         jellies[j].jellyMesh.material.opacity = 1;
+        //     } else {
+        //         jellies[j].jellyMesh.material.opacity = 0.15;
+        //     }
+        // }
+
         for(let pointIndex = 0; pointIndex < position.count; pointIndex++){
             vector.fromBufferAttribute(position, pointIndex);
             vector.applyMatrix4(currentJelly.jellyMesh.matrix);
@@ -446,7 +465,7 @@ const generateJelly = (wishObj) => {
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
-    const outerMaterial = new THREE.MeshMatcapMaterial({
+    const outerMaterial = new THREE.MeshBasicMaterial({
         color: `#${jellyColor}`,
         //color: colorArray[randomNum(0, 6)],
         transparent: true,
