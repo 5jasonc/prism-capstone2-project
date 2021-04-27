@@ -1068,28 +1068,37 @@ const makeWishCursor = () => {
             $('#cursor').show();
             var x = e.targetTouches[0].pageX;
             var y = e.targetTouches[0].pageY;
+            //console.log('start', x, y);
             cursor.style.left = x + 'px';
             cursor.style.top = y + 'px';
+            clicking = true;
         });
         window.addEventListener('touchend', function(e){
+            clicking = false;
             $('#cursor').hide();
         });
         window.addEventListener('touchmove', function(e){
             $('#cursor').show();
+            clicking = true;
+            // if(e.touches.length > 1){
+            // e.preventDefault();
+            // e.stopImmediatePropagation();
+            // }
             var x = e.targetTouches[0].pageX;
             var y = e.targetTouches[0].pageY;
             cursor.style.left = x + 'px';
             cursor.style.top = y + 'px';
-
+            //console.log('move', x, y)
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
-            mouse.x = (e.targetTouches[0].pageX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(e.targetTouches[0].pageY / renderer.domElement.clientHeight) * 2 + 1;
-        
+            mouse.x = (x/ renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(y / renderer.domElement.clientHeight) * 2 + 1;
+            //console.log(mouse.x, mouse.y)
             raycaster.setFromCamera(mouse, camera);
             intersects = new THREE.Vector3();
             raycaster.ray.intersectPlane(plane, intersects);
-        })
+            console.log(intersects);
+        });
 
     }
     else{
@@ -1100,15 +1109,16 @@ const makeWishCursor = () => {
         var y = e.clientY;
         cursor.style.left = x + 'px';
         cursor.style.top = y + 'px';
-
+        //console.log('mousemove', x, y);
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
         mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
-    
+        //console.log(mouse.x, mouse.y)
         raycaster.setFromCamera(mouse, camera);
         intersects = new THREE.Vector3();
 		raycaster.ray.intersectPlane(plane, intersects);
+        console.log(intersects);
     });
     $('body')
     .mousedown(function(e){
