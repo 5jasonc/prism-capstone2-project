@@ -112,9 +112,20 @@ const init = () => {
     });
     document.querySelector('#farView').addEventListener('click', () => {
         isCameraFollowingJelly = false;
+        currentJellyTarget = null;
+        isCameraAnimating = true;
+        new TWEEN.Tween(controls)
+        .to({'target': new THREE.Vector3(0, 0, 0)}, 1000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => controls.update())
+        .onComplete(() => {
+            isCameraAnimating = false;
+        })
+        .start();
         hideWishText();
     });
     canvas.addEventListener('contextmenu', () => {
+        currentJellyTarget = null;
         isCameraFollowingJelly = false;
         hideWishText();
     });
@@ -258,6 +269,7 @@ const animate = (renderer, clock) => {
 
 // Loads scene with given string, currently supported scenes are welcome page and gallery page, moves camera with transition w/ given direction
 const switchScene = (newScene, cameraDirection) => {
+    currentJellyTarget = null;
     hideWishText();
     document.querySelector('#checked').checked = false;
     if(newScene === currentScene) return;   // cancel if trying to switch to already current scene
@@ -556,11 +568,11 @@ const jellyClicked = (jelly) => {
             isCameraAnimating = false;
             isCameraFollowingJelly = true
             // Experimenting with zoom transition next
-            // new TWEEN.Tween(camera)
-            //     .to({'fov': 10}, 1000)
-            //     .easing(TWEEN.Easing.Circular.InOut)
-            //     .onUpdate(() => camera.updateProjectionMatrix())
-            //     .start();
+            new TWEEN.Tween(camera)
+                .to({'position': new THREE.Vector3(orbitTarget.x + 100, orbitTarget.y + 100, orbitTarget.z+100)}, 1000)
+                .easing(TWEEN.Easing.Circular.InOut)
+                .onUpdate(() => camera.updateProjectionMatrix())
+                .start();
         })
         .start();
 };
@@ -623,6 +635,7 @@ const startSearch = (searchtxt) => {
     controls.update();
 
     isCameraFollowingJelly = false;
+    currentJellyTarget = null;
     hideWishText();
     hideSearchUI();
 };
