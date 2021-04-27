@@ -576,10 +576,12 @@ const loadWishes = () => {
     dbRef.on('child_added', (data) => {
         if(currentScene !== 'galleryPage') return;
         const wishObj = data.val();
-        if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
-        //for(let i=0; i<10; i++){
-            generateJelly(wishObj);
-        //}
+        // if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
+        // generateJelly(wishObj)
+        if(transitionTargetWishID !== wishObj.wishID) {
+            if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
+        } 
+        generateJelly(wishObj);
 
         document.querySelector('#numWishes').innerHTML = kFormatter(jellies.length); 
     });
