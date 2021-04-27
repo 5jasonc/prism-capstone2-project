@@ -105,11 +105,17 @@ button {
   font-style: normal;
 }
 
+html {
+  min-height: -webkit-fill-available;
+}
+
 body {
   margin: 0;
   background: radial-gradient( #131780, #040740);
   overflow: hidden;
   color: white;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 h1,
