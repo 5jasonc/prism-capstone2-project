@@ -159,25 +159,53 @@ const animate = (renderer, clock) => {
     const delta = clock.getDelta();
     requestAnimationFrame(() => animate(renderer, clock));
   
-    // Make jellies move around, make them turn around if they hit walls
+    // Make jellies move around, make them turn around if they hit walls or target jelly
     for(let i = 0; i < jellies.length; i++) {
-        if(isCameraAnimating && jellies[i].jellyParent === currentJellyTarget) continue;
         const jelly = jellies[i].jellyParent;
-        jelly.rotateX((Math.PI / 1000) * Math.random());
-        jelly.rotateZ((Math.PI / 1000) * Math.random());
-        jelly.translateY(jellies[i].aStep * 2 + 0.3);
-        if(jelly.position.x < -1300 || jelly.position.x > 1300) {
+
+        if(isCameraAnimating && jelly === currentJellyTarget) continue;
+
+        if (jelly.position.x < -1300 || jelly.position.x > 1300 ||
+            jelly.position.y < -1300 || jelly.position.y > 1300 ||
+            jelly.position.z < -1300 || jelly.position.z > 1300
+        ) {
             jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
+            jelly.position.y = THREE.Math.clamp(jelly.position.y, -1300, 1300);
+            jelly.position.z = THREE.Math.clamp(jelly.position.z, -1300, 1300);
             jelly.rotateX(Math.PI);
         }
-        if(jelly.position.y < -1300 || jelly.position.y > 1300) {
-            jelly.position.y = THREE.Math.clamp(jelly.position.y, -1300, 1300);
-            jelly.rotateY(Math.PI);
+        // EXPERIMENTING WITH FLOCKING BEHAVIORS
+        //     let approachingJelly = false;
+        //     for(const j of jellies) {
+        //         if(jelly.position.distanceTo(j.jellyParent.position) < 30) {
+        //             approachingJelly = true;
+        //             j.jellyParent.rotateX(-Math.PI / 1000);
+        //         }
+        //     }
+        //     if(approachingJelly) {
+        //         jelly.rotateX(Math.PI / 1000);
+        //     } else {
+        //         jelly.rotateX((Math.PI / 1000) * Math.random());
+        //         jelly.rotateZ((Math.PI / 1000) * Math.random());
+        //     }
+        else {
+            jelly.rotateX((Math.PI / 1000) * Math.random());
+            jelly.rotateZ((Math.PI / 1000) * Math.random());
         }
-        if(jelly.position.z < -1300 || jelly.position.z > 1300) {
-            jelly.position.z = THREE.Math.clamp(jelly.position.z, -1300, 1300);
-            jelly.rotateZ(Math.PI);
-        }
+        // OLD COLLISION DETECTION MIGHT STILL USE
+        // else if (
+        //     isCameraFollowingJelly &&
+        //     ((jelly.position.x + 30 > currentJellyTarget.position.x - 30 && jelly.position.x + 30 < currentJellyTarget.position.x + 30) ||
+        //     (jelly.position.x - 30 < currentJellyTarget.position.x + 30 && jelly.position.x - 30 > currentJellyTarget.position.x - 30)) &&
+        //     ((jelly.position.y + 30 > currentJellyTarget.position.y - 30 && jelly.position.y + 30 < currentJellyTarget.position.y + 30) ||
+        //     (jelly.position.y - 30 < currentJellyTarget.position.y + 30 && jelly.position.y - 30 > currentJellyTarget.position.y - 30)) &&
+        //     ((jelly.position.z + 30 > currentJellyTarget.position.z - 30 && jelly.position.z + 30 < currentJellyTarget.position.z + 30) ||
+        //     (jelly.position.z - 30 < currentJellyTarget.position.z + 30 && jelly.position.z - 30 > currentJellyTarget.position.z - 30))
+        // ) {
+        // EXPERIMENTING WITH NOT ALLOWING JELLIES TO TOUCH TARGET
+        // if(isCameraFollowingJelly && currentJellyTarget !== jelly && jelly.position.distanceTo(currentJellyTarget.position) < 30 ) continue;
+        
+        jelly.translateY(jellies[i].aStep * 2 + 0.3);
     }
   
     // Make jellies pulsate through geometry transforms
