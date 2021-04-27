@@ -96,7 +96,8 @@
 
     <!-- GALLERY PAGE -->
     <button id="Exit" onclick="closeBtn()">
-        <img src="./icons/exit.svg" alt="exit icon">
+        <span class="bar top"></span>
+        <span class="bar bottom"></span>
     </button>
 
     <div class="banner" id="bannerBar">
@@ -215,7 +216,7 @@
             <h1>I wish</h1>
             <input type="text" id="wishInput" maxlength="20" autocomplete="off" placeholder="for a puppy" onkeyup="charcountupdate(this.value)">
             <span id=charcount></span>
-            <button type="button" id="makeWishButton">Make your wish</button>
+            <button type="button" id="makeWishButton">Make Your Wish</button>
             <h1 id="errorText"></h1>
         </div>
     </div>
@@ -223,12 +224,15 @@
     <!-- WELCOME PAGE -->
     <div id="welcomescreen">
         <div class="welcometxt">
-            <img id="wishfultxtsvg" src="wishfultxt.svg" width="100%" alt="Wishful">
+            <div class="welcomeButton">
+                <img id="wishfultxtsvg" src="wishfultxt.svg" width="100%" alt="Wishful">
+                <div class="hoverbar"></div>
+            </div>
             <p>Share a wish with the world and watch it come to life as a personalized jellyfish. </p>
         </div>
         <h4>Click wishful to begin</h4>
-        <button class="makewishmobile"><a href="stars.html">Wish</a></button>
-        <button class="exploremobile"><a href="index.html">Explore</a></button>
+        <!-- <button class="makewishmobile"><a href="stars.html">Wish</a></button>
+        <button class="exploremobile"><a href="index.html">Explore</a></button> -->
     </div>
 
     <!-- SETTINGS -->
@@ -309,6 +313,7 @@
         $('.export').fadeIn();
         $('.settings').fadeOut();
         $('.menu-btn').fadeOut();
+        $('#Exit').fadeIn();
         $('.amountofwish').fadeOut();
         $('.addJellyFish').fadeOut();
         $('.logo').fadeOut();
@@ -325,8 +330,6 @@
                     console.log('Thanks for sharing!');
                 })
                 .catch(console.error);
-        } else {
-            // fallback
         }
     });
 
@@ -339,6 +342,7 @@
         $('.export').fadeOut();
         $('.settings').fadeIn();
         $('.menu-btn').fadeIn();
+        $('#Exit').fadeOut();
         $('.amountofwish').fadeIn();
         $('.addJellyFish').fadeIn();
         if ($(window).innerWidth() <= 751) {
