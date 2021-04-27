@@ -112,9 +112,20 @@ const init = () => {
     });
     document.querySelector('#farView').addEventListener('click', () => {
         isCameraFollowingJelly = false;
+        //currentJellyTarget = null;
+        isCameraAnimating = true;
+        new TWEEN.Tween(controls)
+        .to({'target': new THREE.Vector3(0, 0, 0)}, 1000)
+        .easing(TWEEN.Easing.Circular.InOut)
+        .onUpdate(() => controls.update())
+        .onComplete(() => {
+            isCameraAnimating = false;
+        })
+        .start();
         hideWishText();
     });
     canvas.addEventListener('contextmenu', () => {
+        //currentJellyTarget = null;
         isCameraFollowingJelly = false;
         hideWishText();
     });
@@ -177,21 +188,13 @@ const animate = (renderer, clock) => {
         const vector = new THREE.Vector3();
         //loops through points within jelly
 
-        if(currentJellyTarget !== null){
+        // Change opacity if selected
+        if(isCameraFollowingJelly){
             currentJelly.jellyMesh.material.opacity = 0.15;
-            currentJellyTarget.children[0].material.opacity = 0.65;
+            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.65;
         } else {
             currentJelly.jellyMesh.material.opacity = 0.45;
         }
-
-        //test to see if jellies are the selected jelly, if not set their opacity to 0.25
-        // if(isCameraFollowingJelly){
-        //     if(jellies[j].parent === currentJellyTarget){
-        //         jellies[j].jellyMesh.material.opacity = 1;
-        //     } else {
-        //         jellies[j].jellyMesh.material.opacity = 0.15;
-        //     }
-        // }
 
         for(let pointIndex = 0; pointIndex < position.count; pointIndex++){
             vector.fromBufferAttribute(position, pointIndex);
@@ -216,10 +219,10 @@ const animate = (renderer, clock) => {
                 temppoints.push(vec);
             }
     
-            for(let k=0; k<temppoints.length; k++){
+            for(let k=1; k<temppoints.length; k++){
     
                 let point = temppoints[k];
-    
+                
                 shiftRight(positions, point.z);
                 shiftRight(positions, point.y);
                 shiftRight(positions, point.x);
@@ -258,6 +261,7 @@ const animate = (renderer, clock) => {
 
 // Loads scene with given string, currently supported scenes are welcome page and gallery page, moves camera with transition w/ given direction
 const switchScene = (newScene, cameraDirection) => {
+    //currentJellyTarget = null;
     hideWishText();
     document.querySelector('#checked').checked = false;
     if(newScene === currentScene) return;   // cancel if trying to switch to already current scene
@@ -556,11 +560,11 @@ const jellyClicked = (jelly) => {
             isCameraAnimating = false;
             isCameraFollowingJelly = true
             // Experimenting with zoom transition next
-            // new TWEEN.Tween(camera)
-            //     .to({'fov': 10}, 1000)
-            //     .easing(TWEEN.Easing.Circular.InOut)
-            //     .onUpdate(() => camera.updateProjectionMatrix())
-            //     .start();
+            new TWEEN.Tween(camera)
+                .to({'position': new THREE.Vector3(orbitTarget.x + 100, orbitTarget.y + 100, orbitTarget.z+100)}, 1000)
+                .easing(TWEEN.Easing.Circular.InOut)
+                .onUpdate(() => camera.updateProjectionMatrix())
+                .start();
         })
         .start();
 };
@@ -625,6 +629,7 @@ const startSearch = (searchtxt) => {
     controls.update();
 
     isCameraFollowingJelly = false;
+    //currentJellyTarget = null;
     hideWishText();
     hideSearchUI();
 };

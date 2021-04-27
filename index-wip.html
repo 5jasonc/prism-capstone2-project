@@ -188,7 +188,7 @@
 
     <div class="addJellyFish" id="addJellyButton">
         <!-- <a href="stars.html"><img src="addicon.svg" width="100%"></a>  KEEPING THIS UNTIL MAKE A WISH PAGE ACTUALLY WORKS -->
-        <img src="./icons/addicon.svg" height="100%">
+        <!-- <img src="./icons/addicon.svg" height="100%"> -->
     </div>
 
     <div class="amountofwish">
@@ -206,7 +206,8 @@
         </div>
         <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
-            <input type="text" id="wishInput" maxlength="20" autocomplete="off" placeholder="for a puppy" onkeyup="charcountupdate(this.value)">
+            <input type="text" id="wishInput" maxlength="20" autocomplete="off" placeholder="for a puppy"
+                onkeyup="charcountupdate(this.value)">
             <span id=charcount></span>
             <button type="button" id="makeWishButton">Make Your Wish</button>
             <h1 id="errorText"></h1>
@@ -292,6 +293,16 @@
             transform: 'scale(.8, 0.7)',
             borderRadius: '8px'
         });
+
+        if ($(window).width() > 320) {
+            $("#wishtxtbox").css({
+                right: '8%',
+                transition: 'all',
+                transition: '1s ease',
+                transform: 'scale(0.8)'
+            })
+        }
+
         $('.sharelinks').fadeOut()
         if ($(window).innerWidth() <= 751) {
             $('#wishtxtbox').css({
@@ -330,6 +341,14 @@
             transform: 'scale(1)',
             borderRadius: '0'
         });
+        if ($(window).width() > 320) {
+            $("#wishtxtbox").css({
+                right: '32px',
+                transition: 'all',
+                transition: '1s ease',
+                transform: 'scale(1)'
+            })
+        }
         $('.sharelinks').fadeIn()
         $('.export').fadeOut();
         $('.settings').fadeIn();
