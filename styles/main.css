@@ -1513,23 +1513,18 @@ footer {
   font-family: 'GT-Super-Display-Medium', sans-serif;
   width: 464px;
   padding-top: 12px;
-  letter-spacing: 4px;
 }
 
 
 #wishtxtbox {
   display: none;
   position: absolute;
-  bottom: 40%;
   left: 60%;
+  bottom: 40%;
   height: auto;
   width: auto;
   padding: 32px;
   position: absolute;
-  /* background: rgba(141, 141, 141, 0.205);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px); */
-  border-radius: 24px;
   z-index: 2;
 }
 
@@ -1668,7 +1663,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 82px;
+  bottom: 8vh;
   z-index: 0;
   width: 75%;
   margin: auto;
