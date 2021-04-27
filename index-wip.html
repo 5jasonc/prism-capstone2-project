@@ -265,8 +265,12 @@
     //Share model will appear
     function shareBtn() {
         //var x = document.getElementById("#app");
+
+        var scaleHeight = window.innerHeight/window.outerHeight;
+        if(scaleHeight != 1) $('#app').css({top: (-1 * (window.outerHeight - window.innerHeight))})
+
         $('#app').css({
-            transform: 'scale(.8, 0.7)',
+            transform: 'scale('+ 0.8+ ',' + 0.7 + ')',
             borderRadius: '8px'
         });
 
@@ -280,7 +284,7 @@
         }
 
         $('.sharelinks').fadeOut()
-        if ($(window).innerWidth() <= 751) {
+        if ($(window).innerWidth() <= 780) {
             $('#wishtxtbox').css({
                 left: '8%',
                 bottom: '20%',
@@ -315,6 +319,7 @@
     function closeBtn() {
         $('#app').css({
             transform: 'scale(1)',
+            top: '0',
             borderRadius: '0'
         });
         if ($(window).width() > 320) {
@@ -332,7 +337,7 @@
         $('#Exit').fadeOut();
         $('.amountofwish').fadeIn();
         $('.addJellyFish').fadeIn();
-        if ($(window).innerWidth() <= 751) {
+        if ($(window).innerWidth() <= 780) {
             $('#wishtxtbox').css({
                 left: '24px',
                 bottom: '32px',
