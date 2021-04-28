@@ -246,37 +246,31 @@ a {
 }
 
 .orbitbanner {
-  animation: slide-in 1s cubic-bezier(.32, .7, .51, 1.33);
-  display: flex;
-  animation-delay: calc(var(--animation-order) * 9000ms);
-  animation-fill-mode: both;
   position: absolute;
-  z-index: 12;
+  z-index: 4;
   height: 64px;
-  width: 340px;
-  top: 48px;
+  width: 320px;
+  bottom: 32px;
   left: 0;
   right: 0;
   margin: auto;
   padding: 4px;
-  border-radius: 64px;
+  border-radius: 100rem;
   text-align: center;
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
 
-
-
-.orbitbanner img {
-  height: 32px;
-  margin: 12px;
-  padding-left: 8px;
-}
-
 .orbitbanner h1 {
-  font-size: 18px;
+  font-family: sofia-pro, sans-serif;
+  font-size: 16px;
   width: auto;
+  font-weight: 100;
+  text-transform: uppercase;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
 }
 
 .logo {
@@ -1627,6 +1621,7 @@ footer {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: all 1s ease;
+  z-index: 12;
 }
 
 .printArCard img{
@@ -1984,11 +1979,13 @@ canvas #arApp{
 .backbutton {
   width: 64px;
   height: 64px;
-  padding: 16px;
-  background-color: transparent;
+  padding: 20px;
+  background: rgba(141, 141, 141, 0.205);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: 100rem;
   position: absolute;
-  top: 24px;
+  top: 48px;
   left: 24px;
 }
 
@@ -2084,7 +2081,7 @@ canvas #arApp{
     right: 0;
   }
 
-  .menu-btn {
+  .menu-btn, .backbutton {
     right: 24px;
     top: 24px;
   }
