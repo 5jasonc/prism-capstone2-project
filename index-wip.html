@@ -110,12 +110,12 @@
     </div>
     <div class="mobileShare">
         <button onclick="window.location.href='ar.html'" style="display: flex; justify-content: left;"
-            class="share-button" id="share">
+            class="share-button">
             <img src="./icons/ar.svg" height="100%" width="18px" alt="share icon">
             <h4>View in 3D</h4>
         </button>
         <div class="line"></div>
-        <button style="display: flex; justify-content: left;" class="share-button" id="share"><img
+        <button style="display: flex; justify-content: left;" class="share-button" id="iosShare"><img
                 src="./icons/share.svg" height="100%" width="18px" alt="share icon">
             <h4>Share</h4>
         </button>
@@ -295,7 +295,7 @@
     }
 
     //share only mobile view 
-    const shareButton = document.querySelector('.share-button');
+    const shareButton = document.querySelector('#iosShare');
     shareButton.addEventListener('click', event => {
         if (navigator.share) {
             navigator.share({

@@ -246,6 +246,7 @@ a {
 }
 
 .orbitbanner {
+  display: none;
   position: absolute;
   z-index: 4;
   height: 64px;
@@ -2008,7 +2009,6 @@ canvas #arApp{
 
 .mobileShare h4{
   padding-left: 8px;
-  margin-top: 4px;
   font-size: 14px;
   font-weight: 400;
 }
