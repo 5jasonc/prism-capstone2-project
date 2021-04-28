@@ -35,7 +35,7 @@
             <a href="arPrintCards.svg" download>
                 <img src="arPrintCards.svg">
             </a>
-            <h1>Tap the card to export the Ar Card to play the jellyfish.</h1>
+            <h1>Tap the card to print out the Ar Card to interact with the jellyfish.</h1>
         </div>
         <button onclick="myCloseBtn()">Dismiss</button>
     </div>
@@ -57,13 +57,26 @@
             <li><a href="aboutus.html" style="--animation-order: 3;">About us</a></li>
         </ul>
     </nav>
-
     <div id="wishtxtbox">
         <h3>I wish</h3>
-        <h2 id="wishText"></h2>
+        <!--Need to echo the jellyfish data text-->
+        <h2 id="wishText">to learn about the universe</h2>
     </div>
-
     <div class="orbitbanner">
+        <img src="icons/taptap.svg" width="100%">
         <h1>Tap on jelly to see the wish</h1>
     </div>
+    <script>
+        //tap the screen to see wish text
+        $("#container").click(function () {
+            $("#wishtxtbox").toggle();
+            $("#wishText").toggle();
+        });
+
+        $(document).ready(function () {
+            $('.orbitbanner').fadeIn(function () {
+                $('.orbitbanner').delay(5500).fadeOut();
+            });
+        });
+    </script>
 </body>

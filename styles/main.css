@@ -250,7 +250,7 @@ a {
   position: absolute;
   z-index: 4;
   height: 64px;
-  width: 320px;
+  width: 332px;
   bottom: 32px;
   left: 0;
   right: 0;
@@ -261,6 +261,8 @@ a {
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  border: 1px solid white;
+  display: flex;
 }
 
 .orbitbanner h1 {
@@ -272,6 +274,13 @@ a {
   width: 100%;
   padding: 15px;
   text-align: center;
+  position: relative;
+}
+
+.orbitbanner img{
+  width: 32px;
+  height: 100%;
+  margin-left: 16px;
 }
 
 .logo {
@@ -1626,15 +1635,19 @@ footer {
 }
 
 .printArCard img{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   border-radius: 8px;
 }
 
 .autoCenter h1{
+  position: relative;
+  top: 348px;
   font-size: 18px;
-  max-width: 300px;
-  left: 0;
-  right: 0;
+  width: 380px;
   margin: auto;
   font-weight: 100;
   font-family: sofia-pro, sans-serif;
@@ -1646,7 +1659,7 @@ footer {
 .autoCenter{
   position: relative;
   height: auto;
-  width: 235.56px;
+  width: 333px;
   top: 148px;
   margin: auto;
 }
