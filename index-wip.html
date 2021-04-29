@@ -125,7 +125,7 @@
         <h1>Search</h1>
         <input type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
-            <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
+            <h3><span class="wishAmount" id="wishSearchResult">0</span> Wishes Found</h3>
             <button class="viewall" id="startSearchButton">View Results</button>
             <button class="cancel" id="cancelbtn">Cancel</button>
         </div>
@@ -286,6 +286,13 @@
         $('.addJellyFish').fadeOut();
         $('.logo').fadeOut();
     }
+
+    if ($(window).innerWidth() <= 780){
+        $('.settings .line').css({
+                display: 'none',
+                width: '0'
+        });
+    };
 
     //share only mobile view 
     const shareButton = document.querySelector('#iosShare');

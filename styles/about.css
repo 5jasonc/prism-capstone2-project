@@ -333,3 +333,7 @@ img {
 .textField4 { grid-area: textField4; }
 
 .teamField { grid-area: teamField; }
+
+.teamField h1{
+  text-transform: capitalize;
+}

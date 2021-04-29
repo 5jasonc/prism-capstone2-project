@@ -776,7 +776,7 @@ ul {
   font-size: 10px;
   text-align: center;
   cursor: pointer;
-  z-index: 15;
+  z-index: 1;
   border-radius: 64px;
   border: solid 3px transparent;
   background: rgba(141, 141, 141, 0.205);
@@ -1265,7 +1265,7 @@ footer {
   padding: 12px;
   padding-left: 32px;
   padding-right: 32px;
-  width: auto;
+  width: 264px;
   height: 56px;
   font-size: 20px;
   font-weight: 100;
@@ -1324,12 +1324,13 @@ footer {
   width:auto;
 }
 
-#welcomescreen h4, #tapTap{
+#welcomescreen h4, #tapTap, #starTxt{
   font-size: 18px;
+  line-height: 32px;
   color: rgb(172, 172, 172);
   position: absolute;
   bottom: 48px;
-  font-weight: 100;
+  font-weight: 400;
   left: 0;
   right: 0;
   margin: auto;
@@ -1398,6 +1399,12 @@ footer {
   border-bottom: 2px solid white;
   border-bottom-width: 10px;
 } */
+
+#wishfultxtsvg{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
 
 #welcomescreen img:after {
   position: relative;
@@ -1561,6 +1568,7 @@ footer {
   font-weight: 100;
   padding-bottom: 8px;
   font-size: 32px;
+  letter-spacing: 0px;
 }
 
 .starcaught h3 {
@@ -1689,6 +1697,7 @@ footer {
   box-sizing: border-box;
   border-radius: 100rem;
   cursor: pointer;
+  width: 264px;
 }
 
 .printArCard button:active{
@@ -2274,7 +2283,13 @@ canvas #arApp{
   }
 
   .starcaught{
-    width: 320px;
+    width: 100%;
+  }
+
+  .starcaught h2 {
+    line-height: 30px;
+    font-weight: 100;
+    font-size: 22px;
   }
 
   .aboutus h1{
