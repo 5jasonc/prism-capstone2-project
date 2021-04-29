@@ -672,7 +672,6 @@ const loadGalleryPage = () => {
     loadWishes();
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
-    $('.gaugeMeter').fadeOut();
     //changes bg color when load gallery page
     $("#app").css("background", "radial-gradient( #131780, #040740)");
 };
@@ -695,8 +694,8 @@ const loadWelcomePage = () => {
 	scene.add(light);
     scene.add(new THREE.AmbientLight(0xffffff));
 
-    const sun = new THREE.Vector3();
-    const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+    //const sun = new THREE.Vector3();
+    const waterGeometry = new THREE.PlaneGeometry(12000, 10000);
     water = new Water(waterGeometry,
         {
             textureWidth: 512,
@@ -706,43 +705,42 @@ const loadWelcomePage = () => {
             }),
             sunDirection: new THREE.Vector3(),
             sunColor: 0xffffff,
-            waterColor: 0x5499d1,
-            distortionScale: 6,
-            fog: scene.fog !== undefined
+            waterColor: 0xffffff,
+            distortionScale: 6
         }
 	);
 
     water.rotation.x = -Math.PI / 2;
 	scene.add(water);
 
-    const sky = new Sky();
-	sky.scale.setScalar(10000);
-	scene.add(sky);
+    // const sky = new Sky();
+	// sky.scale.setScalar(10000);
+	// scene.add(sky);
 
-	const skyUniforms = sky.material.uniforms;
-	skyUniforms['turbidity'].value = 20;
-	skyUniforms['rayleigh'].value = 0.036;
-	skyUniforms['mieCoefficient'].value = 0;
-	skyUniforms['mieDirectionalG'].value = 1;
+	// const skyUniforms = sky.material.uniforms;
+	// skyUniforms['turbidity'].value = 20;
+	// skyUniforms['rayleigh'].value = 0.036;
+	// skyUniforms['mieCoefficient'].value = 0;
+	// skyUniforms['mieDirectionalG'].value = 1;
 
-	const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+	// const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
+    // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
-    const updateSun = () => {
-        const theta = Math.PI * (parameters.inclination - 0.5);
-        const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+    // const updateSun = () => {
+    //     const theta = Math.PI * (parameters.inclination - 0.5);
+    //     const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
 
-        sun.x = Math.cos(phi);
-        sun.y = Math.sin(phi) * Math.sin(theta);
-        sun.z = Math.sin(phi) * Math.cos(theta);
+    //     sun.x = Math.cos(phi);
+    //     sun.y = Math.sin(phi) * Math.sin(theta);
+    //     sun.z = Math.sin(phi) * Math.cos(theta);
 
-        sky.material.uniforms['sunPosition'].value.copy(sun);
-        water.material.uniforms['sunDirection'].value.copy(sun).normalize();
+    //     sky.material.uniforms['sunPosition'].value.copy(sun);
+    //     water.material.uniforms['sunDirection'].value.copy(sun).normalize();
 
-        scene.environment = pmremGenerator.fromScene(sky).texture;
-	};
+    //     scene.environment = pmremGenerator.fromScene(sky).texture;
+	// };
 
-    updateSun();
+    // updateSun();
 
     generateBGStars();
     currentScene = 'welcomePage';
