@@ -673,7 +673,7 @@ const loadGalleryPage = () => {
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     //changes bg color when load gallery page
-    $("#app").css("background", "radial-gradient( #131780, #040740)");
+    $("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
@@ -686,8 +686,8 @@ const unloadGalleryPage = () => {
 const loadWelcomePage = () => {
     $('.settings').css('width', '164px');
     //changes bg color when load welcome page
-    $("#app").css("background", "#010512");
     bloomPass.threshold = 9;
+    $("#app").css("background", "#040740");
 
     const light = new THREE.DirectionalLight(0xffffff);
 	light.position.set(0, 0, 10.10);
@@ -713,15 +713,15 @@ const loadWelcomePage = () => {
     water.rotation.x = -Math.PI / 2;
 	scene.add(water);
 
-    // const sky = new Sky();
-	// sky.scale.setScalar(10000);
-	// scene.add(sky);
+    const sky = new Sky();
+	sky.scale.setScalar(10000);
+	scene.add(sky);
 
-	// const skyUniforms = sky.material.uniforms;
-	// skyUniforms['turbidity'].value = 20;
-	// skyUniforms['rayleigh'].value = 0.036;
-	// skyUniforms['mieCoefficient'].value = 0;
-	// skyUniforms['mieDirectionalG'].value = 1;
+	const skyUniforms = sky.material.uniforms;
+	skyUniforms['turbidity'].value = 20;
+	skyUniforms['rayleigh'].value = 0.036;
+	skyUniforms['mieCoefficient'].value = 0;
+	skyUniforms['mieDirectionalG'].value = 1;
 
 	// const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
     // const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -1018,8 +1018,6 @@ const updateCaughtStar = (starPos) => {
 const loadMakeWishPage = () => {
     isStarSelected = false;
     $('.settings').css('width', '164px');
-    $('.gaugeMeter').show();
-
     // for(let i = 1; i < 1200; i++) {
     //     const geometry = new THREE.SphereGeometry(0.02 * randomNum(0.5, 1), 6, 6);
     //     const material = new THREE.MeshBasicMaterial({
