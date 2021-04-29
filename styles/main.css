@@ -424,7 +424,8 @@ a {
   width: 100vw;
   height: 100vh;
   background-color: #00013a56;
-  backdrop-filter: blur(38px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 #searchJelly {
@@ -1547,6 +1548,7 @@ footer {
   line-height: 42px;
   z-index: 10;
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .starcaught h2 {
@@ -2077,8 +2079,8 @@ canvas #arApp{
   }
 
   .drawer-menu ul {
-    left: 0;
-    padding-bottom: 32px;
+    left: 32px;
+    margin-left: 0;
   }
 
   .drawer-menu li {
