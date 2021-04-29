@@ -1400,12 +1400,6 @@ footer {
   border-bottom-width: 10px;
 } */
 
-#wishfultxtsvg{
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-
 #welcomescreen img:after {
   position: relative;
   display: inline-block;
