@@ -1318,6 +1318,11 @@ footer {
   transition: all 0.5s ease;
 }
 
+.welcometxt img{
+  max-width:500px !important;
+  width:auto;
+}
+
 #welcomescreen h4, #tapTap{
   font-size: 18px;
   color: rgb(172, 172, 172);

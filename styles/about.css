@@ -297,3 +297,39 @@ img {
   z-index: 1;
   position: relative;
 }
+
+
+
+.grid-container2 {
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-rows: auto auto auto auto auto auto;
+  gap: 0px 0px;
+  grid-template-areas:
+    ". textField1 imgField1 ."
+    ". intro intro ."
+    ". imgField2 textField2 ."
+    ". textField3 imgField3 ."
+    ". imgField4 textField4 ."
+    ". teamField teamField .";
+}
+
+.textField1 { grid-area: textField1; }
+
+.imgField1 { grid-area: imgField1; }
+
+.intro { grid-area: intro; }
+
+.imgField2 { grid-area: imgField2; }
+
+.textField2 { grid-area: textField2; }
+
+.textField3 { grid-area: textField3; }
+
+.imgField3 { grid-area: imgField3; }
+
+.imgField4 { grid-area: imgField4; }
+
+.textField4 { grid-area: textField4; }
+
+.teamField { grid-area: teamField; }
