@@ -673,7 +673,7 @@ const loadGalleryPage = () => {
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     //changes bg color when load gallery page
-    $("#app").css("background", "#040740");
+    //$("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
@@ -687,12 +687,12 @@ const loadWelcomePage = () => {
     $('.settings').css('width', '164px');
     //changes bg color when load welcome page
     bloomPass.threshold = 9;
-    $("#app").css("background", "#040740");
+    $("#app").css("background", "#01031c");
 
-    const light = new THREE.DirectionalLight(0xffffff);
+    const light = new THREE.DirectionalLight(0x02053A);
 	light.position.set(0, 0, 10.10);
 	scene.add(light);
-    scene.add(new THREE.AmbientLight(0xffffff));
+    scene.add(new THREE.AmbientLight(0x02053A));
 
     //const sun = new THREE.Vector3();
     const waterGeometry = new THREE.PlaneGeometry(12000, 10000);
@@ -704,8 +704,8 @@ const loadWelcomePage = () => {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             }),
             sunDirection: new THREE.Vector3(),
-            sunColor: 0xffffff,
-            waterColor: 0xffffff,
+            sunColor: 0x02053A,
+            waterColor: 0x02053A,
             distortionScale: 6
         }
 	);

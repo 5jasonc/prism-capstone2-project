@@ -142,7 +142,7 @@ a {
   display: block;
   height: 100%;
   width: 100%;
-  background: radial-gradient( #131780, #040740);
+  background: #040740;
   transition: all 1s ease-in;
 }
 
@@ -190,6 +190,7 @@ a {
 
 #app {
   /* background: radial-gradient( #131780, #040740); */
+  background-color: #040740;
   width: 100% !important;
   height: 100% !important;
   display: block;
@@ -838,7 +839,7 @@ ul {
   top: 0;
   height: 100vh;
   width: 100%;
-  background: #031059;
+  background: #040740;
   overflow: auto;
   text-align: center;
 }
@@ -1312,9 +1313,9 @@ footer {
   width: 100%;
   position: absolute;
   text-align: center;
-  background-color: #04074056;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background-color: #02053a56;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
   transition: all 0.5s ease;
 }
 
