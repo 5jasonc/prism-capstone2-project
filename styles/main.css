@@ -114,7 +114,7 @@ body {
   background: radial-gradient( #131780, #040740);
   overflow: hidden;
   color: white;
-  min-height: 100vh;
+  min-height: 100%;
   min-height: -webkit-fill-available;
 }
 
@@ -140,8 +140,8 @@ a {
   position: fixed;
   z-index: 99;
   display: block;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: radial-gradient( #131780, #040740);
   transition: all 1s ease-in;
 }
@@ -199,8 +199,8 @@ a {
 }
 
 #stars {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: block;
   position: absolute;
   top: 0;
@@ -403,7 +403,7 @@ a {
   height: auto;
   width: auto;
   margin-left: 24px;
-  top: calc(100vh/2);
+  top: calc(100%/2);
   transform-origin: center;
   padding: 12px;
   text-align: right;
@@ -421,8 +421,8 @@ a {
 .searchWindow {
   position: fixed;
   z-index: 12;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #00013a56;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -583,7 +583,7 @@ nav {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-color: #00013a56;
   backdrop-filter: blur(24px);
@@ -732,7 +732,7 @@ ul {
   top: 0;
   right: 300px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: rgba(0, 0, 0, 0);
   transition: 0.2s ease-in;
   visibility: hidden;
@@ -836,9 +836,9 @@ ul {
   margin-top: 0;
   position: relative;
   top: 0;
-  height: 100%;
-  width: 100vw;
-  background: black;
+  height: 100vh;
+  width: 100%;
+  background: #031059;
   overflow: auto;
   text-align: center;
 }
@@ -848,8 +848,8 @@ ul {
   top: 0;
   left: 0;
   right: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .aboutus h1 {
@@ -861,7 +861,7 @@ ul {
   font-weight: bold;
   text-align: center;
   font-weight: 100 !important;
-  font-family: 'GT-Super-Display-Medium', sans-serif;
+  font-family: sofia-pro, sans-serif !important;
 }
 
 .colortext {
@@ -1033,7 +1033,7 @@ ul {
   scroll-behavior: smooth;
   position: relative;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   margin-bottom: 64px;
 }
@@ -1172,7 +1172,7 @@ footer {
   position: relative;
   display: block;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: black;
   z-index: 5;
 }
@@ -1209,7 +1209,7 @@ footer {
   margin: auto;
   z-index: 12;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   z-index: 3;
   display: none;
 }
@@ -1219,7 +1219,7 @@ footer {
   width: 100%;
   text-align: center;
   position: relative;
-  top: calc(100vh/2 - 50px);
+  top: calc(100%/2 - 50px);
   font-size: 26px;
   letter-spacing: 2px;
   font-weight: 800;
@@ -1227,7 +1227,7 @@ footer {
 
 .controlscontainer #errorText {
   position: relative;
-  top: calc(100vh - 100px);
+  top: calc(100% - 100px);
   font-size: 26px;
   letter-spacing: 2px;
   font-weight: 800;
@@ -1243,7 +1243,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100vh/3.6);
+  bottom: calc(100%/3.6);
   margin: auto;
   font-size: 128px;
   text-align: center;
@@ -1308,8 +1308,8 @@ footer {
   bottom: 0;
   top: 0;
   padding-top: 36vh;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: absolute;
   text-align: center;
   background-color: #00013a56;
@@ -1520,7 +1520,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100vh/2);
+  top: calc(100%/2);
   text-align: center;
   letter-spacing: 2px;
   font-weight: 100;
@@ -1536,6 +1536,7 @@ footer {
   flex-direction: column;
   position: absolute;
   bottom: calc(30%);
+  text-align: center;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1547,8 +1548,6 @@ footer {
   font-size: 28px;
   line-height: 42px;
   z-index: 10;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
 }
 
 .starcaught h2 {
@@ -1855,8 +1854,8 @@ button {
 
 .admin {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin-top: 136px;
   padding: 36px;
 }
@@ -1909,8 +1908,8 @@ button {
   background-color: #00013a56;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: fixed;
 }
 
@@ -1920,7 +1919,7 @@ button {
   text-align: center;
   font-size: 64px;
   letter-spacing: 2px;
-  top: calc(100vh/2.8);
+  top: calc(100%/2.8);
   font-weight: 100;
 }
 
@@ -1935,7 +1934,7 @@ button {
   line-height: 38px;
   text-align: center;
   margin: auto;
-  top: calc(100vh/2.5);
+  top: calc(100%/2.5);
 }
 
 .errorPage button {
@@ -1943,7 +1942,7 @@ button {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100vh/1.6);
+  top: calc(100%/1.6);
   margin: auto;
   height: 64px;
   width: auto;
@@ -2041,8 +2040,8 @@ canvas #arApp{
   }
 
   #app{
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
@@ -2063,8 +2062,8 @@ canvas #arApp{
   }
 
   #app{
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   .export{
@@ -2267,6 +2266,14 @@ canvas #arApp{
     font-size: 18px !important;
     padding: 16px;
   }
+
+  .starcaught{
+    width: 320px;
+  }
+
+  .aboutus h1{
+    font-size: 18px !important;
+  }
 }
 
 
@@ -2276,7 +2283,7 @@ canvas #arApp{
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100vh/4);
+  bottom: calc(100%/4);
   margin: auto;
   font-size: 20px;
   text-align: center;
