@@ -878,6 +878,7 @@ ul {
   font-size: 18px;
   line-height: 32px;
   margin: auto;
+  font-family: sofia-pro, sans-serif;
 }
 
 .widebrief button{
@@ -922,8 +923,8 @@ ul {
   font-size: 18px;
   color: rgb(172, 172, 172);
   line-height: 36px;
-  font-weight: 100;
   max-width: 32rem;
+  font-family: sofia-pro, sans-serif;
 }
 
 .about{
