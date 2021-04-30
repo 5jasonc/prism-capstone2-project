@@ -339,10 +339,10 @@ function init(){
 
 
     onRenderFcts.push(function (delta) {
-		parent.position.y = 3
-		mesh.scale.x = 1
-		mesh.scale.y = 1
-		mesh.scale.z = 1
+		parent.position.y = 2.7
+		mesh.scale.x = 0.7
+		mesh.scale.y = 0.7
+		mesh.scale.z = 0.7
     })
 
     //render the whole thing on the page

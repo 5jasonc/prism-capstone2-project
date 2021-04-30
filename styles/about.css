@@ -113,7 +113,6 @@ video {
         text-align: left;
         font-size: 18px  !important;;
         line-height: 24px;
-        font-weight: 100;
     }
 
   }
@@ -157,7 +156,6 @@ video {
     text-align: left;
     font-size: 24px;
     line-height: 42px;
-    font-weight: 100;
 }
 
   .colortext {
@@ -251,9 +249,20 @@ video {
       "b3";
   }
 
+  .half{
+    width:75% !important;
+  }
+
   .half h1{
-    line-height: 50px;
-    font-size: 40px;
+    text-align: left;
+    line-height: 48px;
+    font-size: 48px;
+    padding-bottom: 32px;
+    font-weight: 100;
+    text-transform: none;
+    width: 560px;
+    width: 325px;
+    font-weight: 100 !important;
   }
 
   .about{
@@ -296,4 +305,104 @@ video {
 img {
   z-index: 1;
   position: relative;
+}
+
+
+
+.grid-container2 {
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr 20px;
+  grid-template-rows: auto auto auto auto auto auto;
+  gap: 0px 0px;
+  grid-template-areas:
+    ". textField1 imgField1 ."
+    ". intro intro ."
+    ". imgField2 textField2 ."
+    ". textField3 imgField3 ."
+    ". imgField4 textField4 ."
+    ". teamField teamField .";
+}
+
+.textField1 { grid-area: textField1; }
+
+.imgField1 { grid-area: imgField1; }
+
+.intro { grid-area: intro; }
+
+.imgField2 { grid-area: imgField2; }
+
+.textField2 { grid-area: textField2; }
+
+.textField3 { grid-area: textField3; }
+
+.imgField3 { grid-area: imgField3; }
+
+.imgField4 { grid-area: imgField4; }
+
+.textField4 { grid-area: textField4; }
+
+.teamField { grid-area: teamField; }
+
+.teamField h1{
+  text-transform: capitalize;
+}
+
+
+@media screen and (max-width: 768px) {
+  .half h1 {
+      line-height: 36px;
+      font-size: 36px;
+      text-align: center;
+  }
+}
+
+
+@media screen and (max-width: 750px) {
+  .grid-container2 {
+    display: grid;
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". imgField1 ."
+      ". textField1 ."
+      ". intro ."
+      ". imgField2 ."
+      ". textField2 ."
+      ". imgField3 ."
+      ". textField3 ."
+      ". imgField4 ."
+      ". textField4 ."
+      ". teamField .";
+  }
+  .half h1 {
+      line-height: 48px;
+      font-size: 48px;
+      width:100%;
+  }
+
+  .player{
+    max-height: 500px;
+    width: 300px;
+  }
+
+  .aboutus h1 {
+
+    line-height: 70px;
+    font-size: 54px;
+
+}
+
+}
+
+
+
+@media screen and (max-width: 520px) {
+
+  .half h1 {
+      line-height: 48px;
+      font-size: 48px;
+      width:100%;
+  }
+
 }

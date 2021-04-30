@@ -114,7 +114,7 @@ body {
   background: radial-gradient( #131780, #040740);
   overflow: hidden;
   color: white;
-  min-height: 100vh;
+  min-height: 100%;
   min-height: -webkit-fill-available;
 }
 
@@ -140,9 +140,9 @@ a {
   position: fixed;
   z-index: 99;
   display: block;
-  height: 100vh;
-  width: 100vw;
-  background: radial-gradient( #131780, #040740);
+  height: 100%;
+  width: 100%;
+  background: #040740;
   transition: all 1s ease-in;
 }
 
@@ -167,7 +167,6 @@ a {
   margin: auto;
   color: white;
   font-size: 32px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   letter-spacing: 2px;
 }
@@ -190,6 +189,7 @@ a {
 
 #app {
   /* background: radial-gradient( #131780, #040740); */
+  background-color: #040740;
   width: 100% !important;
   height: 100% !important;
   display: block;
@@ -199,8 +199,8 @@ a {
 }
 
 #stars {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: block;
   position: absolute;
   top: 0;
@@ -246,37 +246,40 @@ a {
 }
 
 .orbitbanner {
-  animation: slide-in 1s cubic-bezier(.32, .7, .51, 1.33);
-  display: flex;
-  animation-delay: calc(var(--animation-order) * 9000ms);
-  animation-fill-mode: both;
+  display: none;
   position: absolute;
-  z-index: 12;
+  z-index: 4;
   height: 64px;
-  width: 340px;
-  top: 48px;
+  width: 332px;
+  bottom: 32px;
   left: 0;
   right: 0;
   margin: auto;
   padding: 4px;
-  border-radius: 64px;
+  border-radius: 100rem;
   text-align: center;
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-}
-
-
-
-.orbitbanner img {
-  height: 32px;
-  margin: 12px;
-  padding-left: 8px;
+  border: 1px solid white;
+  display: flex;
 }
 
 .orbitbanner h1 {
-  font-size: 18px;
+  font-family: sofia-pro, sans-serif;
+  font-size: 16px;
   width: auto;
+  text-transform: uppercase;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.orbitbanner img{
+  width: 32px;
+  height: 100%;
+  margin-left: 16px;
 }
 
 .logo {
@@ -393,34 +396,14 @@ a {
   cursor: pointer;
 }
 
-.gaugeMeter{
-  position: absolute;
-  left: 0;
-  height: auto;
-  width: auto;
-  margin-left: 24px;
-  top: calc(100vh/2);
-  transform-origin: center;
-  padding: 12px;
-  text-align: right;
-  font-size: 24px;
-  z-index: 12;
-  transition: all 0.5s ease;
-}
-
-.numMeter h4{
-  color: #ffffff;
-  font-family: sofia-pro, sans-serif;
-  font-weight: 100;
-}
-
 .searchWindow {
   position: fixed;
   z-index: 12;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #00013a56;
-  backdrop-filter: blur(38px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 #searchJelly {
@@ -433,7 +416,6 @@ a {
   top: 30%;
   text-align: center;
   font-family: sofia-pro, sans-serif;
-  font-weight: 200;
   font-style: normal;
   letter-spacing: 1px;
 }
@@ -473,7 +455,7 @@ a {
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 16px;
+  padding: 12px;
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
@@ -578,7 +560,7 @@ nav {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-color: #00013a56;
   backdrop-filter: blur(24px);
@@ -727,7 +709,7 @@ ul {
   top: 0;
   right: 300px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: rgba(0, 0, 0, 0);
   transition: 0.2s ease-in;
   visibility: hidden;
@@ -770,7 +752,7 @@ ul {
   font-size: 10px;
   text-align: center;
   cursor: pointer;
-  z-index: 15;
+  z-index: 1;
   border-radius: 64px;
   border: solid 3px transparent;
   background: rgba(141, 141, 141, 0.205);
@@ -831,9 +813,9 @@ ul {
   margin-top: 0;
   position: relative;
   top: 0;
-  height: 100%;
-  width: 100vw;
-  background: black;
+  height: 100vh;
+  width: 100%;
+  background: #040740;
   overflow: auto;
   text-align: center;
 }
@@ -843,8 +825,8 @@ ul {
   top: 0;
   left: 0;
   right: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .aboutus h1 {
@@ -856,7 +838,7 @@ ul {
   font-weight: bold;
   text-align: center;
   font-weight: 100 !important;
-  font-family: 'GT-Super-Display-Medium', sans-serif;
+  font-family: sofia-pro, sans-serif !important;
 }
 
 .colortext {
@@ -878,7 +860,7 @@ ul {
   text-align: center;
   max-width: 1600px;
   margin: auto;
-  margin-top: 164px;
+  margin-top: 100px;
 }
 
 .widebrief iframe{
@@ -896,6 +878,7 @@ ul {
   font-size: 18px;
   line-height: 32px;
   margin: auto;
+  font-family: sofia-pro, sans-serif;
 }
 
 .widebrief button{
@@ -920,18 +903,21 @@ ul {
   width: 50%;
   margin: auto;
   height: auto;
-  padding-top: 164px;
+  padding-top: 75px;
 }
 
-.half h1 {
+.half{
+  width:75% !important;
+}
+
+.half h1{
   text-align: left;
-  line-height: 78px;
-  font-size: 64px;
+  line-height: 48px;
+  font-size: 48px;
   padding-bottom: 32px;
   font-weight: 100;
   text-transform: none;
-  max-width: 560px;
-  width: 100%;
+  width: auto;
   font-weight: 100 !important;
 }
 
@@ -940,8 +926,8 @@ ul {
   font-size: 18px;
   color: rgb(172, 172, 172);
   line-height: 36px;
-  font-weight: 100;
   max-width: 32rem;
+  font-family: sofia-pro, sans-serif;
 }
 
 .about{
@@ -1028,7 +1014,7 @@ ul {
   scroll-behavior: smooth;
   position: relative;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   margin-bottom: 64px;
 }
@@ -1167,7 +1153,7 @@ footer {
   position: relative;
   display: block;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: black;
   z-index: 5;
 }
@@ -1204,7 +1190,7 @@ footer {
   margin: auto;
   z-index: 12;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   z-index: 3;
   display: none;
 }
@@ -1214,7 +1200,7 @@ footer {
   width: 100%;
   text-align: center;
   position: relative;
-  top: calc(100vh/2 - 50px);
+  top: calc(100%/2 - 50px);
   font-size: 26px;
   letter-spacing: 2px;
   font-weight: 800;
@@ -1222,7 +1208,7 @@ footer {
 
 .controlscontainer #errorText {
   position: relative;
-  top: calc(100vh - 100px);
+  top: calc(100% - 100px);
   font-size: 26px;
   letter-spacing: 2px;
   font-weight: 800;
@@ -1238,7 +1224,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100vh/3.6);
+  bottom: calc(100%/3.6);
   margin: auto;
   font-size: 128px;
   text-align: center;
@@ -1259,7 +1245,7 @@ footer {
   padding: 12px;
   padding-left: 32px;
   padding-right: 32px;
-  width: auto;
+  width: 264px;
   height: 56px;
   font-size: 20px;
   font-weight: 100;
@@ -1303,22 +1289,28 @@ footer {
   bottom: 0;
   top: 0;
   padding-top: 36vh;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: absolute;
   text-align: center;
-  background-color: #00013a56;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background-color: #02053a56;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
   transition: all 0.5s ease;
 }
 
-#welcomescreen h4, #tapTap{
+.welcometxt img{
+  max-width:500px !important;
+  width:auto;
+}
+
+#welcomescreen h4, #tapTap, #starTxt{
   font-size: 18px;
+  line-height: 32px;
   color: rgb(172, 172, 172);
   position: absolute;
   bottom: 48px;
-  font-weight: 100;
+  font-weight: 400;
   left: 0;
   right: 0;
   margin: auto;
@@ -1377,7 +1369,6 @@ footer {
   font-size: 20px;
   font-family: sofia-pro, sans-serif;
   line-height: 32px;
-  font-weight: 100;
   max-width: 420px;
   margin: auto;
   padding-top: 32px;
@@ -1515,10 +1506,9 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100vh/2);
+  top: calc(100%/2);
   text-align: center;
   letter-spacing: 2px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
   line-height: 42px;
@@ -1531,18 +1521,17 @@ footer {
   flex-direction: column;
   position: absolute;
   bottom: calc(30%);
+  text-align: center;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
   height: 100%;
   letter-spacing: 2px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
   line-height: 42px;
   z-index: 10;
-  backdrop-filter: blur(2px);
 }
 
 .starcaught h2 {
@@ -1550,6 +1539,7 @@ footer {
   font-weight: 100;
   padding-bottom: 8px;
   font-size: 32px;
+  letter-spacing: 0px;
 }
 
 .starcaught h3 {
@@ -1602,7 +1592,6 @@ footer {
 
 #wishtxtbox h3 {
   font-size: 24px;
-  font-weight: 200;
 }
 
 #wishtxtbox .smlinks {
@@ -1627,18 +1616,23 @@ footer {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: all 1s ease;
+  z-index: 12;
 }
 
 .printArCard img{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   border-radius: 8px;
 }
 
 .autoCenter h1{
+  position: relative;
+  top: 348px;
   font-size: 18px;
-  max-width: 300px;
-  left: 0;
-  right: 0;
+  width: 380px;
   margin: auto;
   font-weight: 100;
   font-family: sofia-pro, sans-serif;
@@ -1650,7 +1644,7 @@ footer {
 .autoCenter{
   position: relative;
   height: auto;
-  width: 235.56px;
+  width: 333px;
   top: 148px;
   margin: auto;
 }
@@ -1673,6 +1667,7 @@ footer {
   box-sizing: border-box;
   border-radius: 100rem;
   cursor: pointer;
+  width: 264px;
 }
 
 .printArCard button:active{
@@ -1844,8 +1839,8 @@ button {
 
 .admin {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin-top: 136px;
   padding: 36px;
 }
@@ -1898,8 +1893,8 @@ button {
   background-color: #00013a56;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: fixed;
 }
 
@@ -1909,7 +1904,7 @@ button {
   text-align: center;
   font-size: 64px;
   letter-spacing: 2px;
-  top: calc(100vh/2.8);
+  top: calc(100%/2.8);
   font-weight: 100;
 }
 
@@ -1924,7 +1919,7 @@ button {
   line-height: 38px;
   text-align: center;
   margin: auto;
-  top: calc(100vh/2.5);
+  top: calc(100%/2.5);
 }
 
 .errorPage button {
@@ -1932,7 +1927,7 @@ button {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100vh/1.6);
+  top: calc(100%/1.6);
   margin: auto;
   height: 64px;
   width: auto;
@@ -1984,11 +1979,13 @@ canvas #arApp{
 .backbutton {
   width: 64px;
   height: 64px;
-  padding: 16px;
-  background-color: transparent;
+  padding: 20px;
+  background: rgba(141, 141, 141, 0.205);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: 100rem;
   position: absolute;
-  top: 24px;
+  top: 48px;
   left: 24px;
 }
 
@@ -2011,7 +2008,6 @@ canvas #arApp{
 
 .mobileShare h4{
   padding-left: 8px;
-  margin-top: 4px;
   font-size: 14px;
   font-weight: 400;
 }
@@ -2029,8 +2025,8 @@ canvas #arApp{
   }
 
   #app{
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
@@ -2051,8 +2047,8 @@ canvas #arApp{
   }
 
   #app{
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   .export{
@@ -2067,8 +2063,8 @@ canvas #arApp{
   }
 
   .drawer-menu ul {
-    left: 0;
-    padding-bottom: 32px;
+    left: 32px;
+    margin-left: 0;
   }
 
   .drawer-menu li {
@@ -2084,7 +2080,7 @@ canvas #arApp{
     right: 0;
   }
 
-  .menu-btn {
+  .menu-btn, .backbutton {
     right: 24px;
     top: 24px;
   }
@@ -2255,6 +2251,20 @@ canvas #arApp{
     font-size: 18px !important;
     padding: 16px;
   }
+
+  .starcaught{
+    width: 100%;
+  }
+
+  .starcaught h2 {
+    line-height: 30px;
+    font-weight: 100;
+    font-size: 22px;
+  }
+
+  .aboutus h1{
+    font-size: 18px !important;
+  }
 }
 
 
@@ -2264,7 +2274,7 @@ canvas #arApp{
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100vh/4);
+  bottom: calc(100%/4);
   margin: auto;
   font-size: 20px;
   text-align: center;

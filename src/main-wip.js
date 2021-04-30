@@ -680,9 +680,8 @@ const loadGalleryPage = () => {
     loadWishes();
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
-    $('.gaugeMeter').fadeOut();
     //changes bg color when load gallery page
-    $("#app").css("background", "radial-gradient( #131780, #040740)");
+    //$("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
@@ -695,16 +694,16 @@ const unloadGalleryPage = () => {
 const loadWelcomePage = () => {
     $('.settings').css('width', '164px');
     //changes bg color when load welcome page
-    $("#app").css("background", "#010512");
     bloomPass.threshold = 9;
+    $("#app").css("background", "#01031c");
 
-    const light = new THREE.DirectionalLight(0xffffff);
+    const light = new THREE.DirectionalLight(0x02053A);
 	light.position.set(0, 0, 10.10);
 	scene.add(light);
-    scene.add(new THREE.AmbientLight(0xffffff));
+    scene.add(new THREE.AmbientLight(0x02053A));
 
-    const sun = new THREE.Vector3();
-    const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+    //const sun = new THREE.Vector3();
+    const waterGeometry = new THREE.PlaneGeometry(12000, 10000);
     water = new Water(waterGeometry,
         {
             textureWidth: 512,
@@ -713,10 +712,9 @@ const loadWelcomePage = () => {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             }),
             sunDirection: new THREE.Vector3(),
-            sunColor: 0xffffff,
-            waterColor: 0x5499d1,
-            distortionScale: 6,
-            fog: scene.fog !== undefined
+            sunColor: 0x02053A,
+            waterColor: 0x02053A,
+            distortionScale: 6
         }
 	);
 
@@ -733,24 +731,24 @@ const loadWelcomePage = () => {
 	skyUniforms['mieCoefficient'].value = 0;
 	skyUniforms['mieDirectionalG'].value = 1;
 
-	const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+	// const parameters = {inclination: 0.4857, azimuth: 0.252, exposure: 0.1389};
+    // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
-    const updateSun = () => {
-        const theta = Math.PI * (parameters.inclination - 0.5);
-        const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+    // const updateSun = () => {
+    //     const theta = Math.PI * (parameters.inclination - 0.5);
+    //     const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
 
-        sun.x = Math.cos(phi);
-        sun.y = Math.sin(phi) * Math.sin(theta);
-        sun.z = Math.sin(phi) * Math.cos(theta);
+    //     sun.x = Math.cos(phi);
+    //     sun.y = Math.sin(phi) * Math.sin(theta);
+    //     sun.z = Math.sin(phi) * Math.cos(theta);
 
-        sky.material.uniforms['sunPosition'].value.copy(sun);
-        water.material.uniforms['sunDirection'].value.copy(sun).normalize();
+    //     sky.material.uniforms['sunPosition'].value.copy(sun);
+    //     water.material.uniforms['sunDirection'].value.copy(sun).normalize();
 
-        scene.environment = pmremGenerator.fromScene(sky).texture;
-	};
+    //     scene.environment = pmremGenerator.fromScene(sky).texture;
+	// };
 
-    updateSun();
+    // updateSun();
 
     generateBGStars();
     currentScene = 'welcomePage';
@@ -1028,8 +1026,6 @@ const updateCaughtStar = (starPos) => {
 const loadMakeWishPage = () => {
     isStarSelected = false;
     $('.settings').css('width', '164px');
-    $('.gaugeMeter').show();
-
     // for(let i = 1; i < 1200; i++) {
     //     const geometry = new THREE.SphereGeometry(0.02 * randomNum(0.5, 1), 6, 6);
     //     const material = new THREE.MeshBasicMaterial({

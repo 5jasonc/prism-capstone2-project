@@ -25,7 +25,7 @@
     <meta property="og:title" content="I wish for a better tomorrow" />
     <!-- WE SHOULD ADD CUSTOM DESCRIPTION HERE -->
     <meta property="og:description" content="Share a wish at wishful.space to create your own jellyfish!" />
-    <meta property="og:image" content="https://ak4479.cad.rit.edu/imgs/smopangraph.png" />
+    <meta property="og:image" content="https://ak4479.cad.rit.edu/wishfulog.png" />
     <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
 
     <!-- Twitter Open Graphs-->
@@ -33,7 +33,7 @@
     <meta name="twitter:site" content="@wishful.rit">
     <meta name="twitter:title" content="I wish for a better tomorrow">
     <meta name="twitter:description" content="Share a wish at wishful.space to create your own jellyfish!">
-    <meta name="twitter:image" content="https://ak4479.cad.rit.edu/imgs/smopangraph.png">
+    <meta name="twitter:image" content="https://ak4479.cad.rit.edu/wishfulog.png">
 </head>
 
 <body>
@@ -110,26 +110,22 @@
     </div>
     <div class="mobileShare">
         <button onclick="window.location.href='ar.html'" style="display: flex; justify-content: left;"
-            class="share-button" id="share">
+            class="share-button">
             <img src="./icons/ar.svg" height="100%" width="18px" alt="share icon">
             <h4>View in 3D</h4>
         </button>
         <div class="line"></div>
-        <button style="display: flex; justify-content: left;" class="share-button" id="share"><img
+        <button style="display: flex; justify-content: left;" class="share-button" id="iosShare"><img
                 src="./icons/share.svg" height="100%" width="18px" alt="share icon">
             <h4>Share</h4>
         </button>
     </div>
 
-    <!-- <div class="gaugeMeter">
-        <h4><span id="numbMeter">0</span> m</h4>
-    </div> -->
-
     <div class="searchWindow" id="searchJelly">
         <h1>Search</h1>
         <input type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
-            <h3><span class="wishAmount" id="wishSearchResult">00</span> Wishes Found</h3>
+            <h3><span class="wishAmount" id="wishSearchResult">0</span> Wishes Found</h3>
             <button class="viewall" id="startSearchButton">View Results</button>
             <button class="cancel" id="cancelbtn">Cancel</button>
         </div>
@@ -148,17 +144,17 @@
             </div>
             <div class="buttnLabel">
                 <button>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=wishful.space" target="_blank">
                     <img src="./icons/fbfill.svg" alt="copy icon">
+                </a>
                 </button>
             </div>
             <div class="buttnLabel">
                 <button>
-                    <img src="./icons/twitterfill.svg" alt="copy icon">
-                </button>
-            </div>
-            <div class="buttnLabel">
-                <button>
-                    <img src="./icons/igfill.svg" alt="copy icon">
+                    <a href="https://twitter.com/intent/tweet?text=I wish for a better tomorrow! Share a wish at Wishful to create your own jellyfish: https://people.rit.edu/jcs1738/prism-capstone2-project/index-wip.html"
+                        target="_blank">
+                        <img src="./icons/twitterfill.svg" alt="copy icon">
+                    </a>
                 </button>
             </div>
         </div>
@@ -170,8 +166,8 @@
             <img src="./icons/exit.svg">
         </div>
         <h1>404 Error</h1>
-        <h2>Oops!, I don't think we were ready for this jelly.</h2>
-        <button>Return to exploring</button>
+        <h2>Oops! I don't think we were ready for this jelly.</h2>
+        <button>Return to Exploring</button>
     </div> -->
 
     <div class="addJellyFish" id="addJellyButton">
@@ -182,6 +178,10 @@
     <div class="amountofwish">
         <h1><span id="numWishes">00</span>Wishes made</h1>
     </div>
+
+    <!-- <div class="orbitbanner">
+        <h1>Tap on each jelly to see the wish</h1>
+    </div> -->
 
     <!-- MAKE WISH PAGE -->
     <h1 id="starTxt">Click and hold to catch a falling star</h1>
@@ -212,8 +212,6 @@
             <p>Share a wish with the world and watch it come to life as a personalized jellyfish. </p>
         </div>
         <h4>Click wishful to begin</h4>
-        <!-- <button class="makewishmobile"><a href="stars.html">Wish</a></button>
-        <button class="exploremobile"><a href="index.html">Explore</a></button> -->
     </div>
 
     <!-- SETTINGS -->
@@ -258,7 +256,7 @@
         if(scaleHeight != 1) $('#app').css({top: (-1 * (window.outerHeight - window.innerHeight))})
 
         $('#app').css({
-            transform: 'scale('+ 0.8+ ',' + 0.7 + ')',
+            transform: 'scale('+ 0.8 + ',' + 0.7 + ')',
             borderRadius: '8px'
         });
 
@@ -275,7 +273,7 @@
         if ($(window).innerWidth() <= 780) {
             $('#wishtxtbox').css({
                 left: '8%',
-                bottom: '20%',
+                bottom: '16%',
                 transition: 'all',
                 transition: '1s ease',
                 transform: 'scale(0.8)'
@@ -290,8 +288,15 @@
         $('.logo').fadeOut();
     }
 
+    if ($(window).innerWidth() <= 780){
+        $('.settings .line').css({
+                display: 'none',
+                width: '0'
+        });
+    };
+
     //share only mobile view 
-    const shareButton = document.querySelector('.share-button');
+    const shareButton = document.querySelector('#iosShare');
     shareButton.addEventListener('click', event => {
         if (navigator.share) {
             navigator.share({
