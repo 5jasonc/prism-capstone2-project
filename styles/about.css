@@ -381,7 +381,20 @@ img {
       width:100%;
   }
 
+  .player{
+    max-height: 500px;
+    width: 300px;
+  }
+
+  .aboutus h1 {
+
+    line-height: 70px;
+    font-size: 54px;
+
 }
+
+}
+
 
 
 @media screen and (max-width: 520px) {
