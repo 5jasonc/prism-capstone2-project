@@ -28,14 +28,94 @@
         $('.printArCard').fadeOut();
     }
 </script>
+<style>
+    .arStep {
+        width: 280px;
+        height: auto;
+        border: 2px solid white;
+        border-radius: 12px;
+        margin: 2rem auto;
+        /* Center the Gallery */
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 120px;
+    }
+
+    .content-view img {
+        width: 100%;
+    }
+
+    .content-view {
+        width: 300%;
+        /* 100% times number of images */
+        display: flex;
+        /* Set this item to flex */
+        justify-content: flex-start;
+        /* left align */
+        align-items: center;
+        /* align vertically */
+        position: relative;
+        /* Lets us Adjust Positiong */
+        left: 0%;
+        transition: left 1.2s cubic-bezier(0.960, 0.005, 0.065, 1);
+    }
+
+
+    /* Target the content holder */
+    /* When one of the ids has been targeted */
+    /* i.e. #mario-1 will move over the content */
+    #step-1:target~.content-view {
+        left: 0;
+
+    }
+
+    #step-2:target~.content-view {
+        left: -100%;
+
+    }
+
+    #step-3:target~.content-view {
+        left: -200%;
+    }
+
+    /* Target a button when pressed */
+    /* to identify the button with an image */
+    #step-1:target~nav a:nth-child(1),
+    #step-2:target~nav a:nth-child(2),
+    #step-3:target~nav a:nth-child(3) {
+        opacity: .5;
+    }
+</style>
 
 <body style="margin : 0px; overflow: hidden; font-family: sans-serif;">
     <div class="printArCard">
-        <div class="autoCenter">
+        <!-- <div class="autoCenter">
             <a href="arPrintCards.svg" download>
                 <img src="arPrintCards.svg">
             </a>
             <h1>Tap the card to print out the AR Card to interact with the jellyfish.</h1>
+        </div> -->
+
+        <div class="arStep">
+            <a id="step-1"></a>
+            <a id="step-2"></a>
+            <a id="step-3"></a>
+            <section class="content-view">
+                <a href="#step-2">
+                    <img src="./imgs/step1.png" alt="wishful logo welcome ar mode">
+                </a>
+
+                <a href="#step-3">
+                    <img src="./imgs/step2.png" alt="print ar card to play">
+                </a>
+
+                <a href="#step-1">
+                    <img src="./imgs/step3.png" alt="watch jellyfish come to life">
+                </a>
+            </section>
+
         </div>
         <button onclick="myCloseBtn()">Dismiss</button>
     </div>
