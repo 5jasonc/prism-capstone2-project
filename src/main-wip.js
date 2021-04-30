@@ -219,7 +219,7 @@ const animate = (renderer, clock) => {
         // Change opacity if selected
         if(isCameraFollowingJelly){
             currentJelly.jellyMesh.material.opacity = 0.15;
-            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.65;
+            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.45;
         } else {
             currentJelly.jellyMesh.material.opacity = 0.45;
         }
@@ -239,22 +239,30 @@ const animate = (renderer, clock) => {
 
         for ( let lineIndex = 0; lineIndex < currentJelly.jellyWidthSegments+1; lineIndex ++ ){
             const temppoints = [];
-            const positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+            let positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+            //positions = new Float32Array(currentJelly.jellyHeightSegments+1 *3 );
     
-            for(let jIndex=currentJelly.jellyWidthSegments; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){    
+            for(let jIndex=currentJelly.jellyWidthSegments+1; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){    
                 var vec = new THREE.Vector3();
                 vec.fromBufferAttribute(position, lineIndex+jIndex)
                 temppoints.push(vec);
             }
     
-            for(let k=1; k<temppoints.length; k++){
-    
+            for(let k=0; k<currentJelly.jellyHeightSegments+1; k++){
                 let point = temppoints[k];
+                if(temppoints[k] !== undefined){
                 
                 shiftRight(positions, point.z);
                 shiftRight(positions, point.y);
                 shiftRight(positions, point.x);
+
+                    // positions[k] = point.x;
+                    // positions[k + 1] = point.y;
+                    // positions[k + 2] = point.z;
             }
+                
+            }
+
             currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
 
         }
@@ -521,13 +529,13 @@ const generateJelly = (wishObj) => {
         const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
         linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
 
-        for(let j=jellyWidthSegments; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
+        for(let j=jellyWidthSegments+1; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
             var vec = new THREE.Vector3();
             vec.fromBufferAttribute(vertex, i+j)
             temppoints.push(vec);
         }
 
-        for(let k=0; k<temppoints.length; k++){
+        for(let k=0; k<temppoints.length-1; k++){
             let point = temppoints[k];
             shiftRight(positions, point.z);
             shiftRight(positions, point.y);
@@ -572,7 +580,7 @@ const jellyClicked = (jelly) => {
     if(currentJellyTarget === jelly) return;
     currentJellyTarget = jelly;
     isCameraAnimating = true;
-
+    //console.log('Currentjelly position', jelly.children[0].children[3].geometry.attributes.position.array)
     const wishBox = document.querySelector('#wishtxtbox');
     const wishText = document.querySelector('#wishText');
     wishText.innerHTML = jelly.userData.wish;
