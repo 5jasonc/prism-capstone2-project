@@ -401,7 +401,8 @@ a {
   z-index: 12;
   width: 100%;
   height: 100%;
-  background-color: #00013a56;
+  /* background-color: #00013a56; */
+  background-color: #0407407c;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -562,7 +563,8 @@ nav {
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: #00013a56;
+  /* background-color: #00013a56; */
+  background-color: #0407407c;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   opacity: 0;
@@ -1259,6 +1261,7 @@ footer {
   margin-bottom: 24px;
 }
 
+
 .controlscontainer button {
   border: none;
   background: none;
@@ -1315,7 +1318,7 @@ footer {
   width: 100%;
   position: absolute;
   text-align: center;
-  background-color: #02053a56;
+  background-color: #0407407c;
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   transition: all 0.5s ease;
