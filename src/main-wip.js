@@ -67,27 +67,13 @@ const init = () => {
     const renderScene = new RenderPass(scene, camera);
     renderScene.renderToScreen = false;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-    filmPass = new FilmPass(0.15, 0.025, 0, false);
     bloomPass.threshold = 0.5;
 	bloomPass.strength = 1;
 	bloomPass.radius = 0.5;
     bloomPass.renderToScreen = true;
-    filmPass.renderToScreen = true;
-    bokehPass = new BokehPass( scene, camera, {
-		focus: 20,
-		aperture: 0.00001,
-		maxblur: 1.525,
-		width: window.innerWidth,
-		height: window.innerHeight
-	} );
-
-	bokehPass.renderToScreen = true;
-	bokehPass.needsSwap = true;
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
 	composer.addPass(bloomPass);
-    // composer.addPass(bokehPass);
-    // composer.addPass(filmPass);
 
     // Set up orbit camera controls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -500,14 +486,15 @@ const generateJelly = (wishObj) => {
     const jellyCode = hashFunc(wishObj.wish);
     const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
-    const colorArray = ['#ffffff', '#F0A6C1', '#F2387C', '#E83CB3', '#DE41F2', '#6C2EF2', '#031473'];
-    const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
+    const colorArray = ['#490085', '#ad538b', '#ff005d', '#2206c4', '#DE41F2', '#765b8c', '#0e47ab'];
+    // const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
+    const jellyColor = colorArray[Math.round(mapNumToRange(jellyCode[2], 0, 9, 0, colorArray.length - 1))];
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
     const outerMaterial = new THREE.MeshBasicMaterial({
-        color: `#${jellyColor}`,
-        //color: colorArray[randomNum(0, 6)],
+        color: jellyColor,
+        // color: colorArray[randomNum(0, 6)],
         transparent: true,
         opacity: 0.45,
         depthWrite: false
@@ -1101,7 +1088,7 @@ const makeWishCursor = () => {
             raycaster.setFromCamera(mouse, camera);
             intersects = new THREE.Vector3();
             raycaster.ray.intersectPlane(plane, intersects);
-            console.log(intersects);
+            // console.log(intersects);
         });
 
     }
@@ -1122,7 +1109,7 @@ const makeWishCursor = () => {
         raycaster.setFromCamera(mouse, camera);
         intersects = new THREE.Vector3();
 		raycaster.ray.intersectPlane(plane, intersects);
-        console.log(intersects);
+        // console.log(intersects);
     });
     $('body')
     .mousedown(function(e){
