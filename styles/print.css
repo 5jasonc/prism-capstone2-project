@@ -2,18 +2,19 @@
   @page {
     size: landscape;
     margin: 0;
+    page-break-after:always;
   }
 
   #app {
-    transform: scale(1.168) !important;
-    width: 100vw;
-    height: 100vh;
+    transform: scale(2) !important;
+    width: 100%;
+    height: 100%;
   }
 
   #wishtxtbox {
-    position: absolute;
-    bottom: 86px;
-    left: 86px;
+    position: fixed;
+    bottom: 64px !important;
+    left: 18px !important;
     margin: auto;
     padding: 16px;
     padding: 0;

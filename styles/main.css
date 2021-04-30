@@ -673,11 +673,27 @@ ul {
 }
 
 .bar.bottom, button .exit-btn {
-  top: 34px;
+  top: 36px;
   -webkit-transform-origin: left bottom;
   -ms-transform-origin: left bottom;
   transform-origin: left bottom;
 }
+
+
+.bar.top{
+  top: 22px;
+}
+
+.bar.mid{
+  top: 31px;
+  width: 28px;
+  transition: all 0.2s ease;
+}
+
+.bar.bottom{
+  top: 40px;
+}
+
 
 .menu-btn__text {
   position: absolute;
@@ -731,6 +747,12 @@ ul {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.check:checked~.menu-btn .bar.mid{
+  width: 0px;
+  transition: all 0.2s ease;
+  border-radius: 100rem;
 }
 
 .check:checked~.menu-btn .bar.bottom {
