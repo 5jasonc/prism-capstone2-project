@@ -249,9 +249,20 @@ video {
       "b3";
   }
 
+  .half{
+    width:75% !important;
+  }
+
   .half h1{
-    line-height: 50px;
-    font-size: 40px;
+    text-align: left;
+    line-height: 48px;
+    font-size: 48px;
+    padding-bottom: 32px;
+    font-weight: 100;
+    text-transform: none;
+    width: 560px;
+    width: 325px;
+    font-weight: 100 !important;
   }
 
   .about{
@@ -334,4 +345,51 @@ img {
 
 .teamField h1{
   text-transform: capitalize;
+}
+
+
+@media screen and (max-width: 768px) {
+  .half h1 {
+      line-height: 36px;
+      font-size: 36px;
+      text-align: center;
+  }
+}
+
+
+@media screen and (max-width: 750px) {
+  .grid-container2 {
+    display: grid;
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". imgField1 ."
+      ". textField1 ."
+      ". intro ."
+      ". imgField2 ."
+      ". textField2 ."
+      ". imgField3 ."
+      ". textField3 ."
+      ". imgField4 ."
+      ". textField4 ."
+      ". teamField .";
+  }
+  .half h1 {
+      line-height: 48px;
+      font-size: 48px;
+      width:100%;
+  }
+
+}
+
+
+@media screen and (max-width: 520px) {
+
+  .half h1 {
+      line-height: 48px;
+      font-size: 48px;
+      width:100%;
+  }
+
 }
