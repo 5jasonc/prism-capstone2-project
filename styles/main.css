@@ -167,7 +167,6 @@ a {
   margin: auto;
   color: white;
   font-size: 32px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   letter-spacing: 2px;
 }
@@ -270,7 +269,6 @@ a {
   font-family: sofia-pro, sans-serif;
   font-size: 16px;
   width: auto;
-  font-weight: 100;
   text-transform: uppercase;
   width: 100%;
   padding: 15px;
@@ -398,27 +396,6 @@ a {
   cursor: pointer;
 }
 
-.gaugeMeter{
-  position: absolute;
-  left: 0;
-  height: auto;
-  width: auto;
-  margin-left: 24px;
-  top: calc(100%/2);
-  transform-origin: center;
-  padding: 12px;
-  text-align: right;
-  font-size: 24px;
-  z-index: 12;
-  transition: all 0.5s ease;
-}
-
-.numMeter h4{
-  color: #ffffff;
-  font-family: sofia-pro, sans-serif;
-  font-weight: 100;
-}
-
 .searchWindow {
   position: fixed;
   z-index: 12;
@@ -439,7 +416,6 @@ a {
   top: 30%;
   text-align: center;
   font-family: sofia-pro, sans-serif;
-  font-weight: 200;
   font-style: normal;
   letter-spacing: 1px;
 }
@@ -479,7 +455,7 @@ a {
   background: rgba(141, 141, 141, 0.205);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 16px;
+  padding: 12px;
   padding-left: 32px;
   padding-right: 32px;
   height: 100%;
@@ -1389,7 +1365,6 @@ footer {
   font-size: 20px;
   font-family: sofia-pro, sans-serif;
   line-height: 32px;
-  font-weight: 100;
   max-width: 420px;
   margin: auto;
   padding-top: 32px;
@@ -1530,7 +1505,6 @@ footer {
   top: calc(100%/2);
   text-align: center;
   letter-spacing: 2px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
   line-height: 42px;
@@ -1550,7 +1524,6 @@ footer {
   margin: auto;
   height: 100%;
   letter-spacing: 2px;
-  font-weight: 100;
   font-family: sofia-pro, sans-serif;
   font-size: 28px;
   line-height: 42px;
@@ -1615,7 +1588,6 @@ footer {
 
 #wishtxtbox h3 {
   font-size: 24px;
-  font-weight: 200;
 }
 
 #wishtxtbox .smlinks {
