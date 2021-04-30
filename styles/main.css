@@ -1299,10 +1299,10 @@ footer {
   transition: all 0.5s ease;
 }
 
-.welcometxt img{
+/* .welcometxt img{
   max-width:500px !important;
   width:auto;
-}
+} */
 
 #welcomescreen h4, #tapTap, #starTxt{
   font-size: 18px;
