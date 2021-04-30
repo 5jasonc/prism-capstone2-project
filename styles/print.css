@@ -1,14 +1,23 @@
 @media print {
   @page {
-    size: landscape;
+    size: 11in 8.5in;
     margin: 0;
     page-break-after:always;
+    overflow: hidden !important;
   }
 
   #app {
     transform: scale(2) !important;
     width: 100%;
     height: 100%;
+  }
+
+  #Exit{
+    display: none !important;
+  }
+
+  .menu-btn{
+    display: none !important;
   }
 
   #wishtxtbox {
