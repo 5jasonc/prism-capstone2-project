@@ -40,6 +40,7 @@ let transitionTargetWishID = null;
 let camZoom = null;
 let totalWishes = 0;
 let jellyRange = null;
+let shareModeOn = false;
 
 // LOADS THREE.JS SCENE AND SHARED RESOURCES BETWEEN PAGES
 const init = () => {
@@ -106,10 +107,13 @@ const init = () => {
         .onUpdate(() => controls.update())
         .onComplete(() => {
             isCameraAnimating = false;
+            controls.maxDistance =  jellyRange * 1.75;
         })
         .start();
         hideWishText();
     });
+    document.querySelector('#shareJellyBtn').addEventListener('click', () => shareModeOn = true);
+    document.querySelector('#Exit').addEventListener('click', () => shareModeOn = false);
     // canvas.addEventListener('contextmenu', () => {
     //     //currentJellyTarget = null;
     //     isCameraFollowingJelly = false;
@@ -133,10 +137,10 @@ const init = () => {
         for(const wish in data.val()) {
             if(data.val()[wish].approved) totalWishes++;
         }
-        jellyRange = Math.cbrt(totalWishes) * 125;
+        jellyRange = Math.cbrt(totalWishes) * 150;
         camZoom = jellyRange * 2 + 50;
         camera.position.set(500, 500, camZoom);
-        controls.maxDistance = camZoom;
+        controls.maxDistance = jellyRange * 1.75;
         scene.add(camera);
         loadGalleryPage();
     });
@@ -170,7 +174,6 @@ const animate = (renderer, clock) => {
             jelly.position.z = THREE.Math.clamp(jelly.position.z, -jellyRange, jellyRange);
 
             jelly.isJellyTurning = true;
-            // moveJelly = false;
             if(jelly.rotation.x < 0.5 || jelly.rotation.z < 0.5) {
                 new TWEEN.Tween(jelly.rotation)
                     .to({'x': jelly.rotation.x + (Math.random() * Math.PI / 4), 'y': jelly.rotation.y + (Math.random() * Math.PI / 4), 'z': jelly.rotation.z + (Math.random() * Math.PI / 4)}, 1000)
@@ -206,7 +209,7 @@ const animate = (renderer, clock) => {
             // EXPERIMENTING WITH FLOCKING BEHAVIORS
             let approachingJelly = false;
             for(const j of jellies) {
-                if(jelly.position.distanceTo(j.jellyParent.position) < 30) {
+                if(jelly.position.distanceTo(j.jellyParent.position) < 20) {
                     approachingJelly = true;
                     j.jellyParent.rotateY(-Math.PI / 500);
                     j.jellyParent.rotateX(-Math.PI / 500);
@@ -218,11 +221,12 @@ const animate = (renderer, clock) => {
                 jelly.rotateX(Math.PI / 500);
                 jelly.rotateZ(Math.PI / 500);
             } else {
+                // How jelly moves when not close to another jelly
                 jelly.rotateX((Math.PI / 1000) * Math.random());
                 jelly.rotateZ((Math.PI / 1000) * Math.random());
             }
         }
-        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+        if(shareModeOn === false) jelly.translateY(jellies[i].aStep * 2 + 0.3);
         // OLD COLLISION DETECTION MIGHT STILL USE
         // else if (
         //     isCameraFollowingJelly &&
@@ -245,12 +249,20 @@ const animate = (renderer, clock) => {
         const vector = new THREE.Vector3();
         //loops through points within jelly
 
-        // Change opacity if selected
-        if(isCameraFollowingJelly){
+        // Change opacity if selected or if share mode is activated
+        if(shareModeOn && isCameraFollowingJelly) {
+            currentJelly.jellyMesh.material.opacity = 0;
+            currentJelly.lines.forEach(line => line.material.opacity = 0);
+        } else if(isCameraFollowingJelly) {
             currentJelly.jellyMesh.material.opacity = 0.15;
-            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.45;
+            currentJelly.lines.forEach(line => line.material.opacity = 0.15);
         } else {
             currentJelly.jellyMesh.material.opacity = 0.45;
+            currentJelly.lines.forEach(line => line.material.opacity = 0.45);
+        }
+        if(currentJellyTarget !== null) {
+            currentJellyTarget.children[0].material.opacity = 0.45;
+            if(currentJelly.jellyParent === currentJellyTarget) currentJelly.lines.forEach((line) => line.material.opacity = 0.45);
         }
 
         for(let pointIndex = 0; pointIndex < position.count; pointIndex++){
@@ -464,7 +476,7 @@ const createParticleSystem = (scene) => {
 	});
 	
 	particles = new THREE.Points(geometry, shaderMaterial);
-	particles.scale.set(1200, 1200, 1200);
+	particles.scale.set(jellyRange * 2 + 500, jellyRange * 2 + 500, jellyRange * 2 + 500);
 	scene.add(particles);
 	particles.rotation.z = -0.5;
 };
@@ -576,7 +588,7 @@ const generateJelly = (wishObj) => {
 // When screen is clicked detect if jellyfish is clicked, call jellyClicked if true
 const sceneClicked = (e) => {
     e.preventDefault();
-    if(currentScene !== 'galleryPage') return;
+    if(currentScene !== 'galleryPage' || shareModeOn) return;
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
@@ -611,6 +623,7 @@ const jellyClicked = (jelly) => {
                 .to({'position': new THREE.Vector3(orbitTarget.x + 100, orbitTarget.y + 100, orbitTarget.z+100)}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)
                 .onUpdate(() => camera.updateProjectionMatrix())
+                .onComplete(() => controls.maxDistance = 500)
                 .start();
         })
         .start();
