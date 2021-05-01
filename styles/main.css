@@ -1238,6 +1238,7 @@ footer {
 }
 
 .controlscontainer input[type=text] {
+  font-size: 50px;
   border: none;
   position: relative;
   border-bottom: 1px solid white;
@@ -2163,8 +2164,10 @@ canvas #arApp{
 
   input[type=text]{
     width: 80% !important;
-    font-size: 12vw !important;
+    font-size: 5vw !important;
   }
+
+
 
   ::placeholder {
     font-size: 12vw;
