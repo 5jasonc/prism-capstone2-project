@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <script src="./src/main-wip.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="src/jquery.inputfit.js"></script>
     <!-- FB Open Graphs -->
     <meta property="og:url" content="http://www.wishful.space" />
     <meta property="og:type" content="website" />
@@ -123,7 +123,7 @@
 
     <div class="searchWindow" id="searchJelly">
         <h1>Search</h1>
-        <input type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
+        <input id="inputMax" name="input" type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
             <h3><span class="wishAmount" id="wishSearchResult">0</span> Wishes Found</h3>
             <button class="viewall" id="startSearchButton">View Results</button>
@@ -194,7 +194,7 @@
         </div>
         <div class="controlscontainer" id="addWishInput" autocomplete="off">
             <h1>I wish</h1>
-            <input type="text" id="wishInput" maxlength="20" autocomplete="off" placeholder="for a puppy"
+            <input type="text" id="input" class="inputMax" maxlength="20" autocomplete="off" placeholder="for a puppy"
                 onkeyup="charcountupdate(this.value)">
             <span id=charcount></span>
             <button type="button" id="makeWishButton">Make Your Wish</button>
@@ -347,6 +347,13 @@
         var lng = str.length;
         document.getElementById("charcount").innerHTML = lng + ' out of 20 characters';
     }
+
+
+    $(function(){
+            $('.inputMax').inputfit();
+        })
+
+
 </script>
 
 </html>

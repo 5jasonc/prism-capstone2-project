@@ -838,7 +838,8 @@ ul {
   font-weight: bold;
   text-align: center;
   font-weight: 100 !important;
-  font-family: sofia-pro, sans-serif !important;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
+
 }
 
 .colortext {
@@ -864,7 +865,9 @@ ul {
 }
 
 .widebrief iframe{
-  padding: 32px;
+  padding: 5px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .widebrief h1{
@@ -918,6 +921,7 @@ ul {
   font-weight: 100;
   text-transform: none;
   width: auto;
+  font-family: 'GT-Super-Display-Medium', sans-serif;
   font-weight: 100 !important;
 }
 
@@ -2263,7 +2267,7 @@ canvas #arApp{
   }
 
   .aboutus h1{
-    font-size: 18px !important;
+    font-size: 34px !important;
   }
 }
 
