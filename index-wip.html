@@ -20,7 +20,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-tween/5.5.11/Tween.min.js"></script>
     <script src="./src/main-wip.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="src/jquery.inputfit.js"></script>
     <!-- FB Open Graphs -->
     <meta property="og:url" content="http://www.wishful.space" />
     <meta property="og:type" content="website" />
@@ -126,7 +125,7 @@
 
     <div class="searchWindow" id="searchJelly">
         <h1>Search</h1>
-        <input id="inputMax" name="input" type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
+        <input class="inputMax" name="input" type="text" id="searchtxt" autocomplete="off" maxlength="20" placeholder="Fluffy puppy">
         <div class="buttoncontrollers">
             <h3><span class="wishAmount" id="wishSearchResult">0</span> Wishes Found</h3>
             <button class="viewall" id="startSearchButton">View Results</button>
@@ -350,13 +349,6 @@
         var lng = str.length;
         document.getElementById("charcount").innerHTML = lng + ' out of 20 characters';
     }
-
-
-    $(function(){
-            $('.inputMax').inputfit();
-        })
-
-
 </script>
 
 </html>

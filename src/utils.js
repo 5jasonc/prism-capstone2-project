@@ -69,15 +69,18 @@ export const changeStyleSource = (newFile) => {
 };
 
 // Updates all neccessary elements as search term is changed
-export const updateWishSearchText = (e, jellies) => {
-    const wishResult = document.querySelector('#wishSearchResult');
+export const updateSearchBanner = (searchtxt, jellies) => {
     const wishBannerResults = document.querySelector('#wishBannerSearchResult');
-    const searchtxt = e.target.value;
     document.getElementById('searchTxt').innerHTML = searchtxt;
     const jellyResults = jellies.filter(jelly => jelly.wish.includes(searchtxt));
-    wishResult.innerHTML = jellyResults.length;
     wishBannerResults.innerHTML = jellyResults.length;
     document.getElementById('bannerBar').style.display = 'flex';
+};
+
+export const updateSearchText = (searchtxt, jellies) => {
+    const wishResult = document.querySelector('#wishSearchResult');
+    const jellyResults = jellies.filter(jelly => jelly.wish.includes(searchtxt));
+    wishResult.innerHTML = jellyResults.length;
 };
 
 // Toggles display of search interface

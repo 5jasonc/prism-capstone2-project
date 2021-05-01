@@ -12,7 +12,7 @@ import { Sky } from './jsm/objects/Sky.js';
 
 import {
     vertexShader, fragmentShader, bgVertexShader, bgFragmentShader, firebaseConfig,
-    changeStyleSource, updateWishSearchText, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
+    changeStyleSource, updateSearchText, updateSearchBanner, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
     getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry, genWishID
 } from './utils.js';
@@ -91,8 +91,11 @@ const init = () => {
     document.querySelector('#searchButton').addEventListener('click', toggleSearchUI);
     document.querySelector('#cancelbtn').addEventListener('click', hideSearchUI);
     document.querySelector('#makeWishButton').addEventListener('click', () => makeWish());
-    document.querySelector('#searchtxt').addEventListener('input', (e) => updateWishSearchText(e, jellies));
-    document.querySelector('#startSearchButton').addEventListener('click', () => startSearch(document.querySelector('#searchtxt').value));
+    document.querySelector('#searchtxt').addEventListener('input', (e) => updateSearchText(e.target.value, jellies));
+    document.querySelector('#startSearchButton').addEventListener('click', () => {
+        updateSearchBanner(document.querySelector('#searchtxt').value, jellies);
+        startSearch(document.querySelector('#searchtxt').value);
+    });
     document.querySelector('#backbutton').addEventListener('click', () => {
         document.getElementById('bannerBar').style.display = 'none';
         startSearch('');
@@ -144,9 +147,6 @@ const init = () => {
         scene.add(camera);
         loadGalleryPage();
     });
-
-    // Create particle system
-    // createParticleSystem(scene);
 
     // Begin animation
     const clock = new THREE.Clock();
