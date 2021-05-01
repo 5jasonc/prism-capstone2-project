@@ -146,9 +146,15 @@ const init = () => {
         const urlParams = new URLSearchParams(queryString);
         if(urlParams.get('scene')) {
             if(urlParams.get('scene') === 'galleryPage') loadGalleryPage();
-            else switchScene(urlParams.get('scene'), 'up');
+            else {
+                hideGalleryPage();
+                switchScene(urlParams.get('scene'), 'up');
+            }
         }
-        else switchScene('welcomePage', 'up');
+        else {
+            hideGalleryPage();
+            switchScene('welcomePage', 'up');
+        }
     });
 
     // Begin animation
