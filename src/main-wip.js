@@ -49,7 +49,6 @@ const init = () => {
     // Connect to FireBase
     firebase.initializeApp(firebaseConfig);
     dbRef = firebase.database().ref('/wishes/');
-    // seedDB(); <-- LEAVE THIS COMMENTED OUT UNLESS DB NEEDS RESEEDING
 
     // Load three.js scene and resources
     const canvas = document.querySelector('#app');
@@ -62,9 +61,6 @@ const init = () => {
     renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    // renderer.setClearColor(0x040742, 1); // not sure if we will need this
-    // renderer.toneMapping = THREE.ReinhardToneMapping; // look better with this?
-    // renderer.NoToneMapping = THREE.ACESFilmicToneMapping;
     const renderScene = new RenderPass(scene, camera);
     renderScene.renderToScreen = false;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
@@ -119,16 +115,10 @@ const init = () => {
         const wish = jellies.find(j => j.jellyParent === currentJellyTarget).wish;
         const encodedWish = $.param({wish});
         console.log(encodedWish);
-        // document.querySelector('.shareLink h4').innerHTML = `http://wishful.space/jelly?${encodedWish}`;
-        document.querySelector('#shareLink').setAttribute('href', `jelly.html?${encodedWish}`);// `jelly.html?${encodedWish}`;
+        document.querySelector('#shareLink').setAttribute('href', `jelly.html?${encodedWish}`);
         shareModeOn = true;
     });
     document.querySelector('#Exit').addEventListener('click', () => shareModeOn = false);
-    // canvas.addEventListener('contextmenu', () => {
-    //     //currentJellyTarget = null;
-    //     isCameraFollowingJelly = false;
-    //     hideWishText();
-    // });
     canvas.addEventListener('pointerdown', (e) => sceneClicked(e), false);
 
     // Listen for page transitions on each link to page with three scene
@@ -152,7 +142,13 @@ const init = () => {
         camera.position.set(500, 500, camZoom);
         controls.maxDistance = jellyRange * 1.75;
         scene.add(camera);
-        loadGalleryPage();
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if(urlParams.get('scene')) {
+            if(urlParams.get('scene') === 'galleryPage') loadGalleryPage();
+            else switchScene(urlParams.get('scene'), 'up');
+        }
+        else switchScene('welcomePage', 'up');
     });
 
     // Begin animation
