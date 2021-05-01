@@ -206,7 +206,7 @@ export const randomNum = (min, max) => {
 };
 
 export const isWishOnlyValidChars = (wish) => {
-    return /^[0-9A-Za-z,' ]+$/.test(wish);
+    return /^[0-9A-Za-z,'! ]+$/.test(wish);
 };
 
 // Adds to the top of a BufferArray, emulating a push
