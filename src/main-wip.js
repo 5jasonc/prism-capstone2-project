@@ -534,7 +534,7 @@ function generateBGStars() {
 const generateJelly = (wishObj) => {
     if(!wishObj.wish) return;
     const jellyCode = hashFunc(wishObj.wish);
-    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[1], 1, 99, 5, 12));
+    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 5, 12));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[2], 0, 9, 5, 12));
     const colorArray = ['#490085', '#ad538b', '#ff005d', '#2206c4', '#DE41F2', '#765b8c', '#0e47ab'];
     // const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);

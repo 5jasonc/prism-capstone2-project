@@ -35,26 +35,47 @@ const checkUser = (dbAdminRef, dbWishRef) => {
 
 // Loads all wishes from the database which are not approved and generate approvals for each
 const loadWishes = (dbRef) => {
-  dbRef.on('child_added', (data) => {
-    const wishObj = data.val();
-    if(wishObj.approved || wishObj.approved === false) return;
+  dbRef.once('value', (data) => {
+    for(const wish in data.val()) {
+      if(data.val()[wish].approved || data.val()[wish].approved === false) continue;
+      console.log(data.val()[wish]);
+      const approvalCard = `
+        <div class="cards">
+          <h3>Wish for</h3>
+          <h2>${data.val()[wish].wish}</h2>
+          <button style="background-color: green;" class="approveButton" id=${wish}>Approve</button>
+          <button style="background-color: rgb(218, 25, 25);" class="rejectButton" id=${wish}>Disapprove</button>
+        </div>
+      `;
 
-    const approvalCard = `
-      <div class="cards">
-        <h3>Wish for</h3>
-        <h2>${wishObj.wish}</h2>
-        <button style="background-color: green;" class="approveButton" id=${data.key}>Approve</button>
-        <button style="background-color: rgb(218, 25, 25);" class="rejectButton" id=${data.key}>Disapprove</button>
-      </div>
-    `;
+      const html = $.parseHTML(approvalCard);
+      $('.auditwishes').append(html);
 
-    const html = $.parseHTML(approvalCard);
-    $('.auditwishes').append(html);
+      const approveButton = Array.prototype.slice.call(document.querySelectorAll('.approveButton')).pop();
+      approveButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, true));
+      const rejectButton = Array.prototype.slice.call(document.querySelectorAll('.rejectButton')).pop();
+      rejectButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, false));
+    }
 
-    const approveButton = Array.prototype.slice.call(document.querySelectorAll('.approveButton')).pop();
-    approveButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, true));
-    const rejectButton = Array.prototype.slice.call(document.querySelectorAll('.rejectButton')).pop();
-    rejectButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, false));
+    // const wishObj = data.val();
+    // if(wishObj.approved || wishObj.approved === false) return;
+
+    // const approvalCard = `
+    //   <div class="cards">
+    //     <h3>Wish for</h3>
+    //     <h2>${wishObj.wish}</h2>
+    //     <button style="background-color: green;" class="approveButton" id=${data.key}>Approve</button>
+    //     <button style="background-color: rgb(218, 25, 25);" class="rejectButton" id=${data.key}>Disapprove</button>
+    //   </div>
+    // `;
+
+    // const html = $.parseHTML(approvalCard);
+    // $('.auditwishes').append(html);
+
+    // const approveButton = Array.prototype.slice.call(document.querySelectorAll('.approveButton')).pop();
+    // approveButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, true));
+    // const rejectButton = Array.prototype.slice.call(document.querySelectorAll('.rejectButton')).pop();
+    // rejectButton.addEventListener('click', (e) => auditWish(e.target.id, dbRef, false));
   }); 
 };
 
