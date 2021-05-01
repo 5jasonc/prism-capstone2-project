@@ -186,6 +186,7 @@ const animate = (renderer, clock) => {
                     .to({'x': jelly.rotation.x + (Math.random() * Math.PI / 4), 'y': jelly.rotation.y + (Math.random() * Math.PI / 4), 'z': jelly.rotation.z + (Math.random() * Math.PI / 4)}, 1000)
                     .easing(TWEEN.Easing.Circular.InOut)
                     .onComplete(() => {
+                        if(!jellies[i]) return;
                         jelly.translateY(jellies[i].aStep * 2 + 0.3);
                         jelly.isJellyTurning = false;
                     })
@@ -196,6 +197,7 @@ const animate = (renderer, clock) => {
                     .to({'x': -jelly.rotation.x / 2}, 1000)
                     .easing(TWEEN.Easing.Circular.InOut)
                     .onComplete(() => {
+                        if(!jellies[i]) return;
                         jelly.translateY(jellies[i].aStep * 2 + 0.3);
                         jelly.isJellyTurning = false;
                     })
@@ -205,6 +207,7 @@ const animate = (renderer, clock) => {
                     .to({'z': -jelly.rotation.z / 2}, 1000)
                     .easing(TWEEN.Easing.Circular.InOut)
                     .onComplete(() => {
+                        if(!jellies[i]) return;
                         jelly.translateY(jellies[i].aStep * 2 + 0.3);
                         jelly.isJellyTurning = false;
                     })
