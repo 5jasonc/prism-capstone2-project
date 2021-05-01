@@ -931,7 +931,7 @@ function Mover(m,vel,loc,isa) {
 }
 
 const createShootingStar = () => {
-	let speed = -1*(5+Math.random()*15);
+	let speed = -1*(1+Math.random()*5);
 	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500), false));
     //console.log(movers[0].mesh.position);
 }
@@ -959,7 +959,7 @@ const attractStar = () => {
 					if(clicking){
 							// movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
 							// console.log(intersects.x, intersects.y)
-						a = new Mover(150, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500), true);
+						a = new Mover(250, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500), true);
 
                         if (movers[i].alive) {
                             var distance = m.location.distanceTo(a.location);
