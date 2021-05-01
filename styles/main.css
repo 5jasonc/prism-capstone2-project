@@ -894,13 +894,13 @@ ul {
 .widebrief h1{
   text-align: center;
   text-transform: capitalize;
-  padding-bottom: 16px;
+  padding-bottom: 32px;
 }
 .widebrief p{
-  max-width: 48rem;
+  max-width: 56rem;
   color: rgb(153, 153, 153);
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 21px;
+  line-height: 28px;
   margin: auto;
   font-family: sofia-pro, sans-serif;
 }
@@ -924,10 +924,8 @@ ul {
 }
 
 .half {
-  width: 50%;
   margin: auto;
   height: auto;
-  padding-top: 75px;
 }
 
 .half{
@@ -943,6 +941,7 @@ ul {
   text-transform: none;
   width: auto;
   font-weight: 100 !important;
+  padding-top: 25%;
 }
 
 .half p {

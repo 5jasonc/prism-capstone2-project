@@ -12,6 +12,19 @@ video {
   left: 0;
 }
 
+.aboutus h1{
+  font-family: 'GT-Super-Display-Medium', sans-serif !important;
+  font-size: 64px;
+  line-height: 64px;
+}
+
+.aboutus p{
+  font-size: 21px;
+  line-height: 28px;
+  color: #999999;
+  font-weight: 100;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 20px 1fr 1fr 20px;
@@ -274,7 +287,6 @@ video {
   }
 }
 
-
 .social-grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -307,9 +319,9 @@ img {
   position: relative;
 }
 
-
-
 .grid-container2 {
+  max-width: 1200px;
+  margin: auto;
   display: grid;
   grid-template-columns: 20px 1fr 1fr 20px;
   grid-template-rows: auto auto auto auto auto auto;
