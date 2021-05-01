@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="./imgs/wishfullapple120.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="./imgs/wishfullapple72.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <title>Wishful : AR</title>
@@ -28,68 +30,8 @@
         $('.printArCard').fadeOut();
     }
 </script>
-<!-- <style>
-    .arStep {
-        width: 280px;
-        height: auto;
-        border: 2px solid white;
-        border-radius: 12px;
-        margin: 2rem auto;
-        /* Center the Gallery */
-        overflow: hidden;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 120px;
-    }
-
-    .content-view img {
-        width: 100%;
-    }
-
-    .content-view {
-        width: 300%;
-        /* 100% times number of images */
-        display: flex;
-        /* Set this item to flex */
-        justify-content: flex-start;
-        /* left align */
-        align-items: center;
-        /* align vertically */
-        position: relative;
-        /* Lets us Adjust Positiong */
-        left: 0%;
-        transition: left 1.2s cubic-bezier(0.960, 0.005, 0.065, 1);
-    }
-
-
-    /* Target the content holder */
-    /* When one of the ids has been targeted */
-    /* i.e. #mario-1 will move over the content */
-    #step-1:target~.content-view {
-        left: 0;
-
-    }
-
-    #step-2:target~.content-view {
-        left: -100%;
-
-    }
-
-    #step-3:target~.content-view {
-        left: -200%;
-    }
-
-    /* Target a button when pressed */
-    /* to identify the button with an image */
-    #step-1:target~nav a:nth-child(1),
-    #step-2:target~nav a:nth-child(2),
-    #step-3:target~nav a:nth-child(3) {
-        opacity: .5;
-    }
-</style> -->
 <style>
-     .arStep {
+    .arStep {
         width: 280px;
         border: 2px solid white;
         border-radius: 12px;
@@ -109,7 +51,7 @@
         scroll-snap-type: x mandatory;
     }
 
-    .slider img{
+    .slider img {
         width: 100%;
     }
 
@@ -119,21 +61,21 @@
         height: 100%;
     }
 
-    .slides > div {
+    .slides>div {
         scroll-snap-align: start;
     }
 
     .slides {
         scroll-behavior: smooth;
         position: relative;
-       
+
     }
 
-    .slider > a {
+    .slider>a {
         display: none;
     }
 
-    .points{
+    .points {
         width: 12px;
         height: 12px;
         background-color: transparent;
@@ -143,12 +85,12 @@
         transition: all 0.2s ease-in;
     }
 
-    .points:active{
+    .points:active {
         background-color: white;
         border: 2px solid transparent;
     }
 
-    .slidepoint{
+    .slidepoint {
         position: relative;
         top: 590px;
         display: flex;
@@ -182,16 +124,16 @@
             </div>
         </div>
         <div class="slidepoint">
-        <a href="#slide-1">
-            <div class="points"></div>
-        </a>
-        <a href="#slide-2">
-            <div class="points"></div>
-        </a>
-        <a href="#slide-3">
-            <div class="points"></div>
-        </a>
-    </div>
+            <a href="#slide-1">
+                <div class="points"></div>
+            </a>
+            <a href="#slide-2">
+                <div class="points"></div>
+            </a>
+            <a href="#slide-3">
+                <div class="points"></div>
+            </a>
+        </div>
         <button onclick="myCloseBtn()">Dismiss</button>
     </div>
     <div id="container"></div>

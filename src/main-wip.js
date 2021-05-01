@@ -25,6 +25,7 @@ let camera, scene, loader, renderer, controls;
 let water;
 let plane, intersects, a;
 var MASS_FACTOR = .01; // for display of size
+let intervalID;
 let particles;
 let bloomPass;
 
@@ -689,7 +690,7 @@ const loadGalleryPage = () => {
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     //changes bg color when load gallery page
-    //$("#app").css("background", "#040740");
+    $("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
@@ -1061,7 +1062,7 @@ const loadMakeWishPage = () => {
     // }
 
     generateBGStars();
-    var intervalID = window.setInterval(createShootingStar, 3500);
+    intervalID = window.setInterval(createShootingStar, 3500);
     makeWishCursor();
 	
     // helper plane for raycasting
@@ -1072,7 +1073,9 @@ const loadMakeWishPage = () => {
 };
 
 const unloadMakeWishPage = () => {
+    clearInterval(intervalID);
     clearScene();
+
 };
 
 // Remove all objects in three js scene
