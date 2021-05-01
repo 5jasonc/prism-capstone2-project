@@ -6,8 +6,6 @@ import * as TWEEN from '../build/tween.js';
 import { OrbitControls } from './jsm/controls/OrbitControls.js';
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from './jsm/postprocessing/RenderPass.js';
-import { BokehPass } from './jsm/postprocessing/BokehPass.js';
-import { FilmPass } from './jsm/postprocessing/FilmPass.js';
 import { UnrealBloomPass } from './jsm/postprocessing/UnrealBloomPass.js';
 import { Water } from './jsm/objects/Water.js';
 import { Sky } from './jsm/objects/Sky.js';
@@ -27,8 +25,9 @@ let camera, scene, loader, renderer, controls;
 let water;
 let plane, intersects, a;
 var MASS_FACTOR = .01; // for display of size
+let intervalID;
 let particles;
-let bloomPass, filmPass, bokehPass;
+let bloomPass;
 
 // VARIABLES TO TRACK STATE AND DATA FOR SCENE
 let currentScene;
@@ -38,7 +37,9 @@ let currentJellyTarget = null;
 let isCameraAnimating = false;
 let isStarSelected = false;
 let transitionTargetWishID = null;
-let camZoom = 1000;
+let camZoom = null;
+let totalWishes = 0;
+let jellyRange = null;
 
 // LOADS THREE.JS SCENE AND SHARED RESOURCES BETWEEN PAGES
 const init = () => {
@@ -56,7 +57,6 @@ const init = () => {
     scene.fog = new THREE.Fog(0x040742, 0, 1500);
     camera = new THREE.PerspectiveCamera(60, window.innerWidth  / window.innerHeight, 0.1, 20000);
     const light = new THREE.PointLight(0xffffff, 1);
-    camera.position.set(500, 500, camZoom);
     camera.add(light);
     renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true}); // antialias T or F, which looks better?
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -67,27 +67,13 @@ const init = () => {
     const renderScene = new RenderPass(scene, camera);
     renderScene.renderToScreen = false;
 	bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-    filmPass = new FilmPass(0.15, 0.025, 0, false);
     bloomPass.threshold = 0.5;
 	bloomPass.strength = 1;
 	bloomPass.radius = 0.5;
     bloomPass.renderToScreen = true;
-    filmPass.renderToScreen = true;
-    bokehPass = new BokehPass( scene, camera, {
-		focus: 20,
-		aperture: 0.00001,
-		maxblur: 1.525,
-		width: window.innerWidth,
-		height: window.innerHeight
-	} );
-
-	bokehPass.renderToScreen = true;
-	bokehPass.needsSwap = true;
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
 	composer.addPass(bloomPass);
-    // composer.addPass(bokehPass);
-    // composer.addPass(filmPass);
 
     // Set up orbit camera controls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -124,11 +110,11 @@ const init = () => {
         .start();
         hideWishText();
     });
-    canvas.addEventListener('contextmenu', () => {
-        //currentJellyTarget = null;
-        isCameraFollowingJelly = false;
-        hideWishText();
-    });
+    // canvas.addEventListener('contextmenu', () => {
+    //     //currentJellyTarget = null;
+    //     isCameraFollowingJelly = false;
+    //     hideWishText();
+    // });
     canvas.addEventListener('pointerdown', (e) => sceneClicked(e), false);
 
     // Listen for page transitions on each link to page with three scene
@@ -141,10 +127,19 @@ const init = () => {
 
     // Add canvas to page and objects to scene
     document.body.appendChild(renderer.domElement);
-    scene.add(camera);
     
     // Start by loading galleryPage, as those are elements not hidden at top of init
-    loadGalleryPage();
+    dbRef.once('value', (data) => {
+        for(const wish in data.val()) {
+            if(data.val()[wish].approved) totalWishes++;
+        }
+        jellyRange = Math.cbrt(totalWishes) * 125;
+        camZoom = jellyRange * 2 + 50;
+        camera.position.set(500, 500, camZoom);
+        controls.maxDistance = camZoom;
+        scene.add(camera);
+        loadGalleryPage();
+    });
 
     // Create particle system
     // createParticleSystem(scene);
@@ -162,36 +157,72 @@ const animate = (renderer, clock) => {
     // Make jellies move around, make them turn around if they hit walls or target jelly
     for(let i = 0; i < jellies.length; i++) {
         const jelly = jellies[i].jellyParent;
+        // let moveJelly = true;
 
-        if(isCameraAnimating && jelly === currentJellyTarget) continue;
+        if((isCameraAnimating && jelly === currentJellyTarget) || !!jelly.isJellyTurning) continue;
 
-        if (jelly.position.x < -1300 || jelly.position.x > 1300 ||
-            jelly.position.y < -1300 || jelly.position.y > 1300 ||
-            jelly.position.z < -1300 || jelly.position.z > 1300
+        if (jelly.position.x < -jellyRange || jelly.position.x > jellyRange ||
+            jelly.position.y < -jellyRange || jelly.position.y > jellyRange ||
+            jelly.position.z < -jellyRange || jelly.position.z > jellyRange
         ) {
-            jelly.position.x = THREE.Math.clamp(jelly.position.x, -1300, 1300);
-            jelly.position.y = THREE.Math.clamp(jelly.position.y, -1300, 1300);
-            jelly.position.z = THREE.Math.clamp(jelly.position.z, -1300, 1300);
-            jelly.rotateX(Math.PI);
+            jelly.position.x = THREE.Math.clamp(jelly.position.x, -jellyRange, jellyRange);
+            jelly.position.y = THREE.Math.clamp(jelly.position.y, -jellyRange, jellyRange);
+            jelly.position.z = THREE.Math.clamp(jelly.position.z, -jellyRange, jellyRange);
+
+            jelly.isJellyTurning = true;
+            // moveJelly = false;
+            if(jelly.rotation.x < 0.5 || jelly.rotation.z < 0.5) {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'x': jelly.rotation.x + (Math.random() * Math.PI / 4), 'y': jelly.rotation.y + (Math.random() * Math.PI / 4), 'z': jelly.rotation.z + (Math.random() * Math.PI / 4)}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            }
+            else if(jelly.rotation.x > jelly.rotation.z) {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'x': -jelly.rotation.x / 2}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            } else {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'z': -jelly.rotation.z / 2}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            }
+            continue;
         }
-        // EXPERIMENTING WITH FLOCKING BEHAVIORS
-        //     let approachingJelly = false;
-        //     for(const j of jellies) {
-        //         if(jelly.position.distanceTo(j.jellyParent.position) < 30) {
-        //             approachingJelly = true;
-        //             j.jellyParent.rotateX(-Math.PI / 1000);
-        //         }
-        //     }
-        //     if(approachingJelly) {
-        //         jelly.rotateX(Math.PI / 1000);
-        //     } else {
-        //         jelly.rotateX((Math.PI / 1000) * Math.random());
-        //         jelly.rotateZ((Math.PI / 1000) * Math.random());
-        //     }
         else {
-            jelly.rotateX((Math.PI / 1000) * Math.random());
-            jelly.rotateZ((Math.PI / 1000) * Math.random());
+            // EXPERIMENTING WITH FLOCKING BEHAVIORS
+            let approachingJelly = false;
+            for(const j of jellies) {
+                if(jelly.position.distanceTo(j.jellyParent.position) < 30) {
+                    approachingJelly = true;
+                    j.jellyParent.rotateY(-Math.PI / 500);
+                    j.jellyParent.rotateX(-Math.PI / 500);
+                    j.jellyParent.rotateZ(-Math.PI / 500);
+                }
+            }
+            if(approachingJelly) {
+                jelly.rotateY(Math.PI / 500);
+                jelly.rotateX(Math.PI / 500);
+                jelly.rotateZ(Math.PI / 500);
+            } else {
+                jelly.rotateX((Math.PI / 1000) * Math.random());
+                jelly.rotateZ((Math.PI / 1000) * Math.random());
+            }
         }
+        jelly.translateY(jellies[i].aStep * 2 + 0.3);
         // OLD COLLISION DETECTION MIGHT STILL USE
         // else if (
         //     isCameraFollowingJelly &&
@@ -204,8 +235,6 @@ const animate = (renderer, clock) => {
         // ) {
         // EXPERIMENTING WITH NOT ALLOWING JELLIES TO TOUCH TARGET
         // if(isCameraFollowingJelly && currentJellyTarget !== jelly && jelly.position.distanceTo(currentJellyTarget.position) < 30 ) continue;
-        
-        jelly.translateY(jellies[i].aStep * 2 + 0.3);
     }
   
     // Make jellies pulsate through geometry transforms
@@ -219,7 +248,7 @@ const animate = (renderer, clock) => {
         // Change opacity if selected
         if(isCameraFollowingJelly){
             currentJelly.jellyMesh.material.opacity = 0.15;
-            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.65;
+            if(currentJellyTarget !== null) currentJellyTarget.children[0].material.opacity = 0.45;
         } else {
             currentJelly.jellyMesh.material.opacity = 0.45;
         }
@@ -239,24 +268,28 @@ const animate = (renderer, clock) => {
 
         for ( let lineIndex = 0; lineIndex < currentJelly.jellyWidthSegments+1; lineIndex ++ ){
             const temppoints = [];
-            const positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+            let positions = currentJelly.lines[lineIndex].geometry.attributes.position.array;
+            //positions = new Float32Array(currentJelly.jellyHeightSegments+1 *3 );
     
-            for(let jIndex=currentJelly.jellyWidthSegments; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){    
+            for(let jIndex=currentJelly.jellyWidthSegments+1; jIndex<(currentJelly.jellyWidthSegments*currentJelly.jellyHeightSegments); jIndex+=(currentJelly.jellyWidthSegments+1)){    
                 var vec = new THREE.Vector3();
                 vec.fromBufferAttribute(position, lineIndex+jIndex)
                 temppoints.push(vec);
             }
     
-            for(let k=1; k<temppoints.length; k++){
-    
+            for(let k=0; k<currentJelly.jellyHeightSegments+1; k++){
                 let point = temppoints[k];
-                
-                shiftRight(positions, point.z);
-                shiftRight(positions, point.y);
-                shiftRight(positions, point.x);
+                if(temppoints[k] !== undefined) {
+                    shiftRight(positions, point.z);
+                    shiftRight(positions, point.y);
+                    shiftRight(positions, point.x);
+                    // positions[k] = point.x;
+                    // positions[k + 1] = point.y;
+                    // positions[k + 2] = point.z;
+                }    
             }
-            currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
 
+            currentJelly.lines[lineIndex].geometry.attributes.position.needsUpdate = true; // required after the first render
         }
 
         currentJelly.jellyMesh.geometry.verticesNeedUpdate = true;
@@ -385,9 +418,6 @@ const switchScene = (newScene, cameraDirection) => {
                     isCameraAnimating = false;
                     if(currentScene === 'galleryPage' && transitionTargetWishID !== null) {
                         jellyClicked(jellies.find(j => j.wishID === transitionTargetWishID).jellyParent);
-                        // const transitionTargetJelly = jellies.find(j => j.wishID === transitionTargetWishID).jellyParent;
-                        // currentJellyTarget = transitionTargetJelly;
-                        // jellyClicked(transitionTargetJelly);
                         transitionTargetWishID = null;
                     }
                 })
@@ -431,11 +461,10 @@ const createParticleSystem = (scene) => {
 	  fragmentShader: fragmentShader,
 	  transparent: true,
 	  depthWrite: false
-	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
 	});
 	
 	particles = new THREE.Points(geometry, shaderMaterial);
-	particles.scale.set(500, 500, 500);
+	particles.scale.set(1200, 1200, 1200);
 	scene.add(particles);
 	particles.rotation.z = -0.5;
 };
@@ -444,17 +473,9 @@ function generateBGStars() {
 	const geometry = new THREE.BufferGeometry();
 
 	const N = 2000;
-	// const vertices = new Float32Array(
-	//   [...Array(N)].map((_) => Math.random()*2-1)
-	// );
 	const vertices = new Float32Array(N);
 	let c = 0;
 	while (c < N) {
-	  // const u = Math.random() * 2 - 1,
-	  //   a = Math.random() * 2 * 3.14,
-	  //   x = Math.sqrt(1 - u * u) * Math.cos(a),
-	  //   y = Math.sqrt(1 - u * u) * Math.sin(a),
-	  //   z = u
 	  const theta = Math.random() * 2 * Math.PI,
 		phi = Math.acos(2 * Math.random() - 1),
 		r = Math.pow(Math.random(), 1 / 3),
@@ -472,12 +493,10 @@ function generateBGStars() {
 	
 	const shaderMaterial = new THREE.ShaderMaterial({
 	  uniforms: {},
-	
 	  vertexShader: bgVertexShader,
 	  fragmentShader: bgFragmentShader,
 	  transparent: true,
 	  depthWrite: true
-	  //https://threejs.org/docs/#api/en/constants/CustomBlendingEquations
 	});
 	
 	let particles = new THREE.Points(geometry, shaderMaterial);
@@ -489,17 +508,19 @@ function generateBGStars() {
 
 // Generates a jellyfish based on the specified string (wish)
 const generateJelly = (wishObj) => {
+    if(!wishObj.wish) return;
     const jellyCode = hashFunc(wishObj.wish);
     const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
     const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
-    const colorArray = ['#ffffff', '#F0A6C1', '#F2387C', '#E83CB3', '#DE41F2', '#6C2EF2', '#031473'];
-    const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
+    const colorArray = ['#490085', '#ad538b', '#ff005d', '#2206c4', '#DE41F2', '#765b8c', '#0e47ab'];
+    // const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
+    const jellyColor = colorArray[Math.round(mapNumToRange(jellyCode[2], 0, 9, 0, colorArray.length - 1))];
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
     const outerMaterial = new THREE.MeshBasicMaterial({
-        color: `#${jellyColor}`,
-        //color: colorArray[randomNum(0, 6)],
+        color: jellyColor,
+        // color: `#${jellyColor}`,
         transparent: true,
         opacity: 0.45,
         depthWrite: false
@@ -513,7 +534,6 @@ const generateJelly = (wishObj) => {
     const lines = [];
 
     for ( let i = 0; i < jellyWidthSegments+1; i ++ ){
-
         const temppoints = [];
 
         let MAX_POINTS = jellyHeightSegments+1;
@@ -521,13 +541,13 @@ const generateJelly = (wishObj) => {
         const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
         linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
 
-        for(let j=jellyWidthSegments; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
+        for(let j=jellyWidthSegments+1; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
             var vec = new THREE.Vector3();
             vec.fromBufferAttribute(vertex, i+j)
             temppoints.push(vec);
         }
 
-        for(let k=0; k<temppoints.length; k++){
+        for(let k=0; k<temppoints.length-1; k++){
             let point = temppoints[k];
             shiftRight(positions, point.z);
             shiftRight(positions, point.y);
@@ -538,7 +558,8 @@ const generateJelly = (wishObj) => {
     }
 
     const parent = new THREE.Object3D();
-    parent.position.set(randomNum(-500, 500), randomNum(-500, 500), randomNum(-500, 500));
+    const jellyStartRange = jellyRange - 100;
+    parent.position.set(randomNum(-jellyStartRange, jellyStartRange), randomNum(-jellyStartRange, jellyStartRange), randomNum(-jellyStartRange, jellyStartRange));
     parent.rotation.set(Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI);
     parent.userData.wish = wishObj.wish;
   
@@ -572,7 +593,6 @@ const jellyClicked = (jelly) => {
     if(currentJellyTarget === jelly) return;
     currentJellyTarget = jelly;
     isCameraAnimating = true;
-
     const wishBox = document.querySelector('#wishtxtbox');
     const wishText = document.querySelector('#wishText');
     wishText.innerHTML = jelly.userData.wish;
@@ -586,8 +606,7 @@ const jellyClicked = (jelly) => {
         .onUpdate(() => controls.update())
         .onComplete(() => {
             isCameraAnimating = false;
-            isCameraFollowingJelly = true
-            // Experimenting with zoom transition next
+            isCameraFollowingJelly = true;
             new TWEEN.Tween(camera)
                 .to({'position': new THREE.Vector3(orbitTarget.x + 100, orbitTarget.y + 100, orbitTarget.z+100)}, 1000)
                 .easing(TWEEN.Easing.Circular.InOut)
@@ -608,8 +627,6 @@ const loadWishes = () => {
     dbRef.on('child_added', (data) => {
         if(currentScene !== 'galleryPage') return;
         const wishObj = data.val();
-        // if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
-        // generateJelly(wishObj)
         if(transitionTargetWishID !== wishObj.wishID) {
             if((wishObj.approved === undefined && wishObj.userID !== userID) || wishObj.approved === false) return;
         } 
@@ -639,7 +656,6 @@ const makeWish = () => {
         transitionTargetWishID = wishID;
         dbRef.push({wishID, wish: wish.trim(), approved: null, userID: getUserID()});
         switchScene('galleryPage', 'down');
-        // jellyClicked(jellies[jellies.length - 1].jellyParent);
     });
 };
 
@@ -670,10 +686,11 @@ const loadGalleryPage = () => {
     isCameraFollowingJelly = false;
     currentJellyTarget = null;
     loadWishes();
+    createParticleSystem(scene);
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     //changes bg color when load gallery page
-    //$("#app").css("background", "#040740");
+    $("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
@@ -765,15 +782,22 @@ function Mover(m,vel,loc,isa) {
     this.alive = true;
     this.geometry = new THREE.SphereGeometry(1.0,5,5);
 
-    this.vertices = [];     // PATH OF MOVEMENT
+    this.lineGeometry = new THREE.BufferGeometry();
+    this.vertices = new Float32Array( 10 * 3);     // PATH OF MOVEMENT
+    this.colors = new Float32Array( 10 * 3);
+    for(let i = 0; i<10; i++){
+        this.vertices[i] = this.location.x;
+        this.vertices[i+1] = this.location.y;
+        this.vertices[i+2] = this.location.z;
+    }
 
-    this.line = new THREE.Line();       // line to display movement
+    this.lineGeometry.setAttribute('position', new THREE.BufferAttribute( this.vertices, 3));
+    this.lineGeometry.setAttribute('color', new THREE.BufferAttribute(this.colors, 3));
+    this.lineGeometry.setDrawRange(0, 10);
 
-    this.color = this.line.material.color;
-    //this.line = THREE.Line(this.lineGeometry, lineMaterial);
-
-    this.basicMaterial =  new THREE.MeshPhongMaterial({
-        color: this.color, specular: this.color, shininess: 10
+    this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, vertexColors: true })
+    this.basicMaterial =  new THREE.MeshBasicMaterial({
+        color: 0xffffff
     });
 
     //this.selectionLight = new THREE.PointLight(this.color,.1);
@@ -782,13 +806,17 @@ function Mover(m,vel,loc,isa) {
     this.mesh.castShadow = false;
     this.mesh.receiveShadow = true;
 
-
+    this.line = new THREE.Line(this.lineGeometry, this.lineMaterial);
     this.position = this.location;
+    this.mesh.position.set(this.location);
 
     this.index = movers.length;
     this.selected = false;
 
-    if(isa === false) scene.add(this.mesh);
+    if(isa === false){ // If the star is not generated by the user cursor
+        scene.add(this.mesh);
+        scene.add(this.line);
+    } 
     //scene.add(this.selectionLight);
     this.applyForce = function(force) {
         if (!this.mass) this.mass = 1.0;
@@ -797,15 +825,39 @@ function Mover(m,vel,loc,isa) {
     };
     this.update = function() {
 
+        if(this.alive) {
         this.velocity.add(this.acceleration);
         this.location.add(this.velocity);
         this.acceleration.multiplyScalar(0);
+        }
 
         //this.selectionLight.position.copy(this.location);
         this.mesh.position.copy(this.location);
-        if (this.vertices.length > 10000) this.vertices.splice(0,1);
+        //if (this.vertices.length > 10000) this.vertices.splice(0,1);
+        if(this.location.x !== 0 && this.location.y !== 0){
+        const linePos = this.line.geometry.attributes.position.array;
 
-        this.vertices.push(this.location.clone());
+        shiftRight(linePos, this.location.z);
+        shiftRight(linePos, this.location.y);
+        shiftRight(linePos, this.location.x);
+
+        const lineCol = this.line.geometry.attributes.color.array;
+
+            this.colors = [];
+            this.lineColor = new THREE.Color();
+            for(let i=0; i<10; i++){
+                this.lineColor.setHSL( 0, 0, (1 - (i/10)));
+                lineCol[ i ] = this.lineColor.r
+                lineCol[ i +1 ] = this.lineColor.g
+                lineCol[ i +2 ] = this.lineColor.b
+            }
+        }
+            
+
+        this.line.geometry.attributes.position.needsUpdate = true; // required after the first render
+        this.line.geometry.attributes.color.needsUpdate = true;
+        
+        //this.vertices.push(this.location.clone());
         //this.lineGeometry.verticesNeedUpdate = true;
 
     };
@@ -825,8 +877,8 @@ function Mover(m,vel,loc,isa) {
         this.velocity=newVelocity;
         this.mass = newMass;
 
-        if (m.selected) this.selected = true;
-        this.color.lerpHSL(m.color, m.mass /  (m.mass + this.mass));
+        //if (m.selected) this.selected = true;
+        //this.color.lerpHSL(m.color, m.mass /  (m.mass + this.mass));
       
         m.kill();
     };
@@ -857,34 +909,12 @@ function Mover(m,vel,loc,isa) {
         }
 
     };
-
-    // this.showTrails = function() {
-        if (!this.lineDrawn) {
-            this.lineDrawn = true;
-            scene.add(this.line);
-        } else if (this.lineDrawn === true) {
-            scene.remove(this.line);
-            var newLineGeometry = new THREE.Geometry();
-            newLineGeometry.vertices = this.vertices.slice();
-
-            newLineGeometry.verticesNeedUpdate = true;
-            if (!pause && !this.alive) {
-                if (this.lineDrawn === true) {
-                  this.vertices.shift();  
-                }
-            }
-            while (newLineGeometry.vertices.length > parseInt(100)) {
-                newLineGeometry.vertices.shift();
-            }
-            this.line = new THREE.Line(newLineGeometry, this.line.material);
-            scene.add(this.line);
-        }
-    // }
 }
 
 const createShootingStar = () => {
-	let speed = -1*(1+Math.random()*5);
+	let speed = -1*(5+Math.random()*15);
 	movers.push(new Mover(1, new THREE.Vector3(speed, speed, 0), new THREE.Vector3(500+Math.random()*800, 500+Math.random()*800, -500), false));
+    //console.log(movers[0].mesh.position);
 }
 
 const attractStar = () => {
@@ -896,6 +926,7 @@ const attractStar = () => {
                 var m = movers[i];
 				// update so they continue on their path
 				m.update();
+                //m.showTrails();
                 if(a) a.kill();
 
 				// if(m.location.y <= 0){
@@ -909,7 +940,7 @@ const attractStar = () => {
 					if(clicking){
 							// movers.push(new Mover(40, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 100, -500)));
 							// console.log(intersects.x, intersects.y)
-						a = new Mover(20, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500), true);
+						a = new Mover(150, new THREE.Vector3(0, 0, 0), new THREE.Vector3(intersects.x, intersects.y, -500), true);
 
                         if (movers[i].alive) {
                             var distance = m.location.distanceTo(a.location);
@@ -1031,7 +1062,7 @@ const loadMakeWishPage = () => {
     // }
 
     generateBGStars();
-    var intervalID = window.setInterval(createShootingStar, 3500);
+    intervalID = window.setInterval(createShootingStar, 3500);
     makeWishCursor();
 	
     // helper plane for raycasting
@@ -1042,7 +1073,9 @@ const loadMakeWishPage = () => {
 };
 
 const unloadMakeWishPage = () => {
+    clearInterval(intervalID);
     clearScene();
+
 };
 
 // Remove all objects in three js scene
@@ -1093,7 +1126,7 @@ const makeWishCursor = () => {
             raycaster.setFromCamera(mouse, camera);
             intersects = new THREE.Vector3();
             raycaster.ray.intersectPlane(plane, intersects);
-            console.log(intersects);
+            // console.log(intersects);
         });
 
     }
@@ -1114,7 +1147,7 @@ const makeWishCursor = () => {
         raycaster.setFromCamera(mouse, camera);
         intersects = new THREE.Vector3();
 		raycaster.ray.intersectPlane(plane, intersects);
-        console.log(intersects);
+        // console.log(intersects);
     });
     $('body')
     .mousedown(function(e){

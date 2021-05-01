@@ -401,7 +401,8 @@ a {
   z-index: 12;
   width: 100%;
   height: 100%;
-  background-color: #00013a56;
+  /* background-color: #00013a56; */
+  background-color: #0407407c;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -562,7 +563,8 @@ nav {
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: #00013a56;
+  /* background-color: #00013a56; */
+  background-color: #0407407c;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   opacity: 0;
@@ -663,7 +665,8 @@ ul {
   left: 17px;
   display: block;
   width: 28px;
-  height: 1px;
+  height: 2px;
+  border-radius: 100rem;
   background-color: #fff;
   -webkit-transition: all .5s;
   transition: all .5s;
@@ -673,11 +676,27 @@ ul {
 }
 
 .bar.bottom, button .exit-btn {
-  top: 34px;
+  top: 36px;
   -webkit-transform-origin: left bottom;
   -ms-transform-origin: left bottom;
   transform-origin: left bottom;
 }
+
+
+.bar.top{
+  top: 20px;
+}
+
+.bar.mid{
+  top: 30px;
+  width: 28px;
+  transition: all 0.2s ease;
+}
+
+.bar.bottom{
+  top: 40px;
+}
+
 
 .menu-btn__text {
   position: absolute;
@@ -692,11 +711,6 @@ ul {
   visibility: visible;
   opacity: 1;
 }
-
-.menu-btn:hover .bar {
-  opacity: 0.8;
-}
-
 .menu-btn:hover {
   transition: 0.2s ease-in;
   transform: scale(0.95);
@@ -727,15 +741,21 @@ ul {
 .check:checked~.menu-btn .bar.top {
   width: 24px;
   left: 24px;
-  top: 23px;
+  top: 22px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
+.check:checked~.menu-btn .bar.mid{
+  width: 0px;
+  transition: all 0.2s ease;
+  border-radius: 100rem;
+}
+
 .check:checked~.menu-btn .bar.bottom {
   width: 24px;
-  top: 39px;
+  top: 38px;
   left: 24px;
   -webkit-transform: rotate(-45deg);
   -ms-transform: rotate(-45deg);
@@ -815,7 +835,7 @@ ul {
   top: 0;
   height: 100vh;
   width: 100%;
-  background: #040740;
+  background: #020345;
   overflow: auto;
   text-align: center;
 }
@@ -873,13 +893,13 @@ ul {
 .widebrief h1{
   text-align: center;
   text-transform: capitalize;
-  padding-bottom: 16px;
+  padding-bottom: 32px;
 }
 .widebrief p{
-  max-width: 48rem;
+  max-width: 56rem;
   color: rgb(153, 153, 153);
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 21px;
+  line-height: 28px;
   margin: auto;
   font-family: sofia-pro, sans-serif;
 }
@@ -903,10 +923,8 @@ ul {
 }
 
 .half {
-  width: 50%;
   margin: auto;
   height: auto;
-  padding-top: 75px;
 }
 
 .half{
@@ -923,6 +941,7 @@ ul {
   width: auto;
   font-family: 'GT-Super-Display-Medium', sans-serif;
   font-weight: 100 !important;
+  padding-top: 25%;
 }
 
 .half p {
@@ -1241,6 +1260,7 @@ footer {
   margin-bottom: 24px;
 }
 
+
 .controlscontainer button {
   border: none;
   background: none;
@@ -1297,16 +1317,16 @@ footer {
   width: 100%;
   position: absolute;
   text-align: center;
-  background-color: #02053a56;
+  background-color: #0407407c;
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   transition: all 0.5s ease;
 }
 
-.welcometxt img{
+/* .welcometxt img{
   max-width:500px !important;
   width:auto;
-}
+} */
 
 #welcomescreen h4, #tapTap, #starTxt{
   font-size: 18px;
@@ -1609,7 +1629,7 @@ footer {
 }
 
 .printArCard{
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1621,15 +1641,6 @@ footer {
   -webkit-backdrop-filter: blur(12px);
   transition: all 1s ease;
   z-index: 12;
-}
-
-.printArCard img{
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  border-radius: 8px;
 }
 
 .autoCenter h1{
@@ -1991,6 +2002,7 @@ canvas #arApp{
   position: absolute;
   top: 48px;
   left: 24px;
+  z-index: 12;
 }
 
 .backbutton:active {
