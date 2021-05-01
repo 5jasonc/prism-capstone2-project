@@ -109,11 +109,11 @@ const init = () => {
         .start();
         hideWishText();
     });
-    canvas.addEventListener('contextmenu', () => {
-        //currentJellyTarget = null;
-        isCameraFollowingJelly = false;
-        hideWishText();
-    });
+    // canvas.addEventListener('contextmenu', () => {
+    //     //currentJellyTarget = null;
+    //     isCameraFollowingJelly = false;
+    //     hideWishText();
+    // });
     canvas.addEventListener('pointerdown', (e) => sceneClicked(e), false);
 
     // Listen for page transitions on each link to page with three scene
@@ -133,7 +133,7 @@ const init = () => {
             if(data.val()[wish].approved) totalWishes++;
         }
         jellyRange = Math.cbrt(totalWishes) * 125;
-        camZoom = jellyRange * 1.5 + 50;
+        camZoom = jellyRange * 2 + 50;
         camera.position.set(500, 500, camZoom);
         controls.maxDistance = camZoom;
         scene.add(camera);
@@ -156,9 +156,9 @@ const animate = (renderer, clock) => {
     // Make jellies move around, make them turn around if they hit walls or target jelly
     for(let i = 0; i < jellies.length; i++) {
         const jelly = jellies[i].jellyParent;
+        // let moveJelly = true;
 
-        // if((isCameraAnimating && jelly === currentJellyTarget) || !!jelly.isJellyTurning) continue;
-        if(isCameraAnimating && jelly === currentJellyTarget) continue;
+        if((isCameraAnimating && jelly === currentJellyTarget) || !!jelly.isJellyTurning) continue;
 
         if (jelly.position.x < -jellyRange || jelly.position.x > jellyRange ||
             jelly.position.y < -jellyRange || jelly.position.y > jellyRange ||
@@ -167,37 +167,61 @@ const animate = (renderer, clock) => {
             jelly.position.x = THREE.Math.clamp(jelly.position.x, -jellyRange, jellyRange);
             jelly.position.y = THREE.Math.clamp(jelly.position.y, -jellyRange, jellyRange);
             jelly.position.z = THREE.Math.clamp(jelly.position.z, -jellyRange, jellyRange);
-            jelly.rotateX(Math.PI);
 
-            // EXPERIMENT WITH JELLY TURNING AROUND ANIMATION
-            // jelly.isJellyTurning = true;
-            // new TWEEN.Tween(jelly.rotation)
-            //     .to({'x': jelly.rotation.x + Math.PI}, 1000)
-            //     .easing(TWEEN.Easing.Circular.InOut)
-            //     .onComplete(() => {
-            //         jelly.translateY(jellies[i].aStep * 2 + 0.3);
-            //         jelly.isJellyTurning = false;
-            //     })
-            //     .start();
+            jelly.isJellyTurning = true;
+            // moveJelly = false;
+            if(jelly.rotation.x < 0.5 || jelly.rotation.z < 0.5) {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'x': jelly.rotation.x + (Math.random() * Math.PI / 4), 'y': jelly.rotation.y + (Math.random() * Math.PI / 4), 'z': jelly.rotation.z + (Math.random() * Math.PI / 4)}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            }
+            else if(jelly.rotation.x > jelly.rotation.z) {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'x': -jelly.rotation.x / 2}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            } else {
+                new TWEEN.Tween(jelly.rotation)
+                    .to({'z': -jelly.rotation.z / 2}, 1000)
+                    .easing(TWEEN.Easing.Circular.InOut)
+                    .onComplete(() => {
+                        jelly.translateY(jellies[i].aStep * 2 + 0.3);
+                        jelly.isJellyTurning = false;
+                    })
+                    .start();
+            }
+            continue;
         }
         else {
-            // jelly.rotateX((Math.PI / 1000) * Math.random());
-            // jelly.rotateZ((Math.PI / 1000) * Math.random());
             // EXPERIMENTING WITH FLOCKING BEHAVIORS
             let approachingJelly = false;
             for(const j of jellies) {
                 if(jelly.position.distanceTo(j.jellyParent.position) < 30) {
                     approachingJelly = true;
+                    j.jellyParent.rotateY(-Math.PI / 500);
                     j.jellyParent.rotateX(-Math.PI / 500);
+                    j.jellyParent.rotateZ(-Math.PI / 500);
                 }
             }
             if(approachingJelly) {
+                jelly.rotateY(Math.PI / 500);
                 jelly.rotateX(Math.PI / 500);
+                jelly.rotateZ(Math.PI / 500);
             } else {
                 jelly.rotateX((Math.PI / 1000) * Math.random());
                 jelly.rotateZ((Math.PI / 1000) * Math.random());
             }
         }
+        jelly.translateY(jellies[i].aStep * 2 + 0.3);
         // OLD COLLISION DETECTION MIGHT STILL USE
         // else if (
         //     isCameraFollowingJelly &&
@@ -210,8 +234,6 @@ const animate = (renderer, clock) => {
         // ) {
         // EXPERIMENTING WITH NOT ALLOWING JELLIES TO TOUCH TARGET
         // if(isCameraFollowingJelly && currentJellyTarget !== jelly && jelly.position.distanceTo(currentJellyTarget.position) < 30 ) continue;
-        
-        jelly.translateY(jellies[i].aStep * 2 + 0.3);
     }
   
     // Make jellies pulsate through geometry transforms
