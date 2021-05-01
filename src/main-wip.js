@@ -25,6 +25,7 @@ let camera, scene, loader, renderer, controls;
 let water;
 let plane, intersects, a;
 var MASS_FACTOR = .01; // for display of size
+let intervalID;
 let particles;
 let bloomPass;
 
@@ -1039,7 +1040,7 @@ const loadMakeWishPage = () => {
     // }
 
     generateBGStars();
-    var intervalID = window.setInterval(createShootingStar, 3500);
+    intervalID = window.setInterval(createShootingStar, 3500);
     makeWishCursor();
 	
     // helper plane for raycasting
@@ -1050,7 +1051,9 @@ const loadMakeWishPage = () => {
 };
 
 const unloadMakeWishPage = () => {
+    clearInterval(intervalID);
     clearScene();
+
 };
 
 // Remove all objects in three js scene
