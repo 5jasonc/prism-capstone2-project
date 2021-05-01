@@ -115,7 +115,14 @@ const init = () => {
         .start();
         hideWishText();
     });
-    document.querySelector('#shareJellyBtn').addEventListener('click', () => shareModeOn = true);
+    document.querySelector('#shareJellyBtn').addEventListener('click', () => {
+        const wish = jellies.find(j => j.jellyParent === currentJellyTarget).wish;
+        const encodedWish = $.param({wish});
+        console.log(encodedWish);
+        // document.querySelector('.shareLink h4').innerHTML = `http://wishful.space/jelly?${encodedWish}`;
+        document.querySelector('#shareLink').setAttribute('href', `jelly.html?${encodedWish}`);// `jelly.html?${encodedWish}`;
+        shareModeOn = true;
+    });
     document.querySelector('#Exit').addEventListener('click', () => shareModeOn = false);
     // canvas.addEventListener('contextmenu', () => {
     //     //currentJellyTarget = null;
@@ -522,11 +529,11 @@ function generateBGStars() {
 const generateJelly = (wishObj) => {
     if(!wishObj.wish) return;
     const jellyCode = hashFunc(wishObj.wish);
-    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[0], 1, 9, 5, 11));
-    const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[1], 0, 9, 3, 8));
+    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode.substring(0, 2), 1, 99, 8, 20));
+    const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[2], 0, 9, 8, 15));
     const colorArray = ['#490085', '#ad538b', '#ff005d', '#2206c4', '#DE41F2', '#765b8c', '#0e47ab'];
     // const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
-    const jellyColor = colorArray[Math.round(mapNumToRange(jellyCode[2], 0, 9, 0, colorArray.length - 1))];
+    const jellyColor = colorArray[Math.round(mapNumToRange(jellyCode[3], 0, 9, 0, colorArray.length - 1))];
     const jellyAnimSpeed = mapNumToRange(jellyCode[4], 0, 9, 0.01, 0.09);
     const jellyGeometery = new THREE.SphereGeometry(15, jellyWidthSegments, jellyHeightSegments, 0, 6.283, 0, 1.7);
     
@@ -545,15 +552,14 @@ const generateJelly = (wishObj) => {
     const vertex = jellyMesh.geometry.attributes.position;
     const lines = [];
 
-    for ( let i = 0; i < jellyWidthSegments+1; i ++ ){
+    for(let i = 0; i < jellyWidthSegments + 1; i++) {
         const temppoints = [];
-
         let MAX_POINTS = jellyHeightSegments+1;
         const linegeo = new THREE.BufferGeometry();
         const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
         linegeo.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
 
-        for(let j=jellyWidthSegments+1; j<(jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
+        for(let j=jellyWidthSegments + 1; j < (jellyWidthSegments*jellyHeightSegments); j+=(jellyWidthSegments+1)){
             var vec = new THREE.Vector3();
             vec.fromBufferAttribute(vertex, i+j)
             temppoints.push(vec);
