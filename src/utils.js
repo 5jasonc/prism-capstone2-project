@@ -205,6 +205,10 @@ export const randomNum = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+export const isWishOnlyValidChars = (wish) => {
+    return /^[0-9A-Za-z]+$/.test(wish);
+};
+
 // Adds to the top of a BufferArray, emulating a push
 export const shiftRight = (collection, value) => {
     for (let i = collection.length - 1; i > 0; i--) {

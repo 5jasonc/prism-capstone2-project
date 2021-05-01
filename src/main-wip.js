@@ -14,7 +14,7 @@ import {
     vertexShader, fragmentShader, bgVertexShader, bgFragmentShader, firebaseConfig,
     changeStyleSource, updateSearchText, updateSearchBanner, toggleSearchUI, hideSearchUI, toggleTempWishUI, hideWishText,
     showGalleryPage, hideGalleryPage, showWelcomePage, hideWelcomePage, showMakeWishPage, hidewMakeWishPage,
-    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry, genWishID
+    getUserID, hashFunc, mapNumToRange, hideWishCursor, randomNum, shiftRight, animateValue, detectMob, showWishEntry, genWishID, isWishOnlyValidChars
 } from './utils.js';
 
 // VARIABLES TO TRACK OBJECTS IN SCENE
@@ -220,23 +220,23 @@ const animate = (renderer, clock) => {
         else {
             // EXPERIMENTING WITH FLOCKING BEHAVIORS
             let approachingJelly = false;
-            for(const j of jellies) {
-                if(jelly.position.distanceTo(j.jellyParent.position) < 20) {
-                    approachingJelly = true;
-                    j.jellyParent.rotateY(-Math.PI / 500);
-                    j.jellyParent.rotateX(-Math.PI / 500);
-                    j.jellyParent.rotateZ(-Math.PI / 500);
-                }
-            }
-            if(approachingJelly) {
-                jelly.rotateY(Math.PI / 500);
-                jelly.rotateX(Math.PI / 500);
-                jelly.rotateZ(Math.PI / 500);
-            } else {
+            // for(const j of jellies) {
+            //     // if(jelly.position.distanceTo(j.jellyParent.position) < 20) {
+            //     //     approachingJelly = true;
+            //     //     j.jellyParent.rotateY(-Math.PI / 500);
+            //     //     j.jellyParent.rotateX(-Math.PI / 500);
+            //     //     j.jellyParent.rotateZ(-Math.PI / 500);
+            //     // }
+            // }
+            // if(approachingJelly) {
+            //     jelly.rotateY(Math.PI / 500);
+            //     jelly.rotateX(Math.PI / 500);
+            //     jelly.rotateZ(Math.PI / 500);
+            // } else {
                 // How jelly moves when not close to another jelly
                 jelly.rotateX((Math.PI / 1000) * Math.random());
                 jelly.rotateZ((Math.PI / 1000) * Math.random());
-            }
+            // }
         }
         if(shareModeOn === false) jelly.translateY(jellies[i].aStep * 2 + 0.3);
         // OLD COLLISION DETECTION MIGHT STILL USE
@@ -534,8 +534,8 @@ function generateBGStars() {
 const generateJelly = (wishObj) => {
     if(!wishObj.wish) return;
     const jellyCode = hashFunc(wishObj.wish);
-    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode.substring(0, 2), 1, 99, 8, 20));
-    const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[2], 0, 9, 8, 15));
+    const jellyWidthSegments = Math.round(mapNumToRange(jellyCode[1], 1, 99, 5, 12));
+    const jellyHeightSegments = Math.round(mapNumToRange(jellyCode[2], 0, 9, 5, 12));
     const colorArray = ['#490085', '#ad538b', '#ff005d', '#2206c4', '#DE41F2', '#765b8c', '#0e47ab'];
     // const jellyColor = Math.floor(mapNumToRange(jellyCode.substring(2, 4), 0, 99, 0.1, 0.9) * 16777215).toString(16);
     const jellyColor = colorArray[Math.round(mapNumToRange(jellyCode[3], 0, 9, 0, colorArray.length - 1))];
@@ -665,6 +665,11 @@ const makeWish = () => {
     const wish = document.querySelector('#wishInput').value;
     if(wish.trim() === '') {
         document.querySelector('#errorText').innerHTML = `Wish can't be empty!`;
+        return;
+    }
+    console.log(isWishOnlyValidChars(wish));
+    if(!isWishOnlyValidChars(wish)) {
+        document.querySelector('#errorText').innerHTML = `Wish can only contain letters or numbers!`;
         return;
     }
 
