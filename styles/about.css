@@ -263,7 +263,7 @@ video {
   }
 
   .half{
-    width:75% !important;
+    width:100% !important;
   }
 
   .half h1{
@@ -329,9 +329,9 @@ img {
   grid-template-areas:
     ". textField1 imgField1 ."
     ". intro intro ."
-    ". imgField2 textField2 ."
-    ". textField3 imgField3 ."
-    ". imgField4 textField4 ."
+    ". textField2 imgField2 ."
+    ". imgField3 textField3 ."
+    ". textField4 imgField4 ."
     ". teamField teamField .";
 }
 
@@ -386,6 +386,7 @@ img {
       ". imgField4 ."
       ". textField4 ."
       ". teamField .";
+      margin-top: 200px;
   }
   .half h1 {
       line-height: 48px;
@@ -400,7 +401,7 @@ img {
 
   .aboutus h1 {
 
-    line-height: 70px;
+    line-height: 54px;
     font-size: 54px;
 
 }
@@ -412,8 +413,8 @@ img {
 @media screen and (max-width: 520px) {
 
   .half h1 {
-      line-height: 48px;
-      font-size: 48px;
+      line-height: 34px;
+      font-size: 32px;
       width:100%;
   }
 
