@@ -14,6 +14,21 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/print.css">
     <link rel="stylesheet" id="styleChangeLink" href="styles/index.css" />
+    <!-- FB Open Graphs -->
+    <meta property="og:url" content="http://www.wishful.space" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="I wish for a better tomorrow" />
+    <!-- WE SHOULD ADD CUSTOM DESCRIPTION HERE -->
+    <meta property="og:description" content="Share a wish at wishful.space to create your own jellyfish!" />
+    <meta property="og:image" content="https://ak4479.cad.rit.edu/wishfulog.png" />
+    <meta property="og:image:alt" content="Wishing well with jellyfish swimming around freely" />
+
+    <!-- Twitter Open Graphs-->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@wishful.rit">
+    <meta name="twitter:title" content="I wish for a better tomorrow">
+    <meta name="twitter:description" content="Share a wish at wishful.space to create your own jellyfish!">
+    <meta name="twitter:image" content="https://ak4479.cad.rit.edu/wishfulog.png">
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -30,109 +45,13 @@
         $('.printArCard').fadeOut();
     }
 </script>
-<style>
-    .arStep {
-        width: 280px;
-        border: 2px solid white;
-        border-radius: 12px;
-        margin: 2rem auto;
-        overflow: hidden;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 120px;
-    }
-
-    .slider {
-        width: auto;
-        display: flex;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-    }
-
-    .slider img {
-        width: 100%;
-    }
-
-    .slide {
-        width: 100%;
-        flex-shrink: 0;
-        height: 100%;
-    }
-
-    .slides>div {
-        scroll-snap-align: start;
-    }
-
-    .slides {
-        scroll-behavior: smooth;
-        position: relative;
-
-    }
-
-    .slider>a {
-        display: none;
-    }
-
-    .points {
-        width: 12px;
-        height: 12px;
-        background-color: transparent;
-        border: 2px solid white;
-        margin: 8px;
-        border-radius: 100rem;
-        transition: all 0.2s ease-in;
-    }
-
-    .points:active {
-        background-color: white;
-        border: 2px solid transparent;
-    }
-
-    .slidepoint {
-        position: relative;
-        top: 590px;
-        display: flex;
-        width: 100px;
-        margin: auto;
-    }
-</style>
-
 <body style="margin : 0px; overflow: hidden; font-family: sans-serif;">
     <div class="printArCard">
-        <!-- <div class="autoCenter">
+        <div class="autoCenter">
             <a href="arPrintCards.svg" download>
                 <img src="arPrintCards.svg">
             </a>
             <h1>Tap the card to print out the AR Card to interact with the jellyfish.</h1>
-        </div> -->
-
-        <div class="arStep">
-            <div class="slider">
-                <div class="slide" id="slide-1">
-                    <img src="./imgs/step1.png" alt="wishful logo welcome ar mode">
-                </div>
-                <div class="slide" id="slide-2">
-                    <a href="arPrintCards.svg" download>
-                        <img src="./imgs/step2.png" alt="wishful logo welcome ar mode">
-                    </a>
-                </div>
-                <div class="slide" id="slide-3">
-                    <img src="./imgs/step3.png" alt="wishful logo welcome ar mode">
-                </div>
-            </div>
-        </div>
-        <div class="slidepoint">
-            <a href="#slide-1">
-                <div class="points"></div>
-            </a>
-            <a href="#slide-2">
-                <div class="points"></div>
-            </a>
-            <a href="#slide-3">
-                <div class="points"></div>
-            </a>
         </div>
         <button onclick="myCloseBtn()">Dismiss</button>
     </div>
@@ -145,7 +64,7 @@
     </label>
     <label class="close-menu" for="checked"></label>
     <div class="backbutton">
-        <a href='index.html'><img src="./icons/ArrowUUpLeft.svg" width="100%"></a>
+        <a href='index-wip.html'><img src="./icons/ArrowUUpLeft.svg" width="100%"></a>
     </div>
     <nav class="drawer-menu">
         <ul>

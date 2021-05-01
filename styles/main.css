@@ -1664,6 +1664,14 @@ footer {
   margin: auto;
 }
 
+.autoCenter img{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+
 .printArCard button{
   position: absolute;
   bottom: 64px;
