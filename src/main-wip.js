@@ -667,7 +667,7 @@ const loadGalleryPage = () => {
     $('.settings').css('width', '364px');
     $('.search').fadeIn();
     //changes bg color when load gallery page
-    //$("#app").css("background", "#040740");
+    $("#app").css("background", "#040740");
 };
 
 // Unload all elements in gallery page
