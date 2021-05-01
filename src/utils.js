@@ -165,7 +165,7 @@ export const hidewMakeWishPage = () => {
 
 export const hideWishCursor = () => {
     $('#cursor').fadeOut();
-    $('#cursor').remove();
+    //$('#cursor').remove();
 }
 
 // JS UTILITY FUNCTIONS //////////////////////////
